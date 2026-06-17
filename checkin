@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Check-in de Produtos — Loja de Joias</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f0eb;
+      color: #2d2d2d;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1a1a2e, #4a3728);
+      color: #f0d9b0;
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+
+    header .logo { font-size: 28px; }
+    header h1 { font-size: 20px; font-weight: 600; letter-spacing: 0.5px; }
+    header p { font-size: 12px; opacity: 0.7; margin-top: 2px; }
+
+    .container {
+      max-width: 1100px;
+      margin: 32px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    @media (max-width: 820px) {
+      .container { grid-template-columns: 1fr; }
+    }
+
+    /* CARD FORMULÁRIO */
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .card h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #4a3728;
+      margin-bottom: 22px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #f0d9b0;
+    }
+
+    .field { margin-bottom: 16px; }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b5a4e;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #2d2d2d;
+      background: #fafafa;
+      transition: border-color 0.2s;
+      font-family: inherit;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #b8860b;
+      background: #fff;
+    }
+
+    textarea { resize: vertical; min-height: 70px; }
+
+    /* Upload foto */
+    .foto-area {
+      border: 2px dashed #c9b99a;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      background: #faf7f2;
+    }
+
+    .foto-area:hover { border-color: #b8860b; background: #fdf8f0; }
+
+    .foto-area input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .foto-area .icon { font-size: 32px; margin-bottom: 6px; }
+    .foto-area p { font-size: 12px; color: #9e8575; }
+
+    #preview-img {
+      width: 100%;
+      max-height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    /* Badge tipo */
+    .tipo-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .tipo-Joia       { background: #fff3cd; color: #856404; }
+    .tipo-Bijuteria  { background: #d1ecf1; color: #0c5460; }
+    .tipo-Semijoia   { background: #f8d7da; color: #721c24; }
+    .tipo-Acessório  { background: #d4edda; color: #155724; }
+    .tipo-Outro      { background: #e2e3e5; color: #383d41; }
+
+    /* Botão */
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.1s, box-shadow 0.2s;
+      letter-spacing: 0.4px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #b8860b, #8b6508);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(184,134,11,0.35);
+    }
+
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(184,134,11,0.45); }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-danger {
+      background: #dc3545;
+      color: #fff;
+      font-size: 12px;
+      padding: 5px 10px;
+      width: auto;
+      border-radius: 6px;
+    }
+
+    .btn-export {
+      background: #1a1a2e;
+      color: #f0d9b0;
+      font-size: 13px;
+      padding: 9px 18px;
+      width: auto;
+      border-radius: 8px;
+    }
+
+    /* HISTÓRICO */
+    .historico-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .historico-header h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #4a3728;
+    }
+
+    .filtros {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .filtros select,
+    .filtros input {
+      padding: 7px 12px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      font-size: 13px;
+      background: #fff;
+    }
+
+    /* Itens do histórico */
+    .entry {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      gap: 14px;
+      align-items: start;
+      transition: box-shadow 0.2s;
+    }
+
+    .entry:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+    .entry img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: #f0ebe4;
+    }
+
+    .entry .no-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+      background: #f0ebe4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+    }
+
+    .entry-info h3 { font-size: 14px; font-weight: 700; color: #2d2d2d; margin-bottom: 4px; }
+    .entry-info .meta { font-size: 12px; color: #9e8575; margin-bottom: 6px; }
+    .entry-info .obs { font-size: 12px; color: #6b5a4e; font-style: italic; margin-top: 4px; }
+
+    .entry-nums {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
+    .num-pill {
+      background: #f5f0eb;
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #4a3728;
+    }
+
+    .num-pill span { font-weight: 400; color: #9e8575; }
+
+    .entry-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+    .entry-date { font-size: 11px; color: #bbb; text-align: right; }
+
+    /* Totalizador */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .stat-box {
+      background: #fff;
+      border-radius: 10px;
+      padding: 12px 16px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .stat-box .num { font-size: 22px; font-weight: 700; color: #b8860b; }
+    .stat-box .lbl { font-size: 11px; color: #9e8575; margin-top: 2px; }
+
+    /* Toast */
+    #toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: #1a1a2e;
+      color: #f0d9b0;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    #toast.show { opacity: 1; transform: translateY(0); }
+
+    .empty {
+      text-align: center;
+      color: #c9b99a;
+      font-size: 14px;
+      padding: 40px 20px;
+    }
+
+    .empty .icon { font-size: 40px; margin-bottom: 8px; }
+
+    .historico-wrap {
+      max-height: 75vh;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .historico-wrap::-webkit-scrollbar { width: 5px; }
+    .historico-wrap::-webkit-scrollbar-thumb { background: #c9b99a; border-radius: 10px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">💎</div>
+  <div>
+    <h1>Check-in de Produtos</h1>
+    <p>Registro de entrada — Loja de Joias & Acessórios</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- FORMULÁRIO -->
+  <div class="card">
+    <h2>📦 Novo Registro</h2>
+
+    <div class="field">
+      <label>Foto do Produto</label>
+      <div class="foto-area" id="foto-area">
+        <input type="file" accept="image/*" id="foto-input" />
+        <div class="icon">📷</div>
+        <p>Clique para adicionar uma foto</p>
+      </div>
+      <img id="preview-img" alt="Preview" />
+    </div>
+
+    <div class="field">
+      <label>Nome / Descrição do Produto *</label>
+      <input type="text" id="nome" placeholder="Ex: Anel Solitário Banhado a Ouro" />
+    </div>
+
+    <div class="field">
+      <label>Tipo de Produto *</label>
+      <select id="tipo">
+        <option value="">Selecione...</option>
+        <option value="Joia">💛 Joia</option>
+        <option value="Bijuteria">💙 Bijuteria</option>
+        <option value="Semijoia">❤️ Semijoia</option>
+        <option value="Acessório">💚 Acessório</option>
+        <option value="Outro">⚪ Outro</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Fornecedor / Origem</label>
+      <input type="text" id="fornecedor" placeholder="Ex: Fornecedor SP, Feira de Ouro..." />
+    </div>
+
+    <div class="row-2">
+      <div class="field">
+        <label>Qtd. → Prateleira *</label>
+        <input type="number" id="qtd-prateleira" min="0" placeholder="0" />
+      </div>
+      <div class="field">
+        <label>Qtd. → Estoque *</label>
+        <input type="number" id="qtd-estoque" min="0" placeholder="0" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Observações</label>
+      <textarea id="obs" placeholder="Cor, tamanho, coleção, condição..."></textarea>
+    </div>
+
+    <button class="btn btn-primary" onclick="registrar()">✅ Registrar Check-in</button>
+  </div>
+
+  <!-- HISTÓRICO -->
+  <div>
+    <!-- Stats -->
+    <div class="stats" id="stats"></div>
+
+    <div class="card" style="padding: 20px;">
+      <div class="historico-header">
+        <h2>📋 Histórico de Entradas</h2>
+        <button class="btn btn-export" onclick="exportarCSV()">⬇️ Exportar CSV</button>
+      </div>
+
+      <div class="filtros">
+        <select id="filtro-tipo" onchange="renderizar()">
+          <option value="">Todos os tipos</option>
+          <option value="Joia">Joia</option>
+          <option value="Bijuteria">Bijuteria</option>
+          <option value="Semijoia">Semijoia</option>
+          <option value="Acessório">Acessório</option>
+          <option value="Outro">Outro</option>
+        </select>
+        <input type="text" id="filtro-busca" placeholder="🔍 Buscar por nome..." oninput="renderizar()" style="flex:1; min-width:140px;" />
+      </div>
+
+      <div class="historico-wrap" id="historico"></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+  let fotoBase64 = null;
+
+  // Preview da foto
+  document.getElementById('foto-input').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      fotoBase64 = ev.target.result;
+      const img = document.getElementById('preview-img');
+      img.src = fotoBase64;
+      img.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  function getRegistros() {
+    return JSON.parse(localStorage.getItem('checkin_joias') || '[]');
+  }
+
+  function salvarRegistros(lista) {
+    localStorage.setItem('checkin_joias', JSON.stringify(lista));
+  }
+
+  function registrar() {
+    const nome      = document.getElementById('nome').value.trim();
+    const tipo      = document.getElementById('tipo').value;
+    const fornecedor= document.getElementById('fornecedor').value.trim();
+    const prateleira= parseInt(document.getElementById('qtd-prateleira').value) || 0;
+    const estoque   = parseInt(document.getElementById('qtd-estoque').value) || 0;
+    const obs       = document.getElementById('obs').value.trim();
+
+    if (!nome) return toast('⚠️ Informe o nome do produto.');
+    if (!tipo) return toast('⚠️ Selecione o tipo do produto.');
+    if (prateleira === 0 && estoque === 0) return toast('⚠️ Informe ao menos uma quantidade.');
+
+    const registro = {
+      id: Date.now(),
+      data: new Date().toISOString(),
+      nome,
+      tipo,
+      fornecedor,
+      prateleira,
+      estoque,
+      obs,
+      foto: fotoBase64 || null
+    };
+
+    const lista = getRegistros();
+    lista.unshift(registro); // mais recente primeiro
+    salvarRegistros(lista);
+
+    limparForm();
+    renderizar();
+    toast('✅ Produto registrado com sucesso!');
+  }
+
+  function limparForm() {
+    document.getElementById('nome').value = '';
+    document.getElementById('tipo').value = '';
+    document.getElementById('fornecedor').value = '';
+    document.getElementById('qtd-prateleira').value = '';
+    document.getElementById('qtd-estoque').value = '';
+    document.getElementById('obs').value = '';
+    document.getElementById('preview-img').style.display = 'none';
+    document.getElementById('preview-img').src = '';
+    document.getElementById('foto-input').value = '';
+    fotoBase64 = null;
+  }
+
+  function excluir(id) {
+    if (!confirm('Excluir este registro do histórico?')) return;
+    const lista = getRegistros().filter(r => r.id !== id);
+    salvarRegistros(lista);
+    renderizar();
+    toast('🗑️ Registro excluído.');
+  }
+
+  function formatarData(iso) {
+    const d = new Date(iso);
+    return d.toLocaleString('pt-BR', {
+      day: '2-digit', month: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    });
+  }
+
+  function renderStats(lista) {
+    const total     = lista.length;
+    const prateleira= lista.reduce((s, r) => s + r.prateleira, 0);
+    const estoque   = lista.reduce((s, r) => s + r.estoque, 0);
+    const tipos     = [...new Set(lista.map(r => r.tipo))].length;
+
+    document.getElementById('stats').innerHTML = `
+      <div class="stat-box"><div class="num">${total}</div><div class="lbl">Registros</div></div>
+      <div class="stat-box"><div class="num">${prateleira}</div><div class="lbl">Na Prateleira</div></div>
+      <div class="stat-box"><div class="num">${estoque}</div><div class="lbl">No Estoque</div></div>
+      <div class="stat-box"><div class="num">${tipos}</div><div class="lbl">Tipos</div></div>
+    `;
+  }
+
+  function renderizar() {
+    const filtroTipo  = document.getElementById('filtro-tipo').value;
+    const filtroBusca = document.getElementById('filtro-busca').value.toLowerCase();
+
+    let lista = getRegistros();
+
+    renderStats(lista);
+
+    if (filtroTipo) lista = lista.filter(r => r.tipo === filtroTipo);
+    if (filtroBusca) lista = lista.filter(r =>
+      r.nome.toLowerCase().includes(filtroBusca) ||
+      (r.fornecedor || '').toLowerCase().includes(filtroBusca)
+    );
+
+    const el = document.getElementById('historico');
+
+    if (lista.length === 0) {
+      el.innerHTML = `
+        <div class="empty">
+          <div class="icon">📭</div>
+          <p>Nenhum registro encontrado.</p>
+        </div>`;
+      return;
+    }
+
+    el.innerHTML = lista.map(r => `
+      <div class="entry">
+        ${r.foto
+          ? `<img src="${r.foto}" alt="${r.nome}" />`
+          : `<div class="no-img">💎</div>`
+        }
+        <div class="entry-info">
+          <h3>${r.nome}</h3>
+          <div class="meta">
+            <span class="tipo-badge tipo-${r.tipo}">${r.tipo}</span>
+            ${r.fornecedor ? ` &bull; ${r.fornecedor}` : ''}
+          </div>
+          <div class="entry-nums">
+            <div class="num-pill"><span>Prateleira: </span>${r.prateleira}</div>
+            <div class="num-pill"><span>Estoque: </span>${r.estoque}</div>
+            <div class="num-pill"><span>Total: </span>${r.prateleira + r.estoque}</div>
+          </div>
+          ${r.obs ? `<div class="obs">📝 ${r.obs}</div>` : ''}
+        </div>
+        <div class="entry-actions">
+          <span class="entry-date">${formatarData(r.data)}</span>
+          <button class="btn btn-danger" onclick="excluir(${r.id})">🗑️ Excluir</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function exportarCSV() {
+    const lista = getRegistros();
+    if (lista.length === 0) return toast('⚠️ Nenhum registro para exportar.');
+
+    const header = ['Data', 'Nome', 'Tipo', 'Fornecedor', 'Prateleira', 'Estoque', 'Total', 'Observações'];
+    const linhas = lista.map(r => [
+      formatarData(r.data),
+      `"${r.nome}"`,
+      r.tipo,
+      `"${r.fornecedor || ''}"`,
+      r.prateleira,
+      r.estoque,
+      r.prateleira + r.estoque,
+      `"${r.obs || ''}"`
+    ].join(';'));
+
+    const csv = [header.join(';'), ...linhas].join('\n');
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `checkin_joias_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('📄 CSV exportado!');
+  }
+
+  function toast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 3000);
+  }
+
+  // Inicializa
+  renderizar();
+</script>
+</body>
+</html>
