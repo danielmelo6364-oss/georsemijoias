@@ -14,19 +14,133 @@
       min-height: 100vh;
     }
 
+    /* LOGIN */
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1a1a2e, #4a3728);
+    }
+
+    .login-box {
+      background: #fff;
+      border-radius: 20px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .login-box .logo { font-size: 48px; margin-bottom: 10px; }
+    .login-box h2 { font-size: 20px; color: #4a3728; margin-bottom: 4px; }
+    .login-box p { font-size: 13px; color: #9e8575; margin-bottom: 28px; }
+
+    .login-field { margin-bottom: 16px; text-align: left; }
+
+    .login-field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b5a4e;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .login-field input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .login-field input:focus {
+      outline: none;
+      border-color: #b8860b;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #b8860b, #8b6508);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: transform 0.1s, box-shadow 0.2s;
+      box-shadow: 0 4px 14px rgba(184,134,11,0.35);
+    }
+
+    .btn-login:hover { transform: translateY(-1px); }
+
+    .login-error {
+      color: #dc3545;
+      font-size: 13px;
+      margin-top: 12px;
+      display: none;
+    }
+
+    /* SISTEMA PRINCIPAL */
+    .sistema { display: none; }
+
     header {
       background: linear-gradient(135deg, #1a1a2e, #4a3728);
       color: #f0d9b0;
-      padding: 20px 32px;
+      padding: 16px 32px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      justify-content: space-between;
       box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
+    .header-left { display: flex; align-items: center; gap: 14px; }
     header .logo { font-size: 28px; }
-    header h1 { font-size: 20px; font-weight: 600; letter-spacing: 0.5px; }
+    header h1 { font-size: 18px; font-weight: 600; }
     header p { font-size: 12px; opacity: 0.7; margin-top: 2px; }
+
+    .header-right { display: flex; align-items: center; gap: 12px; }
+
+    .user-badge {
+      background: rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: #f0d9b0;
+      font-weight: 600;
+    }
+
+    .admin-badge {
+      background: #b8860b;
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 11px;
+      color: #fff;
+      font-weight: 700;
+      margin-left: 6px;
+    }
+
+    .btn-logout {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #f0d9b0;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-logout:hover { background: rgba(255,255,255,0.2); }
 
     .container {
       max-width: 1100px;
@@ -42,7 +156,6 @@
       .container { grid-template-columns: 1fr; }
     }
 
-    /* CARD FORMULÁRIO */
     .card {
       background: #fff;
       border-radius: 16px;
@@ -94,7 +207,6 @@
 
     textarea { resize: vertical; min-height: 70px; }
 
-    /* Upload foto */
     .foto-area {
       border: 2px dashed #c9b99a;
       border-radius: 10px;
@@ -131,7 +243,6 @@
 
     .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-    /* Badge tipo */
     .tipo-badge {
       display: inline-block;
       padding: 2px 10px;
@@ -146,7 +257,6 @@
     .tipo-Acessório  { background: #d4edda; color: #155724; }
     .tipo-Outro      { background: #e2e3e5; color: #383d41; }
 
-    /* Botão */
     .btn {
       width: 100%;
       padding: 12px;
@@ -186,7 +296,6 @@
       border-radius: 8px;
     }
 
-    /* HISTÓRICO */
     .historico-header {
       display: flex;
       justify-content: space-between;
@@ -218,7 +327,6 @@
       background: #fff;
     }
 
-    /* Itens do histórico */
     .entry {
       background: #fff;
       border-radius: 12px;
@@ -256,6 +364,7 @@
     .entry-info h3 { font-size: 14px; font-weight: 700; color: #2d2d2d; margin-bottom: 4px; }
     .entry-info .meta { font-size: 12px; color: #9e8575; margin-bottom: 6px; }
     .entry-info .obs { font-size: 12px; color: #6b5a4e; font-style: italic; margin-top: 4px; }
+    .entry-info .reg-por { font-size: 11px; color: #b8860b; margin-top: 4px; font-weight: 600; }
 
     .entry-nums {
       display: flex;
@@ -278,7 +387,6 @@
     .entry-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
     .entry-date { font-size: 11px; color: #bbb; text-align: right; }
 
-    /* Totalizador */
     .stats {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
@@ -297,7 +405,6 @@
     .stat-box .num { font-size: 22px; font-weight: 700; color: #b8860b; }
     .stat-box .lbl { font-size: 11px; color: #9e8575; margin-top: 2px; }
 
-    /* Toast */
     #toast {
       position: fixed;
       bottom: 28px;
@@ -334,99 +441,143 @@
 
     .historico-wrap::-webkit-scrollbar { width: 5px; }
     .historico-wrap::-webkit-scrollbar-thumb { background: #c9b99a; border-radius: 10px; }
+
+    .aviso-sem-permissao {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 12px;
+      color: #856404;
+      margin-top: 8px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">💎</div>
-  <div>
-    <h1>Check-in de Produtos</h1>
-    <p>Registro de entrada — Loja de Joias & Acessórios</p>
+<!-- TELA DE LOGIN -->
+<div class="login-screen" id="login-screen">
+  <div class="login-box">
+    <div class="logo">💎</div>
+    <h2>Check-in de Produtos</h2>
+    <p>Loja de Joias & Acessórios</p>
+
+    <div class="login-field">
+      <label>Usuário</label>
+      <input type="text" id="login-usuario" placeholder="Digite seu usuário" />
+    </div>
+
+    <div class="login-field">
+      <label>Senha</label>
+      <input type="password" id="login-senha" placeholder="Digite sua senha"
+        onkeydown="if(event.key==='Enter') fazerLogin()" />
+    </div>
+
+    <button class="btn-login" onclick="fazerLogin()">🔐 Entrar</button>
+    <div class="login-error" id="login-error">Usuário ou senha incorretos.</div>
   </div>
-</header>
+</div>
 
-<div class="container">
+<!-- SISTEMA PRINCIPAL -->
+<div class="sistema" id="sistema">
 
-  <!-- FORMULÁRIO -->
-  <div class="card">
-    <h2>📦 Novo Registro</h2>
-
-    <div class="field">
-      <label>Foto do Produto</label>
-      <div class="foto-area" id="foto-area">
-        <input type="file" accept="image/*" id="foto-input" />
-        <div class="icon">📷</div>
-        <p>Clique para adicionar uma foto</p>
+  <header>
+    <div class="header-left">
+      <div class="logo">💎</div>
+      <div>
+        <h1>Check-in de Produtos</h1>
+        <p>Registro de entrada — Loja de Joias & Acessórios</p>
       </div>
-      <img id="preview-img" alt="Preview" />
     </div>
-
-    <div class="field">
-      <label>Nome / Descrição do Produto *</label>
-      <input type="text" id="nome" placeholder="Ex: Anel Solitário Banhado a Ouro" />
+    <div class="header-right">
+      <div class="user-badge" id="user-badge">👤 —</div>
+      <button class="btn-logout" onclick="fazerLogout()">Sair</button>
     </div>
+  </header>
 
-    <div class="field">
-      <label>Tipo de Produto *</label>
-      <select id="tipo">
-        <option value="">Selecione...</option>
-        <option value="Joia">💛 Joia</option>
-        <option value="Bijuteria">💙 Bijuteria</option>
-        <option value="Semijoia">❤️ Semijoia</option>
-        <option value="Acessório">💚 Acessório</option>
-        <option value="Outro">⚪ Outro</option>
-      </select>
-    </div>
+  <div class="container">
 
-    <div class="field">
-      <label>Fornecedor / Origem</label>
-      <input type="text" id="fornecedor" placeholder="Ex: Fornecedor SP, Feira de Ouro..." />
-    </div>
+    <!-- FORMULÁRIO -->
+    <div class="card">
+      <h2>📦 Novo Registro</h2>
 
-    <div class="row-2">
       <div class="field">
-        <label>Qtd. → Prateleira *</label>
-        <input type="number" id="qtd-prateleira" min="0" placeholder="0" />
+        <label>Foto do Produto</label>
+        <div class="foto-area">
+          <input type="file" accept="image/*" id="foto-input" />
+          <div class="icon">📷</div>
+          <p>Clique para adicionar uma foto</p>
+        </div>
+        <img id="preview-img" alt="Preview" />
       </div>
+
       <div class="field">
-        <label>Qtd. → Estoque *</label>
-        <input type="number" id="qtd-estoque" min="0" placeholder="0" />
-      </div>
-    </div>
-
-    <div class="field">
-      <label>Observações</label>
-      <textarea id="obs" placeholder="Cor, tamanho, coleção, condição..."></textarea>
-    </div>
-
-    <button class="btn btn-primary" onclick="registrar()">✅ Registrar Check-in</button>
-  </div>
-
-  <!-- HISTÓRICO -->
-  <div>
-    <!-- Stats -->
-    <div class="stats" id="stats"></div>
-
-    <div class="card" style="padding: 20px;">
-      <div class="historico-header">
-        <h2>📋 Histórico de Entradas</h2>
-        <button class="btn btn-export" onclick="exportarCSV()">⬇️ Exportar CSV</button>
+        <label>Nome / Descrição do Produto *</label>
+        <input type="text" id="nome" placeholder="Ex: Anel Solitário Banhado a Ouro" />
       </div>
 
-      <div class="filtros">
-        <select id="filtro-tipo" onchange="renderizar()">
-          <option value="">Todos os tipos</option>
-          <option value="Joia">Joia</option>
-          <option value="Bijuteria">Bijuteria</option>
-          <option value="Semijoia">Semijoia</option>
-          <option value="Acessório">Acessório</option>
-          <option value="Outro">Outro</option>
+      <div class="field">
+        <label>Tipo de Produto *</label>
+        <select id="tipo">
+          <option value="">Selecione...</option>
+          <option value="Joia">💛 Joia</option>
+          <option value="Bijuteria">💙 Bijuteria</option>
+          <option value="Semijoia">❤️ Semijoia</option>
+          <option value="Acessório">💚 Acessório</option>
+          <option value="Outro">⚪ Outro</option>
         </select>
-        <input type="text" id="filtro-busca" placeholder="🔍 Buscar por nome..." oninput="renderizar()" style="flex:1; min-width:140px;" />
       </div>
 
-      <div class="historico-wrap" id="historico"></div>
+      <div class="field">
+        <label>Fornecedor / Origem</label>
+        <input type="text" id="fornecedor" placeholder="Ex: Fornecedor SP, Feira de Ouro..." />
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label>Qtd. → Prateleira *</label>
+          <input type="number" id="qtd-prateleira" min="0" placeholder="0" />
+        </div>
+        <div class="field">
+          <label>Qtd. → Estoque *</label>
+          <input type="number" id="qtd-estoque" min="0" placeholder="0" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Observações</label>
+        <textarea id="obs" placeholder="Cor, tamanho, coleção, condição..."></textarea>
+      </div>
+
+      <button class="btn btn-primary" onclick="registrar()">✅ Registrar Check-in</button>
+    </div>
+
+    <!-- HISTÓRICO -->
+    <div>
+      <div class="stats" id="stats"></div>
+
+      <div class="card" style="padding: 20px;">
+        <div class="historico-header">
+          <h2>📋 Histórico de Entradas</h2>
+          <button class="btn btn-export" onclick="exportarCSV()">⬇️ Exportar CSV</button>
+        </div>
+
+        <div class="filtros">
+          <select id="filtro-tipo" onchange="renderizar()">
+            <option value="">Todos os tipos</option>
+            <option value="Joia">Joia</option>
+            <option value="Bijuteria">Bijuteria</option>
+            <option value="Semijoia">Semijoia</option>
+            <option value="Acessório">Acessório</option>
+            <option value="Outro">Outro</option>
+          </select>
+          <input type="text" id="filtro-busca" placeholder="🔍 Buscar por nome..."
+            oninput="renderizar()" style="flex:1; min-width:140px;" />
+        </div>
+
+        <div class="historico-wrap" id="historico"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -434,9 +585,51 @@
 <div id="toast"></div>
 
 <script>
+  // ──────────────────────────────────────────
+  // USUÁRIOS E PERMISSÕES
+  // ──────────────────────────────────────────
+  const USUARIOS = {
+    admin:  { senha: 'geor2024',  nome: 'Administrador', isAdmin: true  },
+    hellen: { senha: 'hellen123', nome: 'Hellen',        isAdmin: false }
+  };
+
+  let usuarioAtual = null;
+
+  function fazerLogin() {
+    const usuario = document.getElementById('login-usuario').value.trim().toLowerCase();
+    const senha   = document.getElementById('login-senha').value;
+    const erro    = document.getElementById('login-error');
+
+    if (USUARIOS[usuario] && USUARIOS[usuario].senha === senha) {
+      usuarioAtual = { login: usuario, ...USUARIOS[usuario] };
+      erro.style.display = 'none';
+
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('sistema').style.display = 'block';
+
+      const badge = document.getElementById('user-badge');
+      badge.innerHTML = `👤 ${usuarioAtual.nome}${usuarioAtual.isAdmin
+        ? '<span class="admin-badge">ADMIN</span>' : ''}`;
+
+      renderizar();
+    } else {
+      erro.style.display = 'block';
+    }
+  }
+
+  function fazerLogout() {
+    usuarioAtual = null;
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('sistema').style.display = 'none';
+    document.getElementById('login-usuario').value = '';
+    document.getElementById('login-senha').value = '';
+  }
+
+  // ──────────────────────────────────────────
+  // FOTO
+  // ──────────────────────────────────────────
   let fotoBase64 = null;
 
-  // Preview da foto
   document.getElementById('foto-input').addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -450,6 +643,9 @@
     reader.readAsDataURL(file);
   });
 
+  // ──────────────────────────────────────────
+  // DADOS
+  // ──────────────────────────────────────────
   function getRegistros() {
     return JSON.parse(localStorage.getItem('checkin_joias') || '[]');
   }
@@ -459,12 +655,12 @@
   }
 
   function registrar() {
-    const nome      = document.getElementById('nome').value.trim();
-    const tipo      = document.getElementById('tipo').value;
-    const fornecedor= document.getElementById('fornecedor').value.trim();
-    const prateleira= parseInt(document.getElementById('qtd-prateleira').value) || 0;
-    const estoque   = parseInt(document.getElementById('qtd-estoque').value) || 0;
-    const obs       = document.getElementById('obs').value.trim();
+    const nome       = document.getElementById('nome').value.trim();
+    const tipo       = document.getElementById('tipo').value;
+    const fornecedor = document.getElementById('fornecedor').value.trim();
+    const prateleira = parseInt(document.getElementById('qtd-prateleira').value) || 0;
+    const estoque    = parseInt(document.getElementById('qtd-estoque').value) || 0;
+    const obs        = document.getElementById('obs').value.trim();
 
     if (!nome) return toast('⚠️ Informe o nome do produto.');
     if (!tipo) return toast('⚠️ Selecione o tipo do produto.');
@@ -479,11 +675,12 @@
       prateleira,
       estoque,
       obs,
-      foto: fotoBase64 || null
+      foto: fotoBase64 || null,
+      registradoPor: usuarioAtual.nome
     };
 
     const lista = getRegistros();
-    lista.unshift(registro); // mais recente primeiro
+    lista.unshift(registro);
     salvarRegistros(lista);
 
     limparForm();
@@ -505,6 +702,10 @@
   }
 
   function excluir(id) {
+    if (!usuarioAtual.isAdmin) {
+      toast('🚫 Apenas o administrador pode excluir registros.');
+      return;
+    }
     if (!confirm('Excluir este registro do histórico?')) return;
     const lista = getRegistros().filter(r => r.id !== id);
     salvarRegistros(lista);
@@ -521,10 +722,10 @@
   }
 
   function renderStats(lista) {
-    const total     = lista.length;
-    const prateleira= lista.reduce((s, r) => s + r.prateleira, 0);
-    const estoque   = lista.reduce((s, r) => s + r.estoque, 0);
-    const tipos     = [...new Set(lista.map(r => r.tipo))].length;
+    const total      = lista.length;
+    const prateleira = lista.reduce((s, r) => s + r.prateleira, 0);
+    const estoque    = lista.reduce((s, r) => s + r.estoque, 0);
+    const tipos      = [...new Set(lista.map(r => r.tipo))].length;
 
     document.getElementById('stats').innerHTML = `
       <div class="stat-box"><div class="num">${total}</div><div class="lbl">Registros</div></div>
@@ -539,7 +740,6 @@
     const filtroBusca = document.getElementById('filtro-busca').value.toLowerCase();
 
     let lista = getRegistros();
-
     renderStats(lista);
 
     if (filtroTipo) lista = lista.filter(r => r.tipo === filtroTipo);
@@ -559,6 +759,8 @@
       return;
     }
 
+    const isAdmin = usuarioAtual && usuarioAtual.isAdmin;
+
     el.innerHTML = lista.map(r => `
       <div class="entry">
         ${r.foto
@@ -577,10 +779,14 @@
             <div class="num-pill"><span>Total: </span>${r.prateleira + r.estoque}</div>
           </div>
           ${r.obs ? `<div class="obs">📝 ${r.obs}</div>` : ''}
+          <div class="reg-por">👤 Registrado por: ${r.registradoPor || 'Desconhecido'}</div>
         </div>
         <div class="entry-actions">
           <span class="entry-date">${formatarData(r.data)}</span>
-          <button class="btn btn-danger" onclick="excluir(${r.id})">🗑️ Excluir</button>
+          ${isAdmin
+            ? `<button class="btn btn-danger" onclick="excluir(${r.id})">🗑️ Excluir</button>`
+            : `<span style="font-size:11px;color:#c9b99a;">🔒 Somente admin</span>`
+          }
         </div>
       </div>
     `).join('');
@@ -590,7 +796,7 @@
     const lista = getRegistros();
     if (lista.length === 0) return toast('⚠️ Nenhum registro para exportar.');
 
-    const header = ['Data', 'Nome', 'Tipo', 'Fornecedor', 'Prateleira', 'Estoque', 'Total', 'Observações'];
+    const header = ['Data', 'Nome', 'Tipo', 'Fornecedor', 'Prateleira', 'Estoque', 'Total', 'Registrado Por', 'Observações'];
     const linhas = lista.map(r => [
       formatarData(r.data),
       `"${r.nome}"`,
@@ -599,10 +805,11 @@
       r.prateleira,
       r.estoque,
       r.prateleira + r.estoque,
+      `"${r.registradoPor || ''}"`,
       `"${r.obs || ''}"`
     ].join(';'));
 
-    const csv = [header.join(';'), ...linhas].join('\n');
+    const csv  = [header.join(';'), ...linhas].join('\n');
     const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
@@ -619,9 +826,6 @@
     el.classList.add('show');
     setTimeout(() => el.classList.remove('show'), 3000);
   }
-
-  // Inicializa
-  renderizar();
 </script>
 </body>
 </html>
