@@ -6,328 +6,225 @@
   <title>Géor — Check-in de Produtos</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0;}
-
     :root{
-      --rose:#c9748a;
-      --rose-light:#f7e8ec;
-      --rose-dark:#9e4f63;
-      --gold:#b8860b;
-      --dark:#1a1a2e;
-      --brown:#4a3728;
-      --text:#2d2d2d;
-      --muted:#9e8575;
-      --bg:#fdf5f7;
+      --rose:#c9748a;--rose-light:#f7e8ec;--rose-dark:#9e4f63;
+      --gold:#b8860b;--dark:#1a1a2e;--brown:#4a3728;
+      --text:#2d2d2d;--muted:#9e8575;--bg:#fdf5f7;
     }
-
     body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-    /* ── LOGIN ── */
-    .login-screen{
-      min-height:100vh;display:flex;align-items:center;justify-content:center;
-      background:linear-gradient(135deg,#1a1a2e 0%,#9e4f63 60%,#c9748a 100%);
-    }
-    .login-box{
-      background:#fff;border-radius:24px;padding:44px 38px;width:100%;max-width:390px;
-      box-shadow:0 24px 64px rgba(0,0,0,0.25);text-align:center;
-    }
-    .geor-logo{
-      font-size:38px;font-weight:900;letter-spacing:4px;
+    /* LOGIN */
+    .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,#1a1a2e 0%,#9e4f63 60%,#c9748a 100%);}
+    .login-box{background:#fff;border-radius:24px;padding:44px 38px;width:100%;max-width:390px;
+      box-shadow:0 24px 64px rgba(0,0,0,.25);text-align:center;}
+    .geor-logo{font-size:38px;font-weight:900;letter-spacing:4px;
       background:linear-gradient(135deg,var(--rose-dark),var(--gold));
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-      margin-bottom:4px;
-    }
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;}
     .login-box .sub{font-size:12px;color:var(--muted);margin-bottom:28px;letter-spacing:1px;}
     .lf{margin-bottom:16px;text-align:left;}
     .lf label{display:block;font-size:11px;font-weight:700;color:var(--rose-dark);
       margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;}
-    .lf input{
-      width:100%;padding:11px 14px;border:1.5px solid #e0d0d5;border-radius:10px;
-      font-size:14px;font-family:inherit;transition:border-color .2s;background:#fdf5f7;
-    }
+    .lf input{width:100%;padding:11px 14px;border:1.5px solid #e0d0d5;border-radius:10px;
+      font-size:14px;font-family:inherit;transition:border-color .2s;background:#fdf5f7;}
     .lf input:focus{outline:none;border-color:var(--rose);}
-    .btn-login{
-      width:100%;padding:13px;border:none;border-radius:10px;
+    .btn-login{width:100%;padding:13px;border:none;border-radius:10px;
       background:linear-gradient(135deg,var(--rose),var(--rose-dark));
       color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;
-      box-shadow:0 6px 20px rgba(201,116,138,.4);transition:transform .1s;
-    }
+      box-shadow:0 6px 20px rgba(201,116,138,.4);transition:transform .1s;}
     .btn-login:hover{transform:translateY(-1px);}
     .login-error{color:#dc3545;font-size:12px;margin-top:10px;display:none;}
 
-    /* ── SISTEMA ── */
+    /* SISTEMA */
     .sistema{display:none;}
-
-    header{
-      background:linear-gradient(135deg,var(--dark),var(--rose-dark));
-      color:#fff;padding:14px 28px;display:flex;align-items:center;
-      justify-content:space-between;box-shadow:0 3px 16px rgba(0,0,0,.25);flex-wrap:wrap;gap:10px;
-    }
+    header{background:linear-gradient(135deg,var(--dark),var(--rose-dark));color:#fff;
+      padding:14px 28px;display:flex;align-items:center;justify-content:space-between;
+      box-shadow:0 3px 16px rgba(0,0,0,.25);flex-wrap:wrap;gap:10px;}
     .h-left{display:flex;align-items:center;gap:14px;}
-    .h-logo{
-      font-size:22px;font-weight:900;letter-spacing:3px;
+    .h-logo{font-size:22px;font-weight:900;letter-spacing:3px;
       background:linear-gradient(135deg,#f7e8ec,#f0c8d4);
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-    }
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
     .h-title{font-size:13px;opacity:.8;margin-top:1px;}
     .h-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-    .user-badge{
-      background:rgba(255,255,255,.15);border-radius:20px;
-      padding:5px 14px;font-size:12px;font-weight:600;
-    }
-    .admin-tag{
-      background:var(--gold);border-radius:12px;padding:2px 8px;
-      font-size:10px;font-weight:700;margin-left:5px;
-    }
-    .btn-logout{
-      background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);
-      color:#fff;padding:5px 12px;border-radius:8px;font-size:12px;cursor:pointer;
-    }
+    .user-badge{background:rgba(255,255,255,.15);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;}
+    .admin-tag{background:var(--gold);border-radius:12px;padding:2px 8px;font-size:10px;font-weight:700;margin-left:5px;}
+    .btn-logout{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);
+      color:#fff;padding:5px 12px;border-radius:8px;font-size:12px;cursor:pointer;}
 
-    /* ── ABAS ── */
-    .tabs{
-      display:flex;gap:0;background:#fff;border-bottom:2px solid var(--rose-light);
-      padding:0 28px;box-shadow:0 2px 8px rgba(0,0,0,.05);flex-wrap:wrap;
-    }
-    .tab{
-      padding:13px 20px;font-size:13px;font-weight:600;cursor:pointer;
+    /* ABAS */
+    .tabs{display:flex;background:#fff;border-bottom:2px solid var(--rose-light);
+      padding:0 28px;box-shadow:0 2px 8px rgba(0,0,0,.05);flex-wrap:wrap;}
+    .tab{padding:13px 20px;font-size:13px;font-weight:600;cursor:pointer;
       color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;
-      transition:all .2s;white-space:nowrap;
-    }
+      transition:all .2s;white-space:nowrap;}
     .tab.active{color:var(--rose-dark);border-bottom-color:var(--rose);}
     .tab:hover{color:var(--rose);}
 
-    /* ── PAINÉIS ── */
+    /* PAINÉIS */
     .painel{display:none;padding:24px 28px;max-width:1200px;margin:0 auto;}
     .painel.active{display:block;}
 
-    /* ── CARDS ── */
-    .card{
-      background:#fff;border-radius:16px;padding:24px;
-      box-shadow:0 4px 20px rgba(0,0,0,.07);
-    }
-    .card h2{
-      font-size:15px;font-weight:700;color:var(--brown);
-      margin-bottom:20px;padding-bottom:12px;
-      border-bottom:2px solid var(--rose-light);
-    }
+    /* CARDS */
+    .card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,.07);}
+    .card h2{font-size:15px;font-weight:700;color:var(--brown);margin-bottom:20px;
+      padding-bottom:12px;border-bottom:2px solid var(--rose-light);}
 
-    /* ── FORMULÁRIO ── */
-    .grid-form{display:grid;grid-template-columns:380px 1fr;gap:24px;align-items:start;}
+    /* FORM */
+    .grid-form{display:grid;grid-template-columns:390px 1fr;gap:24px;align-items:start;}
     @media(max-width:820px){.grid-form{grid-template-columns:1fr;}}
-
     .field{margin-bottom:14px;}
-    .field label{
-      display:block;font-size:11px;font-weight:700;color:var(--rose-dark);
-      margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px;
-    }
+    .field label{display:block;font-size:11px;font-weight:700;color:var(--rose-dark);
+      margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px;}
     input[type=text],input[type=number],input[type=date],select,textarea{
       width:100%;padding:9px 13px;border:1.5px solid #e0d0d5;border-radius:8px;
-      font-size:13px;color:var(--text);background:#fdf5f7;
-      transition:border-color .2s;font-family:inherit;
-    }
+      font-size:13px;color:var(--text);background:#fdf5f7;transition:border-color .2s;font-family:inherit;}
     input:focus,select:focus,textarea:focus{outline:none;border-color:var(--rose);background:#fff;}
     textarea{resize:vertical;min-height:64px;}
     .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
     .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
 
-    /* foto */
-    .foto-area{
-      border:2px dashed #e0c0cc;border-radius:10px;padding:18px;
-      text-align:center;cursor:pointer;position:relative;background:#fdf5f7;
-      transition:all .2s;
-    }
+    /* FOTO */
+    .foto-area{border:2px dashed #e0c0cc;border-radius:10px;padding:18px;text-align:center;
+      cursor:pointer;position:relative;background:#fdf5f7;transition:all .2s;}
     .foto-area:hover{border-color:var(--rose);background:#fceef2;}
     .foto-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
     .foto-area .icon{font-size:28px;margin-bottom:4px;}
     .foto-area p{font-size:11px;color:var(--muted);}
     #preview-img{width:100%;max-height:160px;object-fit:cover;border-radius:8px;margin-top:8px;display:none;}
 
-    /* botões */
-    .btn{
-      padding:10px 18px;border:none;border-radius:8px;font-size:13px;
-      font-weight:700;cursor:pointer;transition:transform .1s,box-shadow .2s;
-    }
-    .btn-primary{
-      background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:#fff;
-      box-shadow:0 4px 14px rgba(201,116,138,.35);width:100%;padding:12px;
-    }
+    /* BOTÕES */
+    .btn{padding:10px 18px;border:none;border-radius:8px;font-size:13px;font-weight:700;
+      cursor:pointer;transition:transform .1s,box-shadow .2s;}
+    .btn-primary{background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:#fff;
+      box-shadow:0 4px 14px rgba(201,116,138,.35);width:100%;padding:12px;}
     .btn-primary:hover{transform:translateY(-1px);}
-    .btn-danger{background:#dc3545;color:#fff;font-size:11px;padding:4px 10px;border-radius:6px;}
-    .btn-warning{background:#fd7e14;color:#fff;font-size:11px;padding:4px 10px;border-radius:6px;}
-    .btn-success{background:#28a745;color:#fff;}
-    .btn-outline{
-      background:transparent;border:1.5px solid var(--rose);color:var(--rose-dark);
-      font-size:12px;padding:6px 14px;
-    }
-    .btn-dark{background:var(--dark);color:#f7e8ec;font-size:12px;padding:7px 14px;}
+    .btn-danger{background:#dc3545;color:#fff;font-size:11px;padding:4px 10px;border-radius:6px;border:none;cursor:pointer;}
+    .btn-warning{background:#fd7e14;color:#fff;font-size:11px;padding:4px 10px;border-radius:6px;border:none;cursor:pointer;}
+    .btn-success{background:#28a745;color:#fff;font-size:11px;padding:4px 10px;border-radius:6px;border:none;cursor:pointer;}
+    .btn-dark{background:var(--dark);color:#f7e8ec;font-size:12px;padding:7px 14px;border:none;border-radius:8px;cursor:pointer;}
 
-    /* ── STATS ── */
+    /* STATS */
     .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:20px;}
-    .stat-box{
-      background:#fff;border-radius:12px;padding:14px 16px;text-align:center;
-      box-shadow:0 2px 10px rgba(0,0,0,.06);border-top:3px solid var(--rose);
-    }
+    .stat-box{background:#fff;border-radius:12px;padding:14px 16px;text-align:center;
+      box-shadow:0 2px 10px rgba(0,0,0,.06);border-top:3px solid var(--rose);}
     .stat-box .num{font-size:24px;font-weight:800;color:var(--rose-dark);}
     .stat-box .lbl{font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.4px;}
     .stat-box.warn .num{color:#fd7e14;}
     .stat-box.warn{border-top-color:#fd7e14;}
 
-    /* ── ALERTAS ESTOQUE ── */
-    .alerta-estoque{
-      background:#fff3cd;border:1px solid #ffc107;border-radius:10px;
-      padding:12px 16px;margin-bottom:16px;font-size:13px;color:#856404;
-    }
+    /* ALERTA */
+    .alerta-estoque{background:#fff3cd;border:1px solid #ffc107;border-radius:10px;
+      padding:12px 16px;margin-bottom:16px;font-size:13px;color:#856404;}
     .alerta-estoque strong{display:block;margin-bottom:6px;font-size:14px;}
     .alerta-item{padding:3px 0;border-bottom:1px solid #ffe69c;}
     .alerta-item:last-child{border:none;}
 
-    /* ── FILTROS ── */
+    /* FILTROS */
     .filtros{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center;}
-    .filtros select,.filtros input,.filtros button{
-      padding:7px 12px;border:1.5px solid #e0d0d5;border-radius:8px;
-      font-size:12px;background:#fff;font-family:inherit;
-    }
-    .filtros button{cursor:pointer;background:var(--rose-light);color:var(--rose-dark);font-weight:600;border-color:var(--rose);}
+    .filtros select,.filtros input{padding:7px 12px;border:1.5px solid #e0d0d5;
+      border-radius:8px;font-size:12px;background:#fff;font-family:inherit;}
 
-    /* ── HISTÓRICO ── */
+    /* HISTÓRICO */
     .hist-wrap{max-height:65vh;overflow-y:auto;padding-right:4px;}
     .hist-wrap::-webkit-scrollbar{width:4px;}
     .hist-wrap::-webkit-scrollbar-thumb{background:var(--rose-light);border-radius:10px;}
-
-    .entry{
-      background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;
-      box-shadow:0 2px 8px rgba(0,0,0,.06);
-      display:grid;grid-template-columns:72px 1fr auto;gap:12px;align-items:start;
-      transition:box-shadow .2s;border-left:4px solid var(--rose-light);
-    }
+    .entry{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;
+      box-shadow:0 2px 8px rgba(0,0,0,.06);display:grid;
+      grid-template-columns:72px 1fr auto;gap:12px;align-items:start;
+      transition:box-shadow .2s;border-left:4px solid var(--rose-light);}
     .entry:hover{box-shadow:0 4px 16px rgba(0,0,0,.1);border-left-color:var(--rose);}
     .entry.alerta-low{border-left-color:#fd7e14;}
     .entry img{width:72px;height:72px;object-fit:cover;border-radius:8px;}
-    .entry .no-img{
-      width:72px;height:72px;border-radius:8px;background:var(--rose-light);
-      display:flex;align-items:center;justify-content:center;font-size:22px;
-    }
+    .entry .no-img{width:72px;height:72px;border-radius:8px;background:var(--rose-light);
+      display:flex;align-items:center;justify-content:center;font-size:22px;}
     .entry-info h3{font-size:13px;font-weight:700;margin-bottom:3px;}
     .entry-info .ref{font-size:10px;color:var(--muted);font-family:monospace;margin-bottom:4px;}
     .entry-info .meta{font-size:11px;color:var(--muted);margin-bottom:5px;}
     .entry-info .obs{font-size:11px;color:var(--brown);font-style:italic;margin-top:3px;}
     .entry-info .reg-por{font-size:10px;color:var(--rose-dark);font-weight:600;margin-top:3px;}
-
     .pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;}
-    .pill{
-      border-radius:6px;padding:2px 9px;font-size:11px;font-weight:600;
-      background:var(--rose-light);color:var(--rose-dark);
-    }
+    .pill{border-radius:6px;padding:2px 9px;font-size:11px;font-weight:600;
+      background:var(--rose-light);color:var(--rose-dark);}
     .pill.gondola{background:#e8f5e9;color:#2e7d32;}
     .pill.estoque{background:#e3f2fd;color:#1565c0;}
     .pill.total{background:#f3e5f5;color:#6a1b9a;}
     .pill.low{background:#fff3e0;color:#e65100;}
-
-    .tipo-badge{
-      display:inline-block;padding:1px 9px;border-radius:12px;font-size:10px;font-weight:700;
-    }
+    .tipo-badge{display:inline-block;padding:1px 9px;border-radius:12px;font-size:10px;font-weight:700;}
     .tipo-Joia{background:#fff3cd;color:#856404;}
     .tipo-Bijuteria{background:#d1ecf1;color:#0c5460;}
     .tipo-Semijoia{background:#f8d7da;color:#721c24;}
     .tipo-Acessório{background:#d4edda;color:#155724;}
     .tipo-Outro{background:#e2e3e5;color:#383d41;}
-
     .entry-actions{display:flex;flex-direction:column;align-items:flex-end;gap:5px;}
-    .entry-date{font-size:10px;color:#bbb;text-align:right;}
+    .entry-date{font-size:10px;color:#bbb;text-align:right;margin-bottom:4px;}
 
-    /* ── REPOR GÔNDOLA ── */
-    .repor-modal{
-      position:fixed;inset:0;background:rgba(0,0,0,.5);
-      display:flex;align-items:center;justify-content:center;z-index:200;display:none;
-    }
-    .repor-box{
-      background:#fff;border-radius:16px;padding:28px;width:90%;max-width:360px;
-      box-shadow:0 16px 48px rgba(0,0,0,.2);text-align:center;
-    }
+    /* MODAL REPOR */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);
+      display:none;align-items:center;justify-content:center;z-index:200;}
+    .modal-overlay.open{display:flex;}
+    .repor-box{background:#fff;border-radius:16px;padding:28px;width:90%;max-width:360px;
+      box-shadow:0 16px 48px rgba(0,0,0,.2);text-align:center;}
     .repor-box h3{font-size:16px;font-weight:700;color:var(--brown);margin-bottom:6px;}
     .repor-box p{font-size:12px;color:var(--muted);margin-bottom:16px;}
-    .repor-info{
-      background:var(--rose-light);border-radius:8px;padding:10px;
-      font-size:13px;margin-bottom:16px;color:var(--rose-dark);
-    }
-    .repor-box input{
-      width:100%;padding:10px;border:1.5px solid #e0d0d5;border-radius:8px;
-      font-size:16px;text-align:center;margin-bottom:14px;
-    }
+    .repor-info{background:var(--rose-light);border-radius:8px;padding:10px;
+      font-size:13px;margin-bottom:16px;color:var(--rose-dark);line-height:1.6;}
+    .repor-box input[type=number]{width:100%;padding:10px;border:1.5px solid #e0d0d5;
+      border-radius:8px;font-size:18px;text-align:center;margin-bottom:14px;background:#fdf5f7;}
     .repor-btns{display:flex;gap:10px;}
-    .repor-btns button{flex:1;padding:10px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;}
+    .repor-btns button{flex:1;padding:11px;border:none;border-radius:8px;
+      font-size:13px;font-weight:700;cursor:pointer;}
     .repor-ok{background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:#fff;}
     .repor-cancel{background:#f0f0f0;color:#666;}
 
-    /* ── RELATÓRIO ── */
-    .rel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:20px;}
-    .rel-card{
-      background:#fff;border-radius:12px;padding:16px;
-      box-shadow:0 2px 10px rgba(0,0,0,.06);border-top:3px solid var(--rose);
-    }
-    .rel-card h4{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;}
-    .rel-card .big{font-size:28px;font-weight:800;color:var(--rose-dark);}
-    .rel-card .desc{font-size:11px;color:var(--muted);margin-top:2px;}
-
-    .periodo-form{
-      display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;
-      background:#fff;border-radius:12px;padding:16px;
-      box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px;
-    }
-    .periodo-form .pf{display:flex;flex-direction:column;gap:4px;}
-    .periodo-form label{font-size:11px;font-weight:700;color:var(--rose-dark);text-transform:uppercase;}
-    .periodo-form input,.periodo-form select{
-      padding:8px 12px;border:1.5px solid #e0d0d5;border-radius:8px;
-      font-size:13px;background:#fdf5f7;
-    }
-
-    /* ── EDIÇÃO ADMIN ── */
-    .edit-modal{
-      position:fixed;inset:0;background:rgba(0,0,0,.55);
-      display:none;align-items:center;justify-content:center;z-index:300;
-    }
-    .edit-box{
-      background:#fff;border-radius:16px;padding:28px;width:94%;max-width:520px;
-      box-shadow:0 16px 48px rgba(0,0,0,.25);max-height:90vh;overflow-y:auto;
-    }
+    /* MODAL EDITAR */
+    .edit-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);
+      display:none;align-items:center;justify-content:center;z-index:300;}
+    .edit-overlay.open{display:flex;}
+    .edit-box{background:#fff;border-radius:16px;padding:28px;width:94%;max-width:520px;
+      box-shadow:0 16px 48px rgba(0,0,0,.25);max-height:90vh;overflow-y:auto;}
     .edit-box h3{font-size:16px;font-weight:700;color:var(--brown);margin-bottom:18px;}
 
-    /* ── TOAST ── */
-    #toast{
-      position:fixed;bottom:24px;right:24px;
-      background:var(--dark);color:#f7e8ec;
-      padding:11px 18px;border-radius:10px;font-size:13px;font-weight:600;
-      opacity:0;transform:translateY(8px);transition:all .3s;
-      z-index:999;pointer-events:none;
-    }
-    #toast.show{opacity:1;transform:translateY(0);}
-
-    .empty{text-align:center;color:#d4a0b0;font-size:13px;padding:36px 20px;}
-    .empty .icon{font-size:36px;margin-bottom:8px;}
-
-    /* tabela relatório */
+    /* RELATÓRIO */
+    .periodo-form{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;
+      background:#fff;border-radius:12px;padding:16px;
+      box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px;}
+    .periodo-form .pf{display:flex;flex-direction:column;gap:4px;}
+    .periodo-form label{font-size:11px;font-weight:700;color:var(--rose-dark);text-transform:uppercase;}
+    .periodo-form input,.periodo-form select{padding:8px 12px;border:1.5px solid #e0d0d5;
+      border-radius:8px;font-size:13px;background:#fdf5f7;}
+    .rel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:20px;}
+    .rel-card{background:#fff;border-radius:12px;padding:16px;
+      box-shadow:0 2px 10px rgba(0,0,0,.06);border-top:3px solid var(--rose);}
+    .rel-card h4{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;
+      letter-spacing:.4px;margin-bottom:8px;}
+    .rel-card .big{font-size:28px;font-weight:800;color:var(--rose-dark);}
+    .rel-card .desc{font-size:11px;color:var(--muted);margin-top:2px;}
     .rel-table{width:100%;border-collapse:collapse;font-size:12px;}
-    .rel-table th{
-      background:var(--rose-light);color:var(--rose-dark);
-      padding:8px 10px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;
-    }
+    .rel-table th{background:var(--rose-light);color:var(--rose-dark);padding:8px 10px;
+      text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;}
     .rel-table td{padding:8px 10px;border-bottom:1px solid #f5eef0;}
     .rel-table tr:hover td{background:#fdf5f7;}
 
-    .chip-tipo{
-      display:inline-block;padding:1px 8px;border-radius:10px;
-      font-size:10px;font-weight:700;
-    }
+    /* TOAST */
+    #toast{position:fixed;bottom:24px;right:24px;background:var(--dark);color:#f7e8ec;
+      padding:11px 18px;border-radius:10px;font-size:13px;font-weight:600;
+      opacity:0;transform:translateY(8px);transition:all .3s;z-index:999;pointer-events:none;}
+    #toast.show{opacity:1;transform:translateY(0);}
+    .empty{text-align:center;color:#d4a0b0;font-size:13px;padding:36px 20px;}
+    .empty .icon{font-size:36px;margin-bottom:8px;}
+
+    /* HISTÓRICO DE MOVIMENTAÇÕES */
+    .mov-lista{margin-top:6px;font-size:11px;color:var(--muted);}
+    .mov-item{padding:2px 0;border-top:1px dashed #f0e0e5;}
   </style>
 </head>
 <body>
 
-<!-- ════════════════════ LOGIN ════════════════════ -->
+<!-- LOGIN -->
 <div class="login-screen" id="login-screen">
   <div class="login-box">
     <div class="geor-logo">GÉOR</div>
     <div class="sub">SEMIJOIAS & ACESSÓRIOS</div>
-
     <div class="lf">
       <label>Usuário</label>
       <input type="text" id="l-user" placeholder="Digite seu usuário"/>
@@ -342,13 +239,12 @@
   </div>
 </div>
 
-<!-- ════════════════════ SISTEMA ════════════════════ -->
+<!-- SISTEMA -->
 <div class="sistema" id="sistema">
-
   <header>
     <div class="h-left">
       <div class="h-logo">GÉOR</div>
-      <div class="h-title">Check-in de Produtos</div>
+      <div class="h-title">Sistema de Check-in</div>
     </div>
     <div class="h-right">
       <div class="user-badge" id="user-badge">👤 —</div>
@@ -356,22 +252,18 @@
     </div>
   </header>
 
-  <!-- ABAS -->
   <div class="tabs">
     <div class="tab active" onclick="aba('checkin')">📦 Check-in</div>
     <div class="tab" onclick="aba('estoque')">🗄️ Estoque</div>
     <div class="tab" onclick="aba('relatorio')">📊 Relatório</div>
-    <div class="tab admin-only" onclick="aba('admin')" style="display:none">⚙️ Admin</div>
+    <div class="tab admin-tab" onclick="aba('admin')" style="display:none">⚙️ Admin</div>
   </div>
 
-  <!-- ══ ABA: CHECK-IN ══ -->
+  <!-- ABA CHECK-IN -->
   <div class="painel active" id="tab-checkin">
     <div class="grid-form">
-
-      <!-- Formulário -->
       <div class="card">
         <h2>📦 Novo Registro</h2>
-
         <div class="field">
           <label>Foto do Produto</label>
           <div class="foto-area">
@@ -381,12 +273,10 @@
           </div>
           <img id="preview-img" alt="Preview"/>
         </div>
-
         <div class="field">
           <label>Nome / Descrição *</label>
           <input type="text" id="f-nome" placeholder="Ex: Anel Solitário Banhado a Ouro"/>
         </div>
-
         <div class="row2">
           <div class="field">
             <label>Código / Referência</label>
@@ -404,46 +294,39 @@
             </select>
           </div>
         </div>
-
         <div class="field">
           <label>Fornecedor / Origem</label>
           <input type="text" id="f-forn" placeholder="Ex: Fornecedor SP"/>
         </div>
-
         <div class="row3">
           <div class="field">
-            <label>→ Gôndola *</label>
+            <label>Qtd. Gôndola</label>
             <input type="number" id="f-gondola" min="0" placeholder="0"/>
           </div>
           <div class="field">
-            <label>→ Estoque *</label>
+            <label>Qtd. Estoque</label>
             <input type="number" id="f-estoque" min="0" placeholder="0"/>
           </div>
           <div class="field">
-            <label>Alerta baixo em</label>
-            <input type="number" id="f-alerta" min="0" placeholder="5" title="Avisar quando estoque ficar abaixo desse número"/>
+            <label>Alertar abaixo de</label>
+            <input type="number" id="f-alerta" min="0" placeholder="5"/>
           </div>
         </div>
-
         <div class="field">
           <label>Observações</label>
           <textarea id="f-obs" placeholder="Cor, tamanho, coleção..."></textarea>
         </div>
-
         <button class="btn btn-primary" onclick="registrar()">✅ Registrar Check-in</button>
       </div>
 
-      <!-- Histórico rápido -->
       <div>
         <div class="stats-grid" id="stats-checkin"></div>
         <div id="alertas-top"></div>
-
         <div class="card" style="padding:20px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
-            <h2 style="margin:0;padding:0;border:none;">📋 Histórico de Entradas</h2>
-            <button class="btn btn-dark" onclick="exportarCSV()">⬇️ CSV</button>
+            <h2 style="margin:0;padding:0;border:none;font-size:15px;font-weight:700;color:var(--brown);">📋 Histórico de Entradas</h2>
+            <button class="btn-dark" onclick="exportarCSV()">⬇️ Exportar CSV</button>
           </div>
-
           <div class="filtros">
             <select id="ft-tipo" onchange="renderCheckin()">
               <option value="">Todos os tipos</option>
@@ -456,26 +339,21 @@
             <input type="text" id="ft-busca" placeholder="🔍 Nome ou código..."
               oninput="renderCheckin()" style="flex:1;min-width:130px;"/>
           </div>
-
           <div class="hist-wrap" id="hist-checkin"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ══ ABA: ESTOQUE ══ -->
+  <!-- ABA ESTOQUE -->
   <div class="painel" id="tab-estoque">
     <div class="stats-grid" id="stats-estoque"></div>
     <div id="alertas-estoque"></div>
-
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
-        <h2 style="margin:0;padding:0;border:none;">🗄️ Posição de Estoque</h2>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="btn btn-dark" onclick="exportarCSV()">⬇️ CSV</button>
-        </div>
+        <h2 style="margin:0;padding:0;border:none;font-size:15px;font-weight:700;color:var(--brown);">🗄️ Posição de Estoque</h2>
+        <button class="btn-dark" onclick="exportarCSV()">⬇️ Exportar CSV</button>
       </div>
-
       <div class="filtros">
         <select id="fe-tipo" onchange="renderEstoque()">
           <option value="">Todos os tipos</option>
@@ -493,14 +371,12 @@
         <input type="text" id="fe-busca" placeholder="🔍 Nome ou código..."
           oninput="renderEstoque()" style="flex:1;min-width:130px;"/>
       </div>
-
       <div class="hist-wrap" id="hist-estoque"></div>
     </div>
   </div>
 
-  <!-- ══ ABA: RELATÓRIO ══ -->
+  <!-- ABA RELATÓRIO -->
   <div class="painel" id="tab-relatorio">
-
     <div class="periodo-form">
       <div class="pf">
         <label>Data Início</label>
@@ -522,24 +398,21 @@
         </select>
       </div>
       <div class="pf">
-        <label>Registrado por</label>
+        <label>Usuário</label>
         <select id="r-usuario">
           <option value="">Todos</option>
           <option value="Administrador">Administrador</option>
           <option value="Hellen">Hellen</option>
         </select>
       </div>
-      <button class="btn btn-primary" style="width:auto;padding:9px 20px;" onclick="gerarRelatorio()">
-        🔍 Gerar
-      </button>
-      <button class="btn btn-dark" onclick="exportarRelCSV()">⬇️ CSV</button>
+      <button class="btn btn-primary" style="width:auto;padding:9px 20px;" onclick="gerarRelatorio()">🔍 Gerar</button>
+      <button class="btn-dark" onclick="exportarRelCSV()">⬇️ CSV</button>
     </div>
-
     <div class="rel-grid" id="rel-cards"></div>
     <div class="card" style="padding:20px;">
       <h2>Detalhamento do Período</h2>
       <div style="overflow-x:auto;">
-        <table class="rel-table" id="rel-table">
+        <table class="rel-table">
           <thead>
             <tr>
               <th>Data</th><th>Código</th><th>Produto</th><th>Tipo</th>
@@ -552,31 +425,29 @@
     </div>
   </div>
 
-  <!-- ══ ABA: ADMIN ══ -->
+  <!-- ABA ADMIN -->
   <div class="painel" id="tab-admin">
     <div class="card">
       <h2>⚙️ Painel Administrativo — Edição de Registros</h2>
       <p style="font-size:12px;color:var(--muted);margin-bottom:16px;">
-        Aqui você pode editar ou excluir qualquer registro do histórico.
+        Apenas o administrador pode editar ou excluir registros do histórico.
       </p>
-
       <div class="filtros">
-        <input type="text" id="fa-busca" placeholder="🔍 Buscar..." oninput="renderAdmin()" style="flex:1;"/>
+        <input type="text" id="fa-busca" placeholder="🔍 Buscar produto..."
+          oninput="renderAdmin()" style="flex:1;"/>
       </div>
-
       <div class="hist-wrap" id="hist-admin"></div>
     </div>
   </div>
+</div>
 
-</div><!-- /sistema -->
-
-<!-- ══ MODAL REPOR GÔNDOLA ══ -->
-<div class="repor-modal" id="repor-modal">
+<!-- MODAL REPOR GÔNDOLA -->
+<div class="modal-overlay" id="repor-modal">
   <div class="repor-box">
     <h3>🔄 Repor Gôndola</h3>
-    <p>Quantas unidades deseja mover do estoque para a gôndola?</p>
+    <p>Mover unidades do estoque para a gôndola</p>
     <div class="repor-info" id="repor-info">—</div>
-    <input type="number" id="repor-qtd" min="1" placeholder="0"/>
+    <input type="number" id="repor-qtd" min="1" placeholder="Quantidade"/>
     <div class="repor-btns">
       <button class="repor-cancel" onclick="fecharRepor()">Cancelar</button>
       <button class="repor-ok" onclick="confirmarRepor()">✅ Confirmar</button>
@@ -584,12 +455,11 @@
   </div>
 </div>
 
-<!-- ══ MODAL EDITAR ══ -->
-<div class="edit-modal" id="edit-modal">
+<!-- MODAL EDITAR -->
+<div class="edit-overlay" id="edit-modal">
   <div class="edit-box">
     <h3>✏️ Editar Registro</h3>
     <input type="hidden" id="edit-id"/>
-
     <div class="field">
       <label>Nome / Descrição</label>
       <input type="text" id="edit-nome"/>
@@ -624,7 +494,7 @@
         <input type="number" id="edit-estoque" min="0"/>
       </div>
       <div class="field">
-        <label>Alerta baixo</label>
+        <label>Alertar abaixo de</label>
         <input type="number" id="edit-alerta" min="0"/>
       </div>
     </div>
@@ -632,10 +502,10 @@
       <label>Observações</label>
       <textarea id="edit-obs"></textarea>
     </div>
-
-    <div style="display:flex;gap:10px;margin-top:4px;">
-      <button class="btn" style="flex:1;background:#f0f0f0;color:#666;" onclick="fecharEdit()">Cancelar</button>
-      <button class="btn btn-primary" style="flex:2;" onclick="salvarEdit()">💾 Salvar Alterações</button>
+    <div style="display:flex;gap:10px;margin-top:8px;">
+      <button class="btn" style="flex:1;background:#f0f0f0;color:#666;border:none;cursor:pointer;"
+        onclick="fecharEdit()">Cancelar</button>
+      <button class="btn btn-primary" style="flex:2;" onclick="salvarEdit()">💾 Salvar</button>
     </div>
   </div>
 </div>
@@ -643,9 +513,7 @@
 <div id="toast"></div>
 
 <script>
-// ══════════════════════════════════
-// USUÁRIOS
-// ══════════════════════════════════
+// ══════════ USUÁRIOS ══════════
 const USERS = {
   admin:  { senha:'geor2024',  nome:'Administrador', isAdmin:true  },
   hellen: { senha:'hellen123', nome:'Hellen',        isAdmin:false }
@@ -659,94 +527,85 @@ function login(){
   const s = document.getElementById('l-pass').value;
   const err = document.getElementById('login-error');
   if(USERS[u] && USERS[u].senha === s){
-    USER = {login:u,...USERS[u]};
-    err.style.display='none';
-    document.getElementById('login-screen').style.display='none';
-    document.getElementById('sistema').style.display='block';
-    const b = document.getElementById('user-badge');
-    b.innerHTML = `👤 ${USER.nome}${USER.isAdmin?'<span class="admin-tag">ADMIN</span>':''}`;
-    if(USER.isAdmin) document.querySelectorAll('.admin-only').forEach(el=>el.style.display='');
-    // datas padrão relatório
+    USER = {login:u, ...USERS[u]};
+    err.style.display = 'none';
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('sistema').style.display = 'block';
+    document.getElementById('user-badge').innerHTML =
+      `👤 ${USER.nome}${USER.isAdmin?'<span class="admin-tag">ADMIN</span>':''}`;
+    if(USER.isAdmin)
+      document.querySelectorAll('.admin-tab').forEach(el=>el.style.display='');
     const hoje = new Date();
-    const ini = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+    const ini  = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
     document.getElementById('r-inicio').value = ini.toISOString().slice(0,10);
-    document.getElementById('r-fim').value = hoje.toISOString().slice(0,10);
+    document.getElementById('r-fim').value    = hoje.toISOString().slice(0,10);
     atualizar();
   } else {
-    err.style.display='block';
+    err.style.display = 'block';
   }
 }
 
 function logout(){
-  USER=null;
-  document.getElementById('login-screen').style.display='flex';
-  document.getElementById('sistema').style.display='none';
-  document.getElementById('l-user').value='';
-  document.getElementById('l-pass').value='';
+  USER = null;
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('sistema').style.display = 'none';
+  document.getElementById('l-user').value = '';
+  document.getElementById('l-pass').value = '';
 }
 
-// ══════════════════════════════════
-// ABAS
-// ══════════════════════════════════
+// ══════════ ABAS ══════════
 function aba(id){
   document.querySelectorAll('.tab').forEach((t,i)=>{
-    const ids=['checkin','estoque','relatorio','admin'];
-    t.classList.toggle('active', ids[i]===id);
+    t.classList.toggle('active', ['checkin','estoque','relatorio','admin'][i]===id);
   });
   document.querySelectorAll('.painel').forEach(p=>p.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
-  if(id==='estoque') renderEstoque();
+  if(id==='estoque')  renderEstoque();
   if(id==='relatorio') gerarRelatorio();
-  if(id==='admin') renderAdmin();
+  if(id==='admin')    renderAdmin();
 }
 
-// ══════════════════════════════════
-// DADOS
-// ══════════════════════════════════
-function getData(){ return JSON.parse(localStorage.getItem('geor_produtos')||'[]'); }
-function setData(d){ localStorage.setItem('geor_produtos', JSON.stringify(d)); }
+// ══════════ DADOS ══════════
+function getData(){ return JSON.parse(localStorage.getItem('geor_v2')||'[]'); }
+function setData(d){ localStorage.setItem('geor_v2', JSON.stringify(d)); }
 
-// ══════════════════════════════════
-// FOTO
-// ══════════════════════════════════
+// ══════════ FOTO ══════════
 let fotoB64 = null;
-document.getElementById('foto-input').addEventListener('change',function(e){
+document.getElementById('foto-input').addEventListener('change', function(e){
   const f = e.target.files[0]; if(!f) return;
   const r = new FileReader();
-  r.onload = ev=>{
+  r.onload = ev => {
     fotoB64 = ev.target.result;
     const img = document.getElementById('preview-img');
-    img.src = fotoB64; img.style.display='block';
+    img.src = fotoB64; img.style.display = 'block';
   };
   r.readAsDataURL(f);
 });
 
-// ══════════════════════════════════
-// REGISTRAR
-// ══════════════════════════════════
+// ══════════ REGISTRAR ══════════
 function registrar(){
   const nome    = document.getElementById('f-nome').value.trim();
   const ref     = document.getElementById('f-ref').value.trim();
   const tipo    = document.getElementById('f-tipo').value;
   const forn    = document.getElementById('f-forn').value.trim();
-  const gondola = parseInt(document.getElementById('f-gondola').value)||0;
-  const estoque = parseInt(document.getElementById('f-estoque').value)||0;
-  const alerta  = parseInt(document.getElementById('f-alerta').value)||5;
+  const gondola = parseInt(document.getElementById('f-gondola').value) || 0;
+  const estoque = parseInt(document.getElementById('f-estoque').value) || 0;
+  const alerta  = parseInt(document.getElementById('f-alerta').value) || 5;
   const obs     = document.getElementById('f-obs').value.trim();
 
   if(!nome) return toast('⚠️ Informe o nome do produto.');
   if(!tipo) return toast('⚠️ Selecione o tipo.');
-  if(gondola===0 && estoque===0) return toast('⚠️ Informe ao menos uma quantidade.');
+  if(gondola === 0 && estoque === 0) return toast('⚠️ Informe ao menos uma quantidade.');
 
   const reg = {
     id: Date.now(),
     data: new Date().toISOString(),
     nome, ref, tipo, forn, gondola, estoque, alerta, obs,
-    foto: fotoB64||null,
+    foto: fotoB64 || null,
     por: USER.nome,
-    historico: [{
+    movimentacoes: [{
       data: new Date().toISOString(),
-      acao:'Check-in',
+      acao: 'Check-in inicial',
       gondola, estoque,
       por: USER.nome
     }]
@@ -761,168 +620,184 @@ function registrar(){
 }
 
 function limparForm(){
-  ['f-nome','f-ref','f-forn','f-gondola','f-estoque','f-obs'].forEach(id=>
-    document.getElementById(id).value='');
-  document.getElementById('f-tipo').value='';
-  document.getElementById('f-alerta').value='';
-  document.getElementById('preview-img').style.display='none';
-  document.getElementById('foto-input').value='';
-  fotoB64=null;
+  ['f-nome','f-ref','f-forn','f-gondola','f-estoque','f-obs']
+    .forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-tipo').value   = '';
+  document.getElementById('f-alerta').value = '';
+  document.getElementById('preview-img').style.display = 'none';
+  document.getElementById('foto-input').value = '';
+  fotoB64 = null;
 }
 
-// ══════════════════════════════════
-// REPOR GÔNDOLA
-// ══════════════════════════════════
+// ══════════ REPOR GÔNDOLA ══════════
 function abrirRepor(id){
-  const r = getData().find(x=>x.id===id);
+  const r = getData().find(x => x.id === id);
   if(!r) return;
   reporId = id;
   document.getElementById('repor-info').innerHTML =
-    `<strong>${r.nome}</strong>
-     Gôndola atual: <b>${r.gondola}</b> &nbsp;|&nbsp; Estoque: <b>${r.estoque}</b>`;
-  document.getElementById('repor-qtd').value='';
-  document.getElementById('repor-modal').style.display='flex';
+    `<strong>${r.nome}</strong><br>
+     🛒 Gôndola atual: <b>${r.gondola}</b> &nbsp;&nbsp;
+     📦 Estoque disponível: <b>${r.estoque}</b>`;
+  document.getElementById('repor-qtd').value = '';
+  document.getElementById('repor-modal').classList.add('open');
 }
-function fecharRepor(){ document.getElementById('repor-modal').style.display='none'; reporId=null; }
+
+function fecharRepor(){
+  document.getElementById('repor-modal').classList.remove('open');
+  reporId = null;
+}
+
 function confirmarRepor(){
-  const qtd = parseInt(document.getElementById('repor-qtd').value)||0;
-  if(qtd<=0) return toast('⚠️ Informe uma quantidade válida.');
+  const qtd = parseInt(document.getElementById('repor-qtd').value) || 0;
+  if(qtd <= 0) return toast('⚠️ Informe uma quantidade válida.');
+
   const lista = getData();
-  const idx = lista.findIndex(x=>x.id===reporId);
-  if(idx<0) return;
+  const idx   = lista.findIndex(x => x.id === reporId);
+  if(idx < 0) return;
+
   const r = lista[idx];
-  if(qtd > r.estoque) return toast(`⚠️ Estoque disponível: ${r.estoque} unidades.`);
+
+  if(qtd > r.estoque){
+    return toast(`⚠️ Estoque insuficiente! Disponível: ${r.estoque} unidade(s).`);
+  }
+
+  // Aplica a movimentação
   r.gondola += qtd;
   r.estoque -= qtd;
-  r.historico = r.historico||[];
-  r.historico.unshift({
+
+  r.movimentacoes = r.movimentacoes || [];
+  r.movimentacoes.unshift({
     data: new Date().toISOString(),
-    acao: `Reposto ${qtd} un. para gôndola`,
+    acao: `Reposição: ${qtd} un. → Gôndola`,
+    gondola: r.gondola,
+    estoque: r.estoque,
+    por: USER.nome
+  });
+
+  lista[idx] = r;
+  setData(lista);
+  fecharRepor();
+  atualizar();
+  toast(`✅ ${qtd} unidade(s) movidas do estoque para a gôndola!`);
+}
+
+// ══════════ EDITAR (ADMIN) ══════════
+function abrirEdit(id){
+  if(!USER.isAdmin) return toast('🚫 Apenas o administrador pode editar.');
+  const r = getData().find(x => x.id === id);
+  if(!r) return;
+  document.getElementById('edit-id').value      = id;
+  document.getElementById('edit-nome').value    = r.nome || '';
+  document.getElementById('edit-ref').value     = r.ref  || '';
+  document.getElementById('edit-tipo').value    = r.tipo || '';
+  document.getElementById('edit-forn').value    = r.forn || '';
+  document.getElementById('edit-gondola').value = r.gondola || 0;
+  document.getElementById('edit-estoque').value = r.estoque || 0;
+  document.getElementById('edit-alerta').value  = r.alerta  || 5;
+  document.getElementById('edit-obs').value     = r.obs  || '';
+  document.getElementById('edit-modal').classList.add('open');
+}
+
+function fecharEdit(){
+  document.getElementById('edit-modal').classList.remove('open');
+}
+
+function salvarEdit(){
+  const id    = parseInt(document.getElementById('edit-id').value);
+  const lista = getData();
+  const idx   = lista.findIndex(x => x.id === id);
+  if(idx < 0) return;
+  const r = lista[idx];
+
+  r.nome    = document.getElementById('edit-nome').value.trim();
+  r.ref     = document.getElementById('edit-ref').value.trim();
+  r.tipo    = document.getElementById('edit-tipo').value;
+  r.forn    = document.getElementById('edit-forn').value.trim();
+  r.gondola = parseInt(document.getElementById('edit-gondola').value) || 0;
+  r.estoque = parseInt(document.getElementById('edit-estoque').value) || 0;
+  r.alerta  = parseInt(document.getElementById('edit-alerta').value) || 5;
+  r.obs     = document.getElementById('edit-obs').value.trim();
+  r.movimentacoes = r.movimentacoes || [];
+  r.movimentacoes.unshift({
+    data: new Date().toISOString(),
+    acao: 'Edição manual (Admin)',
     gondola: r.gondola,
     estoque: r.estoque,
     por: USER.nome
   });
   lista[idx] = r;
   setData(lista);
-  fecharRepor();
-  atualizar();
-  toast(`✅ ${qtd} unidade(s) movidas do estoque para a gôndola.`);
-}
-
-// ══════════════════════════════════
-// EDITAR (ADMIN)
-// ══════════════════════════════════
-function abrirEdit(id){
-  const r = getData().find(x=>x.id===id);
-  if(!r) return;
-  document.getElementById('edit-id').value = id;
-  document.getElementById('edit-nome').value = r.nome||'';
-  document.getElementById('edit-ref').value = r.ref||'';
-  document.getElementById('edit-tipo').value = r.tipo||'';
-  document.getElementById('edit-forn').value = r.forn||'';
-  document.getElementById('edit-gondola').value = r.gondola||0;
-  document.getElementById('edit-estoque').value = r.estoque||0;
-  document.getElementById('edit-alerta').value = r.alerta||5;
-  document.getElementById('edit-obs').value = r.obs||'';
-  document.getElementById('edit-modal').style.display='flex';
-}
-function fecharEdit(){ document.getElementById('edit-modal').style.display='none'; }
-function salvarEdit(){
-  const id = parseInt(document.getElementById('edit-id').value);
-  const lista = getData();
-  const idx = lista.findIndex(x=>x.id===id);
-  if(idx<0) return;
-  const r = lista[idx];
-  r.nome    = document.getElementById('edit-nome').value.trim();
-  r.ref     = document.getElementById('edit-ref').value.trim();
-  r.tipo    = document.getElementById('edit-tipo').value;
-  r.forn    = document.getElementById('edit-forn').value.trim();
-  r.gondola = parseInt(document.getElementById('edit-gondola').value)||0;
-  r.estoque = parseInt(document.getElementById('edit-estoque').value)||0;
-  r.alerta  = parseInt(document.getElementById('edit-alerta').value)||5;
-  r.obs     = document.getElementById('edit-obs').value.trim();
-  r.historico = r.historico||[];
-  r.historico.unshift({
-    data: new Date().toISOString(),
-    acao: 'Edição manual',
-    gondola: r.gondola,
-    estoque: r.estoque,
-    por: USER.nome
-  });
-  lista[idx]=r;
-  setData(lista);
   fecharEdit();
   atualizar();
-  toast('💾 Registro atualizado!');
+  toast('💾 Registro atualizado com sucesso!');
 }
 
-// ══════════════════════════════════
-// EXCLUIR (ADMIN)
-// ══════════════════════════════════
+// ══════════ EXCLUIR ══════════
 function excluir(id){
   if(!USER.isAdmin) return toast('🚫 Apenas o administrador pode excluir.');
   if(!confirm('Excluir este registro permanentemente?')) return;
-  setData(getData().filter(r=>r.id!==id));
+  setData(getData().filter(r => r.id !== id));
   atualizar();
   toast('🗑️ Registro excluído.');
 }
 
-// ══════════════════════════════════
-// ALERTAS
-// ══════════════════════════════════
+// ══════════ HELPERS ══════════
+function isLow(r){ return (r.gondola + r.estoque) <= (r.alerta || 5); }
+
+function fmt(iso){
+  const d = new Date(iso);
+  return d.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',
+    hour:'2-digit',minute:'2-digit'});
+}
+
+function fmtCurta(iso){
+  const d = new Date(iso);
+  return d.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',
+    hour:'2-digit',minute:'2-digit'});
+}
+
 function buildAlertas(lista){
-  const low = lista.filter(r=> (r.estoque + r.gondola) <= (r.alerta||5));
-  if(low.length===0) return '';
+  const low = lista.filter(r => isLow(r));
+  if(!low.length) return '';
   return `<div class="alerta-estoque">
     <strong>⚠️ ${low.length} produto(s) com estoque baixo</strong>
     ${low.map(r=>`<div class="alerta-item">
-      ${r.nome} ${r.ref?`<small>(${r.ref})</small>`:''} —
-      Gôndola: <b>${r.gondola}</b> | Estoque: <b>${r.estoque}</b>
+      ${r.nome} ${r.ref?`<small>(${r.ref})</small>`:''}
+      — 🛒 Gôndola: <b>${r.gondola}</b> | 📦 Estoque: <b>${r.estoque}</b>
     </div>`).join('')}
   </div>`;
 }
 
-// ══════════════════════════════════
-// STATS
-// ══════════════════════════════════
 function buildStats(lista, targetId){
-  const total    = lista.length;
-  const gondola  = lista.reduce((s,r)=>s+r.gondola,0);
-  const estoque  = lista.reduce((s,r)=>s+r.estoque,0);
-  const lowCount = lista.filter(r=>(r.estoque+r.gondola)<=(r.alerta||5)).length;
+  const total   = lista.length;
+  const gondola = lista.reduce((s,r)=>s+r.gondola, 0);
+  const estoque = lista.reduce((s,r)=>s+r.estoque, 0);
+  const low     = lista.filter(r=>isLow(r)).length;
   document.getElementById(targetId).innerHTML = `
     <div class="stat-box"><div class="num">${total}</div><div class="lbl">Produtos</div></div>
     <div class="stat-box"><div class="num">${gondola}</div><div class="lbl">Na Gôndola</div></div>
     <div class="stat-box"><div class="num">${estoque}</div><div class="lbl">No Estoque</div></div>
-    <div class="stat-box ${lowCount>0?'warn':''}">
-      <div class="num">${lowCount}</div><div class="lbl">Alerta baixo</div>
-    </div>
-  `;
+    <div class="stat-box ${low>0?'warn':''}">
+      <div class="num">${low}</div><div class="lbl">Alerta Baixo</div>
+    </div>`;
 }
 
-// ══════════════════════════════════
-// RENDER CHECKIN
-// ══════════════════════════════════
-function renderCheckin(){
-  const fTipo  = document.getElementById('ft-tipo').value;
-  const fBusca = document.getElementById('ft-busca').value.toLowerCase();
-  let lista = getData();
-  buildStats(lista,'stats-checkin');
-  document.getElementById('alertas-top').innerHTML = buildAlertas(lista);
-
-  if(fTipo) lista=lista.filter(r=>r.tipo===fTipo);
-  if(fBusca) lista=lista.filter(r=>
-    r.nome.toLowerCase().includes(fBusca)||
-    (r.ref||'').toLowerCase().includes(fBusca)||
-    (r.forn||'').toLowerCase().includes(fBusca)
-  );
-
-  const el = document.getElementById('hist-checkin');
-  if(!lista.length){el.innerHTML=`<div class="empty"><div class="icon">📭</div><p>Nenhum registro.</p></div>`;return;}
-  const isLow = r => (r.estoque+r.gondola)<=(r.alerta||5);
-  el.innerHTML = lista.map(r=>`
-    <div class="entry ${isLow(r)?'alerta-low':''}">
-      ${r.foto?`<img src="${r.foto}" alt="${r.nome}"/>`:`<div class="no-img">💎</div>`}
+function cardProduto(r, mostrarMov){
+  const low = isLow(r);
+  const ultimaMov = r.movimentacoes && r.movimentacoes.length > 1
+    ? `<div class="obs">🕒 Última reposição: ${fmtCurta(r.movimentacoes[0].data)} por ${r.movimentacoes[0].por}</div>`
+    : '';
+  const movLista = mostrarMov && r.movimentacoes && r.movimentacoes.length > 0
+    ? `<div class="mov-lista">
+        ${r.movimentacoes.slice(0,5).map(m=>
+          `<div class="mov-item">📌 ${fmtCurta(m.data)} — ${m.acao} (🛒${m.gondola} | 📦${m.estoque}) por ${m.por}</div>`
+        ).join('')}
+      </div>` : '';
+  return `
+    <div class="entry ${low?'alerta-low':''}">
+      ${r.foto
+        ? `<img src="${r.foto}" alt="${r.nome}"/>`
+        : `<div class="no-img">💎</div>`}
       <div class="entry-info">
         <h3>${r.nome}</h3>
         ${r.ref?`<div class="ref">🏷️ ${r.ref}</div>`:''}
@@ -934,151 +809,122 @@ function renderCheckin(){
           <span class="pill gondola">🛒 Gôndola: ${r.gondola}</span>
           <span class="pill estoque">📦 Estoque: ${r.estoque}</span>
           <span class="pill total">∑ Total: ${r.gondola+r.estoque}</span>
-          ${isLow(r)?`<span class="pill low">⚠️ Baixo</span>`:''}
+          ${low?`<span class="pill low">⚠️ Estoque Baixo</span>`:''}
         </div>
         ${r.obs?`<div class="obs">📝 ${r.obs}</div>`:''}
-        <div class="reg-por">👤 ${r.por||'—'}</div>
+        ${ultimaMov}
+        ${movLista}
+        <div class="reg-por">👤 Check-in por ${r.por||'—'} em ${fmt(r.data)}</div>
       </div>
       <div class="entry-actions">
-        <span class="entry-date">${fmt(r.data)}</span>
-        <button class="btn btn-success" style="font-size:11px;padding:4px 10px;color:#fff;"
-          onclick="abrirRepor(${r.id})">🔄 Repor</button>
+        <button class="btn-success" onclick="abrirRepor(${r.id})">🔄 Repor Gôndola</button>
         ${USER.isAdmin
-          ?`<button class="btn btn-warning" onclick="abrirEdit(${r.id})">✏️ Editar</button>
-            <button class="btn btn-danger" onclick="excluir(${r.id})">🗑️</button>`
-          :`<span style="font-size:10px;color:#ccc;">🔒 Admin</span>`}
+          ? `<button class="btn-warning" onclick="abrirEdit(${r.id})">✏️ Editar</button>
+             <button class="btn-danger" onclick="excluir(${r.id})">🗑️</button>`
+          : `<span style="font-size:10px;color:#ccc;">🔒 Admin</span>`}
       </div>
-    </div>`).join('');
+    </div>`;
 }
 
-// ══════════════════════════════════
-// RENDER ESTOQUE
-// ══════════════════════════════════
+// ══════════ RENDERS ══════════
+function renderCheckin(){
+  const fTipo  = document.getElementById('ft-tipo').value;
+  const fBusca = document.getElementById('ft-busca').value.toLowerCase();
+  let lista = getData();
+  buildStats(lista, 'stats-checkin');
+  document.getElementById('alertas-top').innerHTML = buildAlertas(lista);
+  if(fTipo)  lista = lista.filter(r => r.tipo === fTipo);
+  if(fBusca) lista = lista.filter(r =>
+    r.nome.toLowerCase().includes(fBusca) ||
+    (r.ref||'').toLowerCase().includes(fBusca) ||
+    (r.forn||'').toLowerCase().includes(fBusca));
+  const el = document.getElementById('hist-checkin');
+  if(!lista.length){
+    el.innerHTML=`<div class="empty"><div class="icon">📭</div><p>Nenhum registro encontrado.</p></div>`;
+    return;
+  }
+  el.innerHTML = lista.map(r => cardProduto(r, false)).join('');
+}
+
 function renderEstoque(){
   const fTipo  = document.getElementById('fe-tipo').value;
   const fAlert = document.getElementById('fe-alerta').value;
   const fBusca = document.getElementById('fe-busca').value.toLowerCase();
   let lista = getData();
-  buildStats(lista,'stats-estoque');
+  buildStats(lista, 'stats-estoque');
   document.getElementById('alertas-estoque').innerHTML = buildAlertas(lista);
-
-  if(fTipo) lista=lista.filter(r=>r.tipo===fTipo);
-  if(fAlert==='low') lista=lista.filter(r=>(r.estoque+r.gondola)<=(r.alerta||5));
-  if(fAlert==='ok')  lista=lista.filter(r=>(r.estoque+r.gondola)>(r.alerta||5));
-  if(fBusca) lista=lista.filter(r=>
-    r.nome.toLowerCase().includes(fBusca)||(r.ref||'').toLowerCase().includes(fBusca));
-
+  if(fTipo)         lista = lista.filter(r => r.tipo === fTipo);
+  if(fAlert==='low') lista = lista.filter(r => isLow(r));
+  if(fAlert==='ok')  lista = lista.filter(r => !isLow(r));
+  if(fBusca) lista = lista.filter(r =>
+    r.nome.toLowerCase().includes(fBusca) ||
+    (r.ref||'').toLowerCase().includes(fBusca));
   const el = document.getElementById('hist-estoque');
-  if(!lista.length){el.innerHTML=`<div class="empty"><div class="icon">📭</div><p>Nenhum produto.</p></div>`;return;}
-  const isLow = r => (r.estoque+r.gondola)<=(r.alerta||5);
-  el.innerHTML = lista.map(r=>`
-    <div class="entry ${isLow(r)?'alerta-low':''}">
-      ${r.foto?`<img src="${r.foto}" alt="${r.nome}"/>`:`<div class="no-img">💎</div>`}
-      <div class="entry-info">
-        <h3>${r.nome}</h3>
-        ${r.ref?`<div class="ref">🏷️ ${r.ref}</div>`:''}
-        <div class="meta">
-          <span class="tipo-badge tipo-${r.tipo}">${r.tipo}</span>
-          ${r.forn?` · ${r.forn}`:''}
-        </div>
-        <div class="pills">
-          <span class="pill gondola">🛒 Gôndola: ${r.gondola}</span>
-          <span class="pill estoque">📦 Estoque: ${r.estoque}</span>
-          <span class="pill total">∑ Total: ${r.gondola+r.estoque}</span>
-          <span class="pill" style="background:#f3f3f3;color:#666;">⚠️ Alerta: ≤${r.alerta||5}</span>
-          ${isLow(r)?`<span class="pill low">⚠️ BAIXO</span>`:''}
-        </div>
-        ${buildHistoricoItem(r)}
-      </div>
-      <div class="entry-actions">
-        <span class="entry-date">${fmt(r.data)}</span>
-        <button class="btn btn-success" style="font-size:11px;padding:4px 10px;color:#fff;"
-          onclick="abrirRepor(${r.id})">🔄 Repor</button>
-        ${USER.isAdmin
-          ?`<button class="btn btn-warning" onclick="abrirEdit(${r.id})">✏️ Editar</button>`
-          :''}
-      </div>
-    </div>`).join('');
+  if(!lista.length){
+    el.innerHTML=`<div class="empty"><div class="icon">📭</div><p>Nenhum produto encontrado.</p></div>`;
+    return;
+  }
+  el.innerHTML = lista.map(r => cardProduto(r, true)).join('');
 }
 
-function buildHistoricoItem(r){
-  if(!r.historico||r.historico.length===0) return '';
-  const ult = r.historico[0];
-  return `<div class="obs">🕒 Última movimentação: ${ult.acao} em ${fmt(ult.data)} por ${ult.por}</div>`;
-}
-
-// ══════════════════════════════════
-// RENDER ADMIN
-// ══════════════════════════════════
 function renderAdmin(){
   const fBusca = (document.getElementById('fa-busca').value||'').toLowerCase();
   let lista = getData();
-  if(fBusca) lista=lista.filter(r=>
-    r.nome.toLowerCase().includes(fBusca)||(r.ref||'').toLowerCase().includes(fBusca));
+  if(fBusca) lista = lista.filter(r =>
+    r.nome.toLowerCase().includes(fBusca)||
+    (r.ref||'').toLowerCase().includes(fBusca));
   const el = document.getElementById('hist-admin');
-  if(!lista.length){el.innerHTML=`<div class="empty"><div class="icon">📭</div><p>Nenhum registro.</p></div>`;return;}
-  el.innerHTML = lista.map(r=>`
-    <div class="entry">
-      ${r.foto?`<img src="${r.foto}" alt="${r.nome}"/>`:`<div class="no-img">💎</div>`}
-      <div class="entry-info">
-        <h3>${r.nome}</h3>
-        ${r.ref?`<div class="ref">🏷️ ${r.ref}</div>`:''}
-        <div class="meta">
-          <span class="tipo-badge tipo-${r.tipo}">${r.tipo}</span>
-          ${r.forn?` · ${r.forn}`:''}
-        </div>
-        <div class="pills">
-          <span class="pill gondola">🛒 ${r.gondola}</span>
-          <span class="pill estoque">📦 ${r.estoque}</span>
-        </div>
-        <div class="reg-por">👤 ${r.por||'—'} · ${fmt(r.data)}</div>
-      </div>
-      <div class="entry-actions">
-        <button class="btn btn-warning" onclick="abrirEdit(${r.id})">✏️ Editar</button>
-        <button class="btn btn-danger" onclick="excluir(${r.id})">🗑️ Excluir</button>
-      </div>
-    </div>`).join('');
+  if(!lista.length){
+    el.innerHTML=`<div class="empty"><div class="icon">📭</div><p>Nenhum registro.</p></div>`;
+    return;
+  }
+  el.innerHTML = lista.map(r => cardProduto(r, true)).join('');
 }
 
-// ══════════════════════════════════
-// RELATÓRIO
-// ══════════════════════════════════
+// ══════════ RELATÓRIO ══════════
 function gerarRelatorio(){
-  const ini   = document.getElementById('r-inicio').value;
-  const fim   = document.getElementById('r-fim').value;
-  const tipo  = document.getElementById('r-tipo').value;
-  const usu   = document.getElementById('r-usuario').value;
-
-  let lista = getData();
-  if(ini) lista=lista.filter(r=>r.data>=ini);
-  if(fim) lista=lista.filter(r=>r.data<=fim+'T23:59:59');
-  if(tipo) lista=lista.filter(r=>r.tipo===tipo);
-  if(usu)  lista=lista.filter(r=>r.por===usu);
+  const ini  = document.getElementById('r-inicio').value;
+  const fim  = document.getElementById('r-fim').value;
+  const tipo = document.getElementById('r-tipo').value;
+  const usu  = document.getElementById('r-usuario').value;
+  let lista  = getData();
+  if(ini) lista = lista.filter(r => r.data >= ini);
+  if(fim) lista = lista.filter(r => r.data <= fim+'T23:59:59');
+  if(tipo) lista = lista.filter(r => r.tipo === tipo);
+  if(usu)  lista = lista.filter(r => r.por === usu);
   relFiltrado = lista;
 
-  const totalProd = lista.length;
-  const totGond   = lista.reduce((s,r)=>s+r.gondola,0);
-  const totEst    = lista.reduce((s,r)=>s+r.estoque,0);
-  const tiposUniq = [...new Set(lista.map(r=>r.tipo))].length;
+  const totG  = lista.reduce((s,r)=>s+r.gondola,0);
+  const totE  = lista.reduce((s,r)=>s+r.estoque,0);
+  const tipos = [...new Set(lista.map(r=>r.tipo))].length;
+  const low   = lista.filter(r=>isLow(r)).length;
 
   document.getElementById('rel-cards').innerHTML = `
-    <div class="rel-card"><h4>Registros</h4><div class="big">${totalProd}</div><div class="desc">no período</div></div>
-    <div class="rel-card"><h4>Total Gôndola</h4><div class="big">${totGond}</div><div class="desc">unidades</div></div>
-    <div class="rel-card"><h4>Total Estoque</h4><div class="big">${totEst}</div><div class="desc">unidades</div></div>
-    <div class="rel-card"><h4>Tipos</h4><div class="big">${tiposUniq}</div><div class="desc">categorias</div></div>
+    <div class="rel-card"><h4>Registros</h4>
+      <div class="big">${lista.length}</div><div class="desc">no período selecionado</div></div>
+    <div class="rel-card"><h4>Total Gôndola</h4>
+      <div class="big">${totG}</div><div class="desc">unidades na gôndola</div></div>
+    <div class="rel-card"><h4>Total Estoque</h4>
+      <div class="big">${totE}</div><div class="desc">unidades no estoque</div></div>
+    <div class="rel-card"><h4>Categorias</h4>
+      <div class="big">${tipos}</div><div class="desc">tipos distintos</div></div>
+    <div class="rel-card"><h4>Estoque Baixo</h4>
+      <div class="big" style="color:${low>0?'#fd7e14':'#28a745'}">${low}</div>
+      <div class="desc">produtos em alerta</div></div>
   `;
 
   const tbody = document.getElementById('rel-tbody');
   if(!lista.length){
-    tbody.innerHTML=`<tr><td colspan="8" style="text-align:center;color:#ccc;padding:24px;">Nenhum registro no período.</td></tr>`;
+    tbody.innerHTML=`<tr><td colspan="8" style="text-align:center;color:#ccc;padding:24px;">
+      Nenhum registro no período.</td></tr>`;
     return;
   }
   tbody.innerHTML = lista.map(r=>`
     <tr>
       <td>${fmt(r.data)}</td>
-      <td>${r.ref||'—'}</td>
+      <td style="font-family:monospace;">${r.ref||'—'}</td>
       <td>${r.nome}</td>
-      <td><span class="chip-tipo tipo-${r.tipo}">${r.tipo}</span></td>
+      <td><span class="tipo-badge tipo-${r.tipo}">${r.tipo}</span></td>
       <td>${r.gondola}</td>
       <td>${r.estoque}</td>
       <td><b>${r.gondola+r.estoque}</b></td>
@@ -1086,11 +932,56 @@ function gerarRelatorio(){
     </tr>`).join('');
 }
 
+function exportarCSV(){
+  const lista = getData();
+  if(!lista.length) return toast('⚠️ Nenhum registro para exportar.');
+  const h = ['Data','Código','Produto','Tipo','Fornecedor','Gôndola','Estoque','Total','Alerta','Por','Obs'];
+  const rows = lista.map(r=>[
+    fmt(r.data), `"${r.ref||''}"`, `"${r.nome}"`, r.tipo, `"${r.forn||''}"`,
+    r.gondola, r.estoque, r.gondola+r.estoque, r.alerta||5,
+    `"${r.por||''}"`, `"${r.obs||''}"`
+  ].join(';'));
+  gerarDownloadCSV([h.join(';'),...rows].join('\n'), 'geor_estoque');
+}
+
 function exportarRelCSV(){
   if(!relFiltrado.length) return toast('⚠️ Gere o relatório primeiro.');
-  const h=['Data','Código','Produto','Tipo','Gôndola','Estoque','Total','Por','Obs'];
+  const h = ['Data','Código','Produto','Tipo','Gôndola','Estoque','Total','Por'];
   const rows = relFiltrado.map(r=>[
-    fmt(r.data),`"${r.ref||''}"`,`"${r.nome}"`,r.tipo,
-    r.gondola,r.estoque,r.gondola+r.estoque,`"${r.por||''}"`,`"${r.obs||''}"`
-  ].
+    fmt(r.data), `"${r.ref||''}"`, `"${r.nome}"`, r.tipo,
+    r.gondola, r.estoque, r.gondola+r.estoque, `"${r.por||''}"`
+  ].join(';'));
+  gerarDownloadCSV([h.join(';'),...rows].join('\n'), 'geor_relatorio');
+}
 
+function gerarDownloadCSV(csv, nome){
+  const blob = new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `${nome}_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('📄 CSV exportado!');
+}
+
+function atualizar(){
+  renderCheckin();
+  const abaAtiva = document.querySelector('.tab.active');
+  if(abaAtiva){
+    const idx = [...document.querySelectorAll('.tab')].indexOf(abaAtiva);
+    if(idx===1) renderEstoque();
+    if(idx===2) gerarRelatorio();
+    if(idx===3) renderAdmin();
+  }
+}
+
+function toast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), 3200);
+}
+</script>
+</body>
+</html>
