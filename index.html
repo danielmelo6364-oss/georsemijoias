@@ -1,303 +1,174 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Géor — Check-in de Produtos</title>
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0;}
-    :root{
-      --rose:#c9748a;--rose-light:#f7e8ec;--rose-dark:#9e4f63;
-      --gold:#b8860b;--dark:#1a1a2e;--brown:#4a3728;
-      --text:#2d2d2d;--muted:#9e8575;--bg:#fdf5f7;
-    }
-    body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
-
-    .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;
-      background:linear-gradient(135deg,#1a1a2e 0%,#9e4f63 60%,#c9748a 100%);}
-    .login-box{background:#fff;border-radius:24px;padding:44px 38px;width:100%;max-width:390px;
-      box-shadow:0 24px 64px rgba(0,0,0,.25);text-align:center;}
-    .geor-logo{font-size:38px;font-weight:900;letter-spacing:4px;
-      background:linear-gradient(135deg,var(--rose-dark),var(--gold));
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;}
-    .login-box .sub{font-size:12px;color:var(--muted);margin-bottom:28px;letter-spacing:1px;}
-    .lf{margin-bottom:16px;text-align:left;}
-    .lf label{display:block;font-size:11px;font-weight:700;color:var(--rose-dark);
-      margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;}
-    .lf input{width:100%;padding:11px 14px;border:1.5px solid #e0d0d5;border-radius:10px;
-      font-size:14px;font-family:inherit;transition:border-color .2s;background:#fdf5f7;}
-    .lf input:focus{outline:none;border-color:var(--rose);}
-    .btn-login{width:100%;padding:13px;border:none;border-radius:10px;
-      background:linear-gradient(135deg,var(--rose),var(--rose-dark));
-      color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;
-      box-shadow:0 6px 20px rgba(201,116,138,.4);transition:transform .1s;}
-    .btn-login:hover{transform:translateY(-1px);}
-    .login-error{color:#dc3545;font-size:12px;margin-top:10px;display:none;}
-
-    .sistema{display:none;}
-    header{background:linear-gradient(135deg,var(--dark),var(--rose-dark));color:#fff;
-      padding:14px 28px;display:flex;align-items:center;justify-content:space-between;
-      box-shadow:0 3px 16px rgba(0,0,0,.25);flex-wrap:wrap;gap:10px;}
-    .h-left{display:flex;align-items:center;gap:14px;}
-    .h-logo{font-size:22px;font-weight:900;letter-spacing:3px;
-      background:linear-gradient(135deg,#f7e8ec,#f0c8d4);
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-    .h-title{font-size:13px;opacity:.8;margin-top:1px;}
-    .h-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-    .user-badge{background:rgba(255,255,255,.15);border-radius:20px;padding:5px 14px;
-      font-size:12px;font-weight:600;}
-    .admin-tag{background:var(--gold);border-radius:12px;padding:2px 8px;
-      font-size:10px;font-weight:700;margin-left:5px;}
-    .btn-logout{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);
-      color:#fff;padding:5px 12px;border-radius:8px;font-size:12px;cursor:pointer;}
-
-    .tabs{display:flex;background:#fff;border-bottom:2px solid var(--rose-light);
-      padding:0 28px;box-shadow:0 2px 8px rgba(0,0,0,.05);flex-wrap:wrap;}
-    .tab{padding:13px 20px;font-size:13px;font-weight:600;cursor:pointer;
-      color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;
-      transition:all .2s;white-space:nowrap;}
-    .tab.active{color:var(--rose-dark);border-bottom-color:var(--rose);}
-    .tab:hover{color:var(--rose);}
-
-    .painel{display:none;padding:24px 28px;max-width:1200px;margin:0 auto;}
-    .painel.active{display:block;}
-
-    .card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,.07);}
-    .card h2{font-size:15px;font-weight:700;color:var(--brown);margin-bottom:20px;
-      padding-bottom:12px;border-bottom:2px solid var(--rose-light);}
-
-    .grid-form{display:grid;grid-template-columns:420px 1fr;gap:24px;align-items:start;}
-    @media(max-width:860px){.grid-form{grid-template-columns:1fr;}}
-    .field{margin-bottom:14px;}
-    .field label{display:block;font-size:11px;font-weight:700;color:var(--rose-dark);
-      margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px;}
-    input[type=text],input[type=number],input[type=date],select,textarea{
-      width:100%;padding:9px 13px;border:1.5px solid #e0d0d5;border-radius:8px;
-      font-size:13px;color:var(--text);background:#fdf5f7;
-      transition:border-color .2s;font-family:inherit;}
-    input:focus,select:focus,textarea:focus{outline:none;border-color:var(--rose);background:#fff;}
-    textarea{resize:vertical;min-height:64px;}
-    .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-    .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
-
-    /* ── TOGGLE MODO QUANTIDADE ── */
-    .modo-qtd-toggle{display:flex;gap:0;margin-bottom:14px;border-radius:10px;
-      overflow:hidden;border:2px solid #e0d0d5;}
-    .modo-qtd-toggle button{flex:1;padding:9px 6px;border:none;background:#fdf5f7;
-      font-size:12px;font-weight:700;cursor:pointer;color:var(--muted);
-      transition:all .2s;}
-    .modo-qtd-toggle button.ativo{background:linear-gradient(135deg,var(--rose),var(--rose-dark));
-      color:#fff;}
-    .modo-qtd-toggle button:first-child{border-right:1px solid #e0d0d5;}
-
-    /* ── BLOCO DE QUANTIDADES POR VARIAÇÃO ── */
-    .qtd-geral-block{display:block;}
-    .qtd-variacao-block{display:none;}
-
-    .variacao-row{background:#fdf5f7;border:1.5px solid #e8d0d8;border-radius:10px;
-      padding:12px 14px;margin-bottom:10px;}
-    .variacao-row .v-titulo{font-size:11px;font-weight:800;color:var(--rose-dark);
-      text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;
-      display:flex;align-items:center;gap:6px;}
-    .variacao-row .v-campos{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-    .variacao-row .v-campos label{font-size:10px;font-weight:700;color:var(--muted);
-      display:block;margin-bottom:3px;text-transform:uppercase;}
-    .variacao-row .v-campos input{background:#fff;}
-
-    .qtd-total-preview{background:var(--rose-light);border-radius:8px;padding:9px 13px;
-      font-size:12px;color:var(--rose-dark);font-weight:700;text-align:center;
-      margin-top:4px;}
-
-    /* ── FOTO ── */
-    .foto-area{border:2px dashed #e0c0cc;border-radius:10px;padding:18px;text-align:center;
-      cursor:pointer;position:relative;background:#fdf5f7;transition:all .2s;}
-    .foto-area:hover{border-color:var(--rose);background:#fceef2;}
-    .foto-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;
-      width:100%;height:100%;}
-    .foto-area .icon{font-size:28px;margin-bottom:4px;}
-    .foto-area p{font-size:11px;color:var(--muted);}
-    #preview-img{width:100%;max-height:160px;object-fit:cover;border-radius:8px;
-      margin-top:8px;display:none;}
-
-    /* ── BOTÕES ── */
-    .btn{padding:10px 18px;border:none;border-radius:8px;font-size:13px;font-weight:700;
-      cursor:pointer;transition:transform .1s,box-shadow .2s;}
-    .btn-primary{background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:#fff;
-      box-shadow:0 4px 14px rgba(201,116,138,.35);width:100%;padding:12px;}
-    .btn-primary:hover{transform:translateY(-1px);}
-    .btn-danger{background:#dc3545;color:#fff;font-size:11px;padding:4px 10px;
-      border-radius:6px;border:none;cursor:pointer;}
-    .btn-warning{background:#fd7e14;color:#fff;font-size:11px;padding:4px 10px;
-      border-radius:6px;border:none;cursor:pointer;}
-    .btn-success{background:#28a745;color:#fff;font-size:11px;padding:4px 10px;
-      border-radius:6px;border:none;cursor:pointer;}
-    .btn-dark{background:var(--dark);color:#f7e8ec;font-size:12px;padding:7px 14px;
-      border:none;border-radius:8px;cursor:pointer;}
-
-    /* ── STATS ── */
-    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));
-      gap:10px;margin-bottom:20px;}
-    .stat-box{background:#fff;border-radius:12px;padding:14px 16px;text-align:center;
-      box-shadow:0 2px 10px rgba(0,0,0,.06);border-top:3px solid var(--rose);}
-    .stat-box .num{font-size:24px;font-weight:800;color:var(--rose-dark);}
-    .stat-box .lbl{font-size:10px;color:var(--muted);margin-top:2px;
-      text-transform:uppercase;letter-spacing:.4px;}
-    .stat-box.warn .num{color:#fd7e14;}
-    .stat-box.warn{border-top-color:#fd7e14;}
-
-    /* ── ALERTA ── */
-    .alerta-estoque{background:#fff3cd;border:1px solid #ffc107;border-radius:10px;
-      padding:12px 16px;margin-bottom:16px;font-size:13px;color:#856404;}
-    .alerta-estoque strong{display:block;margin-bottom:6px;font-size:14px;}
-    .alerta-item{padding:3px 0;border-bottom:1px solid #ffe69c;}
-    .alerta-item:last-child{border:none;}
-
-    /* ── FILTROS ── */
-    .filtros{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center;}
-    .filtros select,.filtros input{padding:7px 12px;border:1.5px solid #e0d0d5;
-      border-radius:8px;font-size:12px;background:#fff;font-family:inherit;}
-
-    /* ── HISTÓRICO ── */
-    .hist-wrap{max-height:65vh;overflow-y:auto;padding-right:4px;}
-    .hist-wrap::-webkit-scrollbar{width:4px;}
-    .hist-wrap::-webkit-scrollbar-thumb{background:var(--rose-light);border-radius:10px;}
-    .entry{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;
-      box-shadow:0 2px 8px rgba(0,0,0,.06);display:grid;
-      grid-template-columns:72px 1fr auto;gap:12px;align-items:start;
-      transition:box-shadow .2s;border-left:4px solid var(--rose-light);}
-    .entry:hover{box-shadow:0 4px 16px rgba(0,0,0,.1);border-left-color:var(--rose);}
-    .entry.alerta-low{border-left-color:#fd7e14;}
-    .entry img{width:72px;height:72px;object-fit:cover;border-radius:8px;}
-    .entry .no-img{width:72px;height:72px;border-radius:8px;background:var(--rose-light);
-      display:flex;align-items:center;justify-content:center;font-size:22px;}
-    .entry-info h3{font-size:13px;font-weight:700;margin-bottom:3px;}
-    .entry-info .ref{font-size:10px;color:var(--muted);font-family:monospace;margin-bottom:4px;}
-    .entry-info .meta{font-size:11px;color:var(--muted);margin-bottom:5px;}
-    .entry-info .obs{font-size:11px;color:var(--brown);font-style:italic;margin-top:3px;}
-    .entry-info .reg-por{font-size:10px;color:var(--rose-dark);font-weight:600;margin-top:3px;}
-    .pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;}
-    .pill{border-radius:6px;padding:2px 9px;font-size:11px;font-weight:600;
-      background:var(--rose-light);color:var(--rose-dark);}
-    .pill.gondola{background:#e8f5e9;color:#2e7d32;}
-    .pill.estoque{background:#e3f2fd;color:#1565c0;}
-    .pill.total{background:#f3e5f5;color:#6a1b9a;}
-    .pill.low{background:#fff3e0;color:#e65100;}
-    .pill.prata{background:#e8e8f0;color:#3a3a6e;}
-    .pill.dourado{background:#fff8e1;color:#7a5500;}
-    .pill.rosegold{background:#fce4ec;color:#9e4f63;}
-    .tipo-badge{display:inline-block;padding:1px 9px;border-radius:12px;
-      font-size:10px;font-weight:700;}
-    .tipo-Joia{background:#fff3cd;color:#856404;}
-    .tipo-Bijuteria{background:#d1ecf1;color:#0c5460;}
-    .tipo-Semijoia{background:#f8d7da;color:#721c24;}
-    .tipo-Acessório{background:#d4edda;color:#155724;}
-    .tipo-Outro{background:#e2e3e5;color:#383d41;}
-    .entry-actions{display:flex;flex-direction:column;align-items:flex-end;gap:5px;}
-
-    /* ── VARIAÇÕES NO CARD ── */
-    .var-detalhe{margin-top:8px;background:#fdf5f7;border-radius:8px;padding:8px 10px;}
-    .var-detalhe .var-titulo{font-size:10px;font-weight:800;color:var(--rose-dark);
-      text-transform:uppercase;margin-bottom:6px;}
-    .var-linha{display:flex;justify-content:space-between;align-items:center;
-      font-size:11px;padding:3px 0;border-bottom:1px dashed #f0dde3;}
-    .var-linha:last-child{border:none;}
-    .var-nome{font-weight:700;color:var(--brown);}
-    .var-qtds{display:flex;gap:8px;color:var(--muted);}
-
-    /* ── MODAL REPOR ── */
-    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);
-      display:none;align-items:center;justify-content:center;z-index:200;}
-    .modal-overlay.open{display:flex;}
-    .repor-box{background:#fff;border-radius:16px;padding:28px;width:90%;max-width:420px;
-      box-shadow:0 16px 48px rgba(0,0,0,.2);text-align:center;}
-    .repor-box h3{font-size:16px;font-weight:700;color:var(--brown);margin-bottom:6px;}
-    .repor-box p{font-size:12px;color:var(--muted);margin-bottom:16px;}
-    .repor-info{background:var(--rose-light);border-radius:8px;padding:10px;
-      font-size:13px;margin-bottom:16px;color:var(--rose-dark);line-height:1.8;}
-    .repor-variacao-sel{margin-bottom:14px;text-align:left;}
-    .repor-variacao-sel label{display:block;font-size:11px;font-weight:700;
-      color:var(--rose-dark);text-transform:uppercase;margin-bottom:6px;}
-    .var-sel-group{display:flex;gap:8px;flex-wrap:wrap;}
-    .var-sel-btn{padding:8px 14px;border:2px solid #e0d0d5;border-radius:8px;
-      font-size:12px;font-weight:700;cursor:pointer;background:#fdf5f7;
-      transition:all .2s;display:flex;align-items:center;gap:5px;}
-    .var-sel-btn.ativo.prata{background:#e8e8f0;border-color:#7e7ea0;color:#3a3a6e;}
-    .var-sel-btn.ativo.dourado{background:#fff8e1;border-color:#b8860b;color:#7a5500;}
-    .var-sel-btn.ativo.rosegold{background:#fce4ec;border-color:#c9748a;color:#9e4f63;}
-    .var-sel-btn.ativo.geral{background:#f3e5f5;border-color:#6a1b9a;color:#6a1b9a;}
-    .repor-box input[type=number]{width:100%;padding:10px;border:1.5px solid #e0d0d5;
-      border-radius:8px;font-size:18px;text-align:center;
-      margin-bottom:14px;background:#fdf5f7;}
-    .repor-btns{display:flex;gap:10px;}
-    .repor-btns button{flex:1;padding:11px;border:none;border-radius:8px;
-      font-size:13px;font-weight:700;cursor:pointer;}
-    .repor-ok{background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:#fff;}
-    .repor-cancel{background:#f0f0f0;color:#666;}
-
-    /* ── MODAL EDITAR ── */
-    .edit-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);
-      display:none;align-items:center;justify-content:center;z-index:300;}
-    .edit-overlay.open{display:flex;}
-    .edit-box{background:#fff;border-radius:16px;padding:28px;width:94%;max-width:560px;
-      box-shadow:0 16px 48px rgba(0,0,0,.25);max-height:90vh;overflow-y:auto;}
-    .edit-box h3{font-size:16px;font-weight:700;color:var(--brown);margin-bottom:18px;}
-
-    /* ── RELATÓRIO ── */
-    .periodo-form{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;
-      background:#fff;border-radius:12px;padding:16px;
-      box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px;}
-    .periodo-form .pf{display:flex;flex-direction:column;gap:4px;}
-    .periodo-form label{font-size:11px;font-weight:700;
-      color:var(--rose-dark);text-transform:uppercase;}
-    .periodo-form input,.periodo-form select{padding:8px 12px;border:1.5px solid #e0d0d5;
-      border-radius:8px;font-size:13px;background:#fdf5f7;}
-    .rel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-      gap:14px;margin-bottom:20px;}
-    .rel-card{background:#fff;border-radius:12px;padding:16px;
-      box-shadow:0 2px 10px rgba(0,0,0,.06);border-top:3px solid var(--rose);}
-    .rel-card h4{font-size:11px;font-weight:700;color:var(--muted);
-      text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;}
-    .rel-card .big{font-size:28px;font-weight:800;color:var(--rose-dark);}
-    .rel-card .desc{font-size:11px;color:var(--muted);margin-top:2px;}
-    .rel-table{width:100%;border-collapse:collapse;font-size:12px;}
-    .rel-table th{background:var(--rose-light);color:var(--rose-dark);padding:8px 10px;
-      text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;}
-    .rel-table td{padding:8px 10px;border-bottom:1px solid #f5eef0;}
-    .rel-table tr:hover td{background:#fdf5f7;}
-
-    /* ── TOAST ── */
-    #toast{position:fixed;bottom:24px;right:24px;background:var(--dark);color:#f7e8ec;
-      padding:11px 18px;border-radius:10px;font-size:13px;font-weight:600;
-      opacity:0;transform:translateY(8px);transition:all .3s;z-index:999;pointer-events:none;}
-    #toast.show{opacity:1;transform:translateY(0);}
-    .empty{text-align:center;color:#d4a0b0;font-size:13px;padding:36px 20px;}
-    .empty .icon{font-size:36px;margin-bottom:8px;}
-    .mov-lista{margin-top:6px;font-size:11px;color:var(--muted);}
-    .mov-item{padding:2px 0;border-top:1px dashed #f0e0e5;}
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Géor — Check-in</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--rose:#c9748a;--rose-light:#f7e8ec;--rose-dark:#9e4f63;--gold:#b8860b;--dark:#1a1a2e;--brown:#4a3728;--text:#2d2d2d;--muted:#9e8575;--bg:#fdf5f7;}
+body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a1a2e 0%,#9e4f63 60%,#c9748a 100%);}
+.login-box{background:#fff;border-radius:24px;padding:44px 38px;width:100%;max-width:390px;box-shadow:0 24px 64px rgba(0,0,0,.25);text-align:center;}
+.geor-logo{font-size:38px;font-weight:900;letter-spacing:4px;background:linear-gradient(135deg,var(--rose-dark),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;}
+.login-box .sub{font-size:12px;color:var(--muted);margin-bottom:28px;letter-spacing:1px;}
+.lf{margin-bottom:16px;text-align:left;}
+.lf label{display:block;font-size:11px;font-weight:700;color:var(--rose-dark);margin-bottom:5px;text-transform:uppercase;}
+.lf input{width:100%;padding:11px 14px;border:1.5px solid #e0d0d5;border-radius:10px;font-size:14px;font-family:inherit;background:#fdf5f7;}
+.lf input:focus{outline:none;border-color:var(--rose);}
+.btn-login{width:100%;padding:13px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;box-shadow:0 6px 20px rgba(201,116,138,.4);}
+.login-error{color:#dc3545;font-size:12px;margin-top:10px;display:none;}
+.sistema{display:none;}
+header{background:linear-gradient(135deg,var(--dark),var(--rose-dark));color:#fff;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 16px rgba(0,0,0,.25);flex-wrap:wrap;gap:10px;}
+.h-left{display:flex;align-items:center;gap:14px;}
+.h-logo{font-size:22px;font-weight:900;letter-spacing:3px;background:linear-gradient(135deg,#f7e8ec,#f0c8d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.h-title{font-size:13px;opacity:.8;}
+.h-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.user-badge{background:rgba(255,255,255,.15);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;}
+.admin-tag{background:var(--gold);border-radius:12px;padding:2px 8px;font-size:10px;font-weight:700;margin-left:5px;}
+.btn-logout{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:#fff;padding:5px 12px;border-radius:8px;font-size:12px;cursor:pointer;}
+.tabs{display:flex;background:#fff;border-bottom:2px solid var(--rose-light);padding:0 28px;box-shadow:0 2px 8px rgba(0,0,0,.05);flex-wrap:wrap;}
+.tab{padding:13px 20px;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap;}
+.tab.active{color:var(--rose-dark);border-bottom-color:var(--rose);}
+.tab:hover{color:var(--rose);}
+.painel{display:none;padding:24px 28px;max-width:1200px;margin:0 auto;}
+.painel.active{display:block;}
+.card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,.07);}
+.card h2{font-size:15px;font-weight:700;color:var(--brown);margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--rose-light);}
+.grid-form{display:grid;grid-template-columns:430px 1fr;gap:24px;align-items:start;}
+@media(max-width:860px){.grid-form{grid-template-columns:1fr;}}
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:11px;font-weight:700;color:var(--rose-dark);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px;}
+input[type=text],input[type=number],input[type=date],select,textarea{width:100%;padding:9px 13px;border:1.5px solid #e0d0d5;border-radius:8px;font-size:13px;color:var(--text);background:#fdf5f7;transition:border-color .2s;font-family:inherit;}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--rose);background:#fff;}
+textarea{resize:vertical;min-height:64px;}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.modo-toggle{display:flex;gap:0;margin-bottom:14px;border-radius:10px;overflow:hidden;border:2px solid #e0d0d5;}
+.modo-toggle button{flex:1;padding:9px 6px;border:none;background:#fdf5f7;font-size:12px;font-weight:700;cursor:pointer;color:var(--muted);transition:all .2s;}
+.modo-toggle button.ativo{background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:#fff;}
+.modo-toggle button:first-child{border-right:1px solid #e0d0d5;}
+.bloco-geral{display:block;}
+.bloco-variacao{display:none;}
+.var-row{background:#fdf5f7;border:1.5px solid #e8d0d8;border-radius:10px;padding:12px 14px;margin-bottom:10px;}
+.var-row .vt{font-size:11px;font-weight:800;color:var(--rose-dark);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;}
+.var-row .vc{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.var-row .vc label{font-size:10px;font-weight:700;color:var(--muted);display:block;margin-bottom:3px;text-transform:uppercase;}
+.var-row .vc input{background:#fff;}
+.preview-total{background:var(--rose-light);border-radius:8px;padding:9px 13px;font-size:12px;color:var(--rose-dark);font-weight:700;text-align:center;margin-top:6px;}
+.foto-area{border:2px dashed #e0c0cc;border-radius:10px;padding:18px;text-align:center;cursor:pointer;position:relative;background:#fdf5f7;transition:all .2s;}
+.foto-area:hover{border-color:var(--rose);background:#fceef2;}
+.foto-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.foto-area .icon{font-size:28px;margin-bottom:4px;}
+.foto-area p{font-size:11px;color:var(--muted);}
+#preview-img{width:100%;max-height:160px;object-fit:cover;border-radius:8px;margin-top:8px;display:none;}
+.btn{padding:10px 18px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;transition:transform .1s;}
+.btn-primary{background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:#fff;box-shadow:0 4px 14px rgba(201,116,138,.35);width:100%;padding:12px;}
+.btn-primary:hover{transform:translateY(-1px);}
+.btn-danger{background:#dc3545;color:#fff;font-size:11px;padding:4px 10px;border-radius:6px;border:none;cursor:pointer;}
+.btn-warning{background:#fd7e14;color:#fff;font-size:11px;padding:4px 10px;border-radius:6px;border:none;cursor:pointer;}
+.btn-success{background:#28a745;color:#fff;font-size:11px;padding:4px 10px;border-radius:6px;border:none;cursor:pointer;}
+.btn-dark{background:var(--dark);color:#f7e8ec;font-size:12px;padding:7px 14px;border:none;border-radius:8px;cursor:pointer;}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:20px;}
+.stat-box{background:#fff;border-radius:12px;padding:14px 16px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.06);border-top:3px solid var(--rose);}
+.stat-box .num{font-size:24px;font-weight:800;color:var(--rose-dark);}
+.stat-box .lbl{font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.4px;}
+.stat-box.warn .num{color:#fd7e14;}
+.stat-box.warn{border-top-color:#fd7e14;}
+.alerta-estoque{background:#fff3cd;border:1px solid #ffc107;border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#856404;}
+.alerta-estoque strong{display:block;margin-bottom:6px;font-size:14px;}
+.alerta-item{padding:3px 0;border-bottom:1px solid #ffe69c;}
+.alerta-item:last-child{border:none;}
+.filtros{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center;}
+.filtros select,.filtros input{padding:7px 12px;border:1.5px solid #e0d0d5;border-radius:8px;font-size:12px;background:#fff;font-family:inherit;}
+.hist-wrap{max-height:65vh;overflow-y:auto;padding-right:4px;}
+.hist-wrap::-webkit-scrollbar{width:4px;}
+.hist-wrap::-webkit-scrollbar-thumb{background:var(--rose-light);border-radius:10px;}
+.entry{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);display:grid;grid-template-columns:72px 1fr auto;gap:12px;align-items:start;border-left:4px solid var(--rose-light);transition:box-shadow .2s;}
+.entry:hover{box-shadow:0 4px 16px rgba(0,0,0,.1);border-left-color:var(--rose);}
+.entry.alerta-low{border-left-color:#fd7e14;}
+.entry img{width:72px;height:72px;object-fit:cover;border-radius:8px;}
+.entry .no-img{width:72px;height:72px;border-radius:8px;background:var(--rose-light);display:flex;align-items:center;justify-content:center;font-size:22px;}
+.entry-info h3{font-size:13px;font-weight:700;margin-bottom:3px;}
+.entry-info .ref{font-size:10px;color:var(--muted);font-family:monospace;margin-bottom:4px;}
+.entry-info .meta{font-size:11px;color:var(--muted);margin-bottom:5px;}
+.entry-info .obs{font-size:11px;color:var(--brown);font-style:italic;margin-top:3px;}
+.entry-info .reg-por{font-size:10px;color:var(--rose-dark);font-weight:600;margin-top:3px;}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;}
+.pill{border-radius:6px;padding:2px 9px;font-size:11px;font-weight:600;background:var(--rose-light);color:var(--rose-dark);}
+.pill.gondola{background:#e8f5e9;color:#2e7d32;}
+.pill.estoque{background:#e3f2fd;color:#1565c0;}
+.pill.total{background:#f3e5f5;color:#6a1b9a;}
+.pill.low{background:#fff3e0;color:#e65100;}
+.pill.prata{background:#e8e8f0;color:#3a3a6e;}
+.pill.dourado{background:#fff8e1;color:#7a5500;}
+.pill.rosegold{background:#fce4ec;color:#9e4f63;}
+.tipo-badge{display:inline-block;padding:1px 9px;border-radius:12px;font-size:10px;font-weight:700;}
+.tipo-Joia{background:#fff3cd;color:#856404;}
+.tipo-Bijuteria{background:#d1ecf1;color:#0c5460;}
+.tipo-Semijoia{background:#f8d7da;color:#721c24;}
+.tipo-Acessório{background:#d4edda;color:#155724;}
+.tipo-Outro{background:#e2e3e5;color:#383d41;}
+.entry-actions{display:flex;flex-direction:column;align-items:flex-end;gap:5px;}
+.var-detalhe{margin-top:8px;background:#fdf5f7;border-radius:8px;padding:8px 10px;}
+.var-detalhe .vd-title{font-size:10px;font-weight:800;color:var(--rose-dark);text-transform:uppercase;margin-bottom:6px;}
+.var-linha{display:flex;justify-content:space-between;font-size:11px;padding:3px 0;border-bottom:1px dashed #f0dde3;}
+.var-linha:last-child{border:none;}
+.var-nome{font-weight:700;color:var(--brown);}
+.var-qtds{color:var(--muted);}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:200;}
+.modal-overlay.open{display:flex;}
+.repor-box{background:#fff;border-radius:16px;padding:28px;width:90%;max-width:420px;box-shadow:0 16px 48px rgba(0,0,0,.2);text-align:center;}
+.repor-box h3{font-size:16px;font-weight:700;color:var(--brown);margin-bottom:6px;}
+.repor-box p{font-size:12px;color:var(--muted);margin-bottom:16px;}
+.repor-info{background:var(--rose-light);border-radius:8px;padding:10px;font-size:13px;margin-bottom:16px;color:var(--rose-dark);line-height:1.8;text-align:left;}
+.var-sel-label{font-size:11px;font-weight:700;color:var(--rose-dark);text-transform:uppercase;margin-bottom:6px;display:block;text-align:left;}
+.var-sel-group{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.var-sel-btn{padding:8px 12px;border:2px solid #e0d0d5;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;background:#fdf5f7;transition:all .2s;}
+.var-sel-btn.ativo{border-color:var(--rose);background:var(--rose-light);color:var(--rose-dark);}
+.repor-box input[type=number]{width:100%;padding:10px;border:1.5px solid #e0d0d5;border-radius:8px;font-size:18px;text-align:center;margin-bottom:14px;background:#fdf5f7;}
+.repor-btns{display:flex;gap:10px;}
+.repor-btns button{flex:1;padding:11px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;}
+.repor-ok{background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:#fff;}
+.repor-cancel{background:#f0f0f0;color:#666;}
+.edit-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:300;}
+.edit-overlay.open{display:flex;}
+.edit-box{background:#fff;border-radius:16px;padding:28px;width:94%;max-width:540px;box-shadow:0 16px 48px rgba(0,0,0,.25);max-height:90vh;overflow-y:auto;}
+.edit-box h3{font-size:16px;font-weight:700;color:var(--brown);margin-bottom:18px;}
+.periodo-form{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px;}
+.periodo-form .pf{display:flex;flex-direction:column;gap:4px;}
+.periodo-form label{font-size:11px;font-weight:700;color:var(--rose-dark);text-transform:uppercase;}
+.periodo-form input,.periodo-form select{padding:8px 12px;border:1.5px solid #e0d0d5;border-radius:8px;font-size:13px;background:#fdf5f7;}
+.rel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:20px;}
+.rel-card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.06);border-top:3px solid var(--rose);}
+.rel-card h4{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;}
+.rel-card .big{font-size:28px;font-weight:800;color:var(--rose-dark);}
+.rel-card .desc{font-size:11px;color:var(--muted);margin-top:2px;}
+.rel-table{width:100%;border-collapse:collapse;font-size:12px;}
+.rel-table th{background:var(--rose-light);color:var(--rose-dark);padding:8px 10px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;}
+.rel-table td{padding:8px 10px;border-bottom:1px solid #f5eef0;}
+.rel-table tr:hover td{background:#fdf5f7;}
+#toast{position:fixed;bottom:24px;right:24px;background:var(--dark);color:#f7e8ec;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:600;opacity:0;transform:translateY(8px);transition:all .3s;z-index:999;pointer-events:none;}
+#toast.show{opacity:1;transform:translateY(0);}
+.empty{text-align:center;color:#d4a0b0;font-size:13px;padding:36px 20px;}
+.empty .icon{font-size:36px;margin-bottom:8px;}
+.mov-lista{margin-top:6px;font-size:11px;color:var(--muted);}
+.mov-item{padding:2px 0;border-top:1px dashed #f0e0e5;}
+</style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div class="login-screen" id="login-screen">
   <div class="login-box">
     <div class="geor-logo">GÉOR</div>
     <div class="sub">SEMIJOIAS & ACESSÓRIOS</div>
-    <div class="lf">
-      <label>Usuário</label>
-      <input type="text" id="l-user" placeholder="Digite seu usuário"/>
-    </div>
-    <div class="lf">
-      <label>Senha</label>
-      <input type="password" id="l-pass" placeholder="Digite sua senha"
-        onkeydown="if(event.key==='Enter')login()"/>
-    </div>
+    <div class="lf"><label>Usuário</label><input type="text" id="l-user" placeholder="Digite seu usuário"/></div>
+    <div class="lf"><label>Senha</label><input type="password" id="l-pass" placeholder="Digite sua senha" onkeydown="if(event.key==='Enter')login()"/></div>
     <button class="btn-login" onclick="login()">🔐 Entrar</button>
     <div class="login-error" id="login-error">Usuário ou senha incorretos.</div>
   </div>
 </div>
 
-<!-- SISTEMA -->
 <div class="sistema" id="sistema">
   <header>
     <div class="h-left">
@@ -317,12 +188,11 @@
     <div class="tab admin-tab" onclick="aba('admin')" style="display:none">⚙️ Admin</div>
   </div>
 
-  <!-- ABA CHECK-IN -->
+  <!-- CHECK-IN -->
   <div class="painel active" id="tab-checkin">
     <div class="grid-form">
       <div class="card">
         <h2>📦 Novo Registro</h2>
-
         <div class="field">
           <label>Foto do Produto</label>
           <div class="foto-area">
@@ -332,19 +202,10 @@
           </div>
           <img id="preview-img" alt="Preview"/>
         </div>
-
-        <div class="field">
-          <label>Nome / Descrição *</label>
-          <input type="text" id="f-nome" placeholder="Ex: Anel Solitário Banhado a Ouro"/>
-        </div>
-
+        <div class="field"><label>Nome / Descrição *</label><input type="text" id="f-nome" placeholder="Ex: Anel Solitário Banhado a Ouro"/></div>
         <div class="row2">
-          <div class="field">
-            <label>Código / Referência</label>
-            <input type="text" id="f-ref" placeholder="Ex: GR-001"/>
-          </div>
-          <div class="field">
-            <label>Tipo *</label>
+          <div class="field"><label>Código / Referência</label><input type="text" id="f-ref" placeholder="Ex: GR-001"/></div>
+          <div class="field"><label>Tipo *</label>
             <select id="f-tipo">
               <option value="">Selecione...</option>
               <option value="Joia">💛 Joia</option>
@@ -355,108 +216,54 @@
             </select>
           </div>
         </div>
+        <div class="field"><label>Fornecedor / Origem</label><input type="text" id="f-forn" placeholder="Ex: Fornecedor SP"/></div>
 
         <div class="field">
-          <label>Fornecedor / Origem</label>
-          <input type="text" id="f-forn" placeholder="Ex: Fornecedor SP"/>
-        </div>
-
-        <!-- ══ MODO DE QUANTIDADE ══ -->
-        <div class="field">
-          <label>Como deseja informar as quantidades?</label>
-          <div class="modo-qtd-toggle">
-            <button type="button" id="btn-modo-geral" class="ativo"
-              onclick="setModoQtd('geral')">📦 Quantidade Geral</button>
-            <button type="button" id="btn-modo-variacao"
-              onclick="setModoQtd('variacao')">🔘✨ Por Acabamento</button>
+          <label>Como informar as quantidades?</label>
+          <div class="modo-toggle">
+            <button type="button" id="btn-modo-geral" class="ativo" onclick="setModo('geral')">📦 Quantidade Geral</button>
+            <button type="button" id="btn-modo-var" onclick="setModo('variacao')">🔘✨ Por Acabamento</button>
           </div>
         </div>
 
-        <!-- MODO GERAL -->
-        <div id="bloco-geral" class="qtd-geral-block">
+        <!-- GERAL -->
+        <div class="bloco-geral" id="bloco-geral">
           <div class="row3">
-            <div class="field">
-              <label>Qtd. Gôndola</label>
-              <input type="number" id="f-gondola" min="0" placeholder="0"
-                oninput="atualizarPreviewGeral()"/>
-            </div>
-            <div class="field">
-              <label>Qtd. Estoque</label>
-              <input type="number" id="f-estoque" min="0" placeholder="0"
-                oninput="atualizarPreviewGeral()"/>
-            </div>
-            <div class="field">
-              <label>Alertar abaixo de</label>
-              <input type="number" id="f-alerta" min="0" placeholder="5"/>
-            </div>
+            <div class="field"><label>Qtd. Gôndola</label><input type="number" id="f-gondola" min="0" placeholder="0" oninput="prevGeral()"/></div>
+            <div class="field"><label>Qtd. Estoque</label><input type="number" id="f-estoque" min="0" placeholder="0" oninput="prevGeral()"/></div>
+            <div class="field"><label>Alertar abaixo de</label><input type="number" id="f-alerta" min="0" placeholder="5"/></div>
           </div>
-          <div class="qtd-total-preview" id="preview-geral" style="display:none"></div>
+          <div class="preview-total" id="prev-geral" style="display:none"></div>
         </div>
 
-        <!-- MODO VARIAÇÃO -->
-        <div id="bloco-variacao" class="qtd-variacao-block">
-
-          <div class="variacao-row" id="var-prata-row">
-            <div class="v-titulo">🔘 Prata</div>
-            <div class="v-campos">
-              <div>
-                <label>Gôndola</label>
-                <input type="number" id="vp-gondola" min="0" placeholder="0"
-                  oninput="atualizarPreviewVariacao()"/>
-              </div>
-              <div>
-                <label>Estoque</label>
-                <input type="number" id="vp-estoque" min="0" placeholder="0"
-                  oninput="atualizarPreviewVariacao()"/>
-              </div>
+        <!-- VARIAÇÃO -->
+        <div class="bloco-variacao" id="bloco-variacao">
+          <div class="var-row">
+            <div class="vt">🔘 Prata</div>
+            <div class="vc">
+              <div><label>Gôndola</label><input type="number" id="vp-g" min="0" placeholder="0" oninput="prevVar()"/></div>
+              <div><label>Estoque</label><input type="number" id="vp-e" min="0" placeholder="0" oninput="prevVar()"/></div>
             </div>
           </div>
-
-          <div class="variacao-row" id="var-dourado-row">
-            <div class="v-titulo">✨ Dourado</div>
-            <div class="v-campos">
-              <div>
-                <label>Gôndola</label>
-                <input type="number" id="vd-gondola" min="0" placeholder="0"
-                  oninput="atualizarPreviewVariacao()"/>
-              </div>
-              <div>
-                <label>Estoque</label>
-                <input type="number" id="vd-estoque" min="0" placeholder="0"
-                  oninput="atualizarPreviewVariacao()"/>
-              </div>
+          <div class="var-row">
+            <div class="vt">✨ Dourado</div>
+            <div class="vc">
+              <div><label>Gôndola</label><input type="number" id="vd-g" min="0" placeholder="0" oninput="prevVar()"/></div>
+              <div><label>Estoque</label><input type="number" id="vd-e" min="0" placeholder="0" oninput="prevVar()"/></div>
             </div>
           </div>
-
-          <div class="variacao-row" id="var-rose-row">
-            <div class="v-titulo">🌸 Rose Gold</div>
-            <div class="v-campos">
-              <div>
-                <label>Gôndola</label>
-                <input type="number" id="vr-gondola" min="0" placeholder="0"
-                  oninput="atualizarPreviewVariacao()"/>
-              </div>
-              <div>
-                <label>Estoque</label>
-                <input type="number" id="vr-estoque" min="0" placeholder="0"
-                  oninput="atualizarPreviewVariacao()"/>
-              </div>
+          <div class="var-row">
+            <div class="vt">🌸 Rose Gold</div>
+            <div class="vc">
+              <div><label>Gôndola</label><input type="number" id="vr-g" min="0" placeholder="0" oninput="prevVar()"/></div>
+              <div><label>Estoque</label><input type="number" id="vr-e" min="0" placeholder="0" oninput="prevVar()"/></div>
             </div>
           </div>
-
-          <div class="row2" style="margin-top:4px;">
-            <div class="field">
-              <label>Alertar abaixo de (total)</label>
-              <input type="number" id="f-alerta-var" min="0" placeholder="5"/>
-            </div>
-          </div>
-          <div class="qtd-total-preview" id="preview-variacao"></div>
+          <div class="field" style="margin-top:6px;"><label>Alertar abaixo de (total)</label><input type="number" id="f-alerta-v" min="0" placeholder="5"/></div>
+          <div class="preview-total" id="prev-var"></div>
         </div>
 
-        <div class="field" style="margin-top:4px;">
-          <label>Observações</label>
-          <textarea id="f-obs" placeholder="Cor, tamanho, coleção..."></textarea>
-        </div>
+        <div class="field" style="margin-top:6px;"><label>Observações</label><textarea id="f-obs" placeholder="Cor, tamanho, coleção..."></textarea></div>
         <button class="btn btn-primary" onclick="registrar()">✅ Registrar Check-in</button>
       </div>
 
@@ -464,30 +271,24 @@
         <div class="stats-grid" id="stats-checkin"></div>
         <div id="alertas-top"></div>
         <div class="card" style="padding:20px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;
-            margin-bottom:14px;flex-wrap:wrap;gap:8px;">
-            <h2 style="margin:0;padding:0;border:none;font-size:15px;
-              font-weight:700;color:var(--brown);">📋 Histórico de Entradas</h2>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+            <h2 style="margin:0;padding:0;border:none;font-size:15px;font-weight:700;color:var(--brown);">📋 Histórico de Entradas</h2>
             <button class="btn-dark" onclick="exportarCSV()">⬇️ Exportar CSV</button>
           </div>
           <div class="filtros">
             <select id="ft-tipo" onchange="renderCheckin()">
               <option value="">Todos os tipos</option>
-              <option value="Joia">Joia</option>
-              <option value="Bijuteria">Bijuteria</option>
-              <option value="Semijoia">Semijoia</option>
-              <option value="Acessório">Acessório</option>
-              <option value="Outro">Outro</option>
+              <option value="Joia">Joia</option><option value="Bijuteria">Bijuteria</option>
+              <option value="Semijoia">Semijoia</option><option value="Acessório">Acessório</option><option value="Outro">Outro</option>
             </select>
-            <select id="ft-acabamento" onchange="renderCheckin()">
+            <select id="ft-acab" onchange="renderCheckin()">
               <option value="">Todos os acabamentos</option>
+              <option value="Geral">📦 Geral</option>
               <option value="Prata">🔘 Prata</option>
               <option value="Dourado">✨ Dourado</option>
               <option value="Rose Gold">🌸 Rose Gold</option>
-              <option value="Geral">📦 Geral</option>
             </select>
-            <input type="text" id="ft-busca" placeholder="🔍 Nome ou código..."
-              oninput="renderCheckin()" style="flex:1;min-width:130px;"/>
+            <input type="text" id="ft-busca" placeholder="🔍 Nome ou código..." oninput="renderCheckin()" style="flex:1;min-width:130px;"/>
           </div>
           <div class="hist-wrap" id="hist-checkin"></div>
         </div>
@@ -495,87 +296,68 @@
     </div>
   </div>
 
-  <!-- ABA ESTOQUE -->
+  <!-- ESTOQUE -->
   <div class="painel" id="tab-estoque">
     <div class="stats-grid" id="stats-estoque"></div>
     <div id="alertas-estoque"></div>
     <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;
-        margin-bottom:16px;flex-wrap:wrap;gap:8px;">
-        <h2 style="margin:0;padding:0;border:none;font-size:15px;
-          font-weight:700;color:var(--brown);">🗄️ Posição de Estoque</h2>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+        <h2 style="margin:0;padding:0;border:none;font-size:15px;font-weight:700;color:var(--brown);">🗄️ Posição de Estoque</h2>
         <button class="btn-dark" onclick="exportarCSV()">⬇️ Exportar CSV</button>
       </div>
       <div class="filtros">
         <select id="fe-tipo" onchange="renderEstoque()">
           <option value="">Todos os tipos</option>
-          <option value="Joia">Joia</option>
-          <option value="Bijuteria">Bijuteria</option>
-          <option value="Semijoia">Semijoia</option>
-          <option value="Acessório">Acessório</option>
-          <option value="Outro">Outro</option>
+          <option value="Joia">Joia</option><option value="Bijuteria">Bijuteria</option>
+          <option value="Semijoia">Semijoia</option><option value="Acessório">Acessório</option><option value="Outro">Outro</option>
         </select>
-        <select id="fe-acabamento" onchange="renderEstoque()">
+        <select id="fe-acab" onchange="renderEstoque()">
           <option value="">Todos os acabamentos</option>
+          <option value="Geral">📦 Geral</option>
           <option value="Prata">🔘 Prata</option>
           <option value="Dourado">✨ Dourado</option>
           <option value="Rose Gold">🌸 Rose Gold</option>
-          <option value="Geral">📦 Geral</option>
         </select>
         <select id="fe-alerta" onchange="renderEstoque()">
           <option value="">Todos</option>
           <option value="low">⚠️ Estoque baixo</option>
           <option value="ok">✅ Estoque ok</option>
         </select>
-        <input type="text" id="fe-busca" placeholder="🔍 Nome ou código..."
-          oninput="renderEstoque()" style="flex:1;min-width:130px;"/>
+        <input type="text" id="fe-busca" placeholder="🔍 Nome ou código..." oninput="renderEstoque()" style="flex:1;min-width:130px;"/>
       </div>
       <div class="hist-wrap" id="hist-estoque"></div>
     </div>
   </div>
 
-  <!-- ABA RELATÓRIO -->
+  <!-- RELATÓRIO -->
   <div class="painel" id="tab-relatorio">
     <div class="periodo-form">
-      <div class="pf">
-        <label>Data Início</label>
-        <input type="date" id="r-inicio"/>
-      </div>
-      <div class="pf">
-        <label>Data Fim</label>
-        <input type="date" id="r-fim"/>
-      </div>
-      <div class="pf">
-        <label>Tipo</label>
+      <div class="pf"><label>Data Início</label><input type="date" id="r-inicio"/></div>
+      <div class="pf"><label>Data Fim</label><input type="date" id="r-fim"/></div>
+      <div class="pf"><label>Tipo</label>
         <select id="r-tipo">
           <option value="">Todos</option>
-          <option value="Joia">Joia</option>
-          <option value="Bijuteria">Bijuteria</option>
-          <option value="Semijoia">Semijoia</option>
-          <option value="Acessório">Acessório</option>
-          <option value="Outro">Outro</option>
+          <option value="Joia">Joia</option><option value="Bijuteria">Bijuteria</option>
+          <option value="Semijoia">Semijoia</option><option value="Acessório">Acessório</option><option value="Outro">Outro</option>
         </select>
       </div>
-      <div class="pf">
-        <label>Acabamento</label>
-        <select id="r-acabamento">
+      <div class="pf"><label>Acabamento</label>
+        <select id="r-acab">
           <option value="">Todos</option>
+          <option value="Geral">📦 Geral</option>
           <option value="Prata">🔘 Prata</option>
           <option value="Dourado">✨ Dourado</option>
           <option value="Rose Gold">🌸 Rose Gold</option>
-          <option value="Geral">📦 Geral</option>
         </select>
       </div>
-      <div class="pf">
-        <label>Usuário</label>
+      <div class="pf"><label>Usuário</label>
         <select id="r-usuario">
           <option value="">Todos</option>
           <option value="Administrador">Administrador</option>
           <option value="Hellen">Hellen</option>
         </select>
       </div>
-      <button class="btn btn-primary" style="width:auto;padding:9px 20px;"
-        onclick="gerarRelatorio()">🔍 Gerar</button>
+      <button class="btn btn-primary" style="width:auto;padding:9px 20px;" onclick="gerarRelatorio()">🔍 Gerar</button>
       <button class="btn-dark" onclick="exportarRelCSV()">⬇️ CSV</button>
     </div>
     <div class="rel-grid" id="rel-cards"></div>
@@ -583,48 +365,34 @@
       <h2>Detalhamento do Período</h2>
       <div style="overflow-x:auto;">
         <table class="rel-table">
-          <thead>
-            <tr>
-              <th>Data</th><th>Código</th><th>Produto</th><th>Tipo</th>
-              <th>Acabamento</th><th>Gôndola</th><th>Estoque</th><th>Total</th><th>Por</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Data</th><th>Código</th><th>Produto</th><th>Tipo</th><th>Acabamento</th><th>Gôndola</th><th>Estoque</th><th>Total</th><th>Por</th></tr></thead>
           <tbody id="rel-tbody"></tbody>
         </table>
       </div>
     </div>
   </div>
 
-  <!-- ABA ADMIN -->
+  <!-- ADMIN -->
   <div class="painel" id="tab-admin">
     <div class="card">
-      <h2>⚙️ Painel Administrativo — Edição de Registros</h2>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:16px;">
-        Apenas o administrador pode editar ou excluir registros do histórico.
-      </p>
-      <div class="filtros">
-        <input type="text" id="fa-busca" placeholder="🔍 Buscar produto..."
-          oninput="renderAdmin()" style="flex:1;"/>
-      </div>
+      <h2>⚙️ Painel Administrativo</h2>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:16px;">Apenas o administrador pode editar ou excluir registros.</p>
+      <div class="filtros"><input type="text" id="fa-busca" placeholder="🔍 Buscar produto..." oninput="renderAdmin()" style="flex:1;"/></div>
       <div class="hist-wrap" id="hist-admin"></div>
     </div>
   </div>
 </div>
 
-<!-- MODAL REPOR GÔNDOLA -->
+<!-- MODAL REPOR -->
 <div class="modal-overlay" id="repor-modal">
   <div class="repor-box">
     <h3>🔄 Repor Gôndola</h3>
     <p>Mover unidades do estoque para a gôndola</p>
     <div class="repor-info" id="repor-info">—</div>
-
-    <div class="repor-variacao-sel">
-      <label>Selecione o acabamento a repor</label>
-      <div class="var-sel-group" id="repor-var-group"></div>
-      <input type="hidden" id="repor-var-sel" value=""/>
-    </div>
-
-    <input type="number" id="repor-qtd" min="1" placeholder="Quantidade a mover"/>
+    <span class="var-sel-label">Selecione o acabamento a repor</span>
+    <div class="var-sel-group" id="repor-var-group"></div>
+    <input type="hidden" id="repor-var-sel" value=""/>
+    <input type="number" id="repor-qtd" min="1" placeholder="Quantidade"/>
     <div class="repor-btns">
       <button class="repor-cancel" onclick="fecharRepor()">Cancelar</button>
       <button class="repor-ok" onclick="confirmarRepor()">✅ Confirmar</button>
@@ -637,75 +405,48 @@
   <div class="edit-box">
     <h3>✏️ Editar Registro</h3>
     <input type="hidden" id="edit-id"/>
-    <div class="field">
-      <label>Nome / Descrição</label>
-      <input type="text" id="edit-nome"/>
-    </div>
+    <div class="field"><label>Nome / Descrição</label><input type="text" id="edit-nome"/></div>
     <div class="row2">
-      <div class="field">
-        <label>Código / Referência</label>
-        <input type="text" id="edit-ref"/>
-      </div>
-      <div class="field">
-        <label>Tipo</label>
+      <div class="field"><label>Código</label><input type="text" id="edit-ref"/></div>
+      <div class="field"><label>Tipo</label>
         <select id="edit-tipo">
-          <option value="Joia">Joia</option>
-          <option value="Bijuteria">Bijuteria</option>
-          <option value="Semijoia">Semijoia</option>
-          <option value="Acessório">Acessório</option>
-          <option value="Outro">Outro</option>
+          <option value="Joia">Joia</option><option value="Bijuteria">Bijuteria</option>
+          <option value="Semijoia">Semijoia</option><option value="Acessório">Acessório</option><option value="Outro">Outro</option>
         </select>
       </div>
     </div>
-    <div class="field">
-      <label>Fornecedor</label>
-      <input type="text" id="edit-forn"/>
-    </div>
+    <div class="field"><label>Fornecedor</label><input type="text" id="edit-forn"/></div>
     <div id="edit-qtd-area"></div>
-    <div class="field">
-      <label>Alertar abaixo de (total)</label>
-      <input type="number" id="edit-alerta" min="0"/>
-    </div>
-    <div class="field">
-      <label>Observações</label>
-      <textarea id="edit-obs"></textarea>
-    </div>
+    <div class="field"><label>Alertar abaixo de</label><input type="number" id="edit-alerta" min="0"/></div>
+    <div class="field"><label>Observações</label><textarea id="edit-obs"></textarea></div>
     <div style="display:flex;gap:10px;margin-top:8px;">
-      <button class="btn" style="flex:1;background:#f0f0f0;color:#666;border:none;cursor:pointer;"
-        onclick="fecharEdit()">Cancelar</button>
+      <button class="btn" style="flex:1;background:#f0f0f0;color:#666;border:none;cursor:pointer;" onclick="fecharEdit()">Cancelar</button>
       <button class="btn btn-primary" style="flex:2;" onclick="salvarEdit()">💾 Salvar</button>
     </div>
   </div>
 </div>
 
 <div id="toast"></div>
-
 <script>
-// ══════════ USUÁRIOS ══════════
-const USERS = {
-  admin:  { senha:'geor2024',  nome:'Administrador', isAdmin:true  },
-  hellen: { senha:'hellen123', nome:'Hellen',        isAdmin:false }
+const USERS={
+  admin:{senha:'geor2024',nome:'Administrador',isAdmin:true},
+  hellen:{senha:'hellen123',nome:'Hellen',isAdmin:false}
 };
-let USER     = null;
-let reporId  = null;
-let relFiltrado = [];
-let modoQtd  = 'geral'; // 'geral' | 'variacao'
+let USER=null,reporId=null,relFiltrado=[],modoAtual='geral';
 
-// ══════════ LOGIN ══════════
 function login(){
-  const u   = document.getElementById('l-user').value.trim().toLowerCase();
-  const s   = document.getElementById('l-pass').value;
-  const err = document.getElementById('login-error');
-  if(USERS[u] && USERS[u].senha === s){
-    USER = {login:u,...USERS[u]};
+  const u=document.getElementById('l-user').value.trim().toLowerCase();
+  const s=document.getElementById('l-pass').value;
+  const err=document.getElementById('login-error');
+  if(USERS[u]&&USERS[u].senha===s){
+    USER={login:u,...USERS[u]};
     err.style.display='none';
     document.getElementById('login-screen').style.display='none';
     document.getElementById('sistema').style.display='block';
     document.getElementById('user-badge').innerHTML=
       `👤 ${USER.nome}${USER.isAdmin?'<span class="admin-tag">ADMIN</span>':''}`;
-    if(USER.isAdmin)
-      document.querySelectorAll('.admin-tab').forEach(el=>el.style.display='');
-    const hoje=new Date(), ini=new Date(hoje.getFullYear(),hoje.getMonth(),1);
+    if(USER.isAdmin) document.querySelectorAll('.admin-tab').forEach(el=>el.style.display='');
+    const hoje=new Date(),ini=new Date(hoje.getFullYear(),hoje.getMonth(),1);
     document.getElementById('r-inicio').value=ini.toISOString().slice(0,10);
     document.getElementById('r-fim').value=hoje.toISOString().slice(0,10);
     atualizar();
@@ -720,198 +461,124 @@ function logout(){
   document.getElementById('l-pass').value='';
 }
 
-// ══════════ MODO QUANTIDADE ══════════
-function setModoQtd(modo){
-  modoQtd = modo;
-  document.getElementById('btn-modo-geral').classList.toggle('ativo', modo==='geral');
-  document.getElementById('btn-modo-variacao').classList.toggle('ativo', modo==='variacao');
-  document.getElementById('bloco-geral').style.display    = modo==='geral'    ? 'block' : 'none';
-  document.getElementById('bloco-variacao').style.display = modo==='variacao' ? 'block' : 'none';
+// MODO QUANTIDADE
+function setModo(modo){
+  modoAtual=modo;
+  document.getElementById('btn-modo-geral').classList.toggle('ativo',modo==='geral');
+  document.getElementById('btn-modo-var').classList.toggle('ativo',modo==='variacao');
+  document.getElementById('bloco-geral').style.display=modo==='geral'?'block':'none';
+  document.getElementById('bloco-variacao').style.display=modo==='variacao'?'block':'none';
 }
 
-function atualizarPreviewGeral(){
-  const g = parseInt(document.getElementById('f-gondola').value)||0;
-  const e = parseInt(document.getElementById('f-estoque').value)||0;
-  const el = document.getElementById('preview-geral');
-  if(g===0 && e===0){ el.style.display='none'; return; }
+function prevGeral(){
+  const g=parseInt(document.getElementById('f-gondola').value)||0;
+  const e=parseInt(document.getElementById('f-estoque').value)||0;
+  const el=document.getElementById('prev-geral');
+  if(g===0&&e===0){el.style.display='none';return;}
   el.style.display='block';
-  el.textContent = `∑ Total: ${g+e} un. | 🛒 Gôndola: ${g} | 📦 Estoque: ${e}`;
+  el.textContent=`∑ Total: ${g+e} un. | 🛒 Gôndola: ${g} | 📦 Estoque: ${e}`;
 }
 
-function atualizarPreviewVariacao(){
-  const pg=parseInt(document.getElementById('vp-gondola').value)||0;
-  const pe=parseInt(document.getElementById('vp-estoque').value)||0;
-  const dg=parseInt(document.getElementById('vd-gondola').value)||0;
-  const de=parseInt(document.getElementById('vd-estoque').value)||0;
-  const rg=parseInt(document.getElementById('vr-gondola').value)||0;
-  const re=parseInt(document.getElementById('vr-estoque').value)||0;
-  const totG=pg+dg+rg, totE=pe+de+re;
-  document.getElementById('preview-variacao').textContent =
-    `∑ Total geral: ${totG+totE} un. | 🛒 Gôndola: ${totG} | 📦 Estoque: ${totE}`;
+function prevVar(){
+  const pg=n('vp-g'),pe=n('vp-e'),dg=n('vd-g'),de=n('vd-e'),rg=n('vr-g'),re=n('vr-e');
+  const tG=pg+dg+rg,tE=pe+de+re;
+  document.getElementById('prev-var').textContent=
+    `∑ Total: ${tG+tE} un. | 🛒 Gôndola: ${tG} | 📦 Estoque: ${tE}`;
 }
 
-// ══════════ ABAS ══════════
+function n(id){return parseInt(document.getElementById(id).value)||0;}
+
+// ABAS
 function aba(id){
   document.querySelectorAll('.tab').forEach((t,i)=>{
     t.classList.toggle('active',['checkin','estoque','relatorio','admin'][i]===id);
   });
   document.querySelectorAll('.painel').forEach(p=>p.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
-  if(id==='estoque')   renderEstoque();
+  if(id==='estoque') renderEstoque();
   if(id==='relatorio') gerarRelatorio();
-  if(id==='admin')     renderAdmin();
+  if(id==='admin') renderAdmin();
 }
 
-// ══════════ DADOS ══════════
-function getData(){ return JSON.parse(localStorage.getItem('geor_v3')||'[]'); }
-function setData(d){ localStorage.setItem('geor_v3', JSON.stringify(d)); }
+// DADOS
+function getData(){return JSON.parse(localStorage.getItem('geor_v3')||'[]');}
+function setData(d){localStorage.setItem('geor_v3',JSON.stringify(d));}
 
-// ══════════ FOTO ══════════
+// FOTO
 let fotoB64=null;
 document.getElementById('foto-input').addEventListener('change',function(e){
-  const f=e.target.files[0]; if(!f) return;
+  const f=e.target.files[0];if(!f)return;
   const r=new FileReader();
-  r.onload=ev=>{
-    fotoB64=ev.target.result;
-    const img=document.getElementById('preview-img');
-    img.src=fotoB64; img.style.display='block';
-  };
+  r.onload=ev=>{fotoB64=ev.target.result;const img=document.getElementById('preview-img');img.src=fotoB64;img.style.display='block';};
   r.readAsDataURL(f);
 });
 
-// ══════════ HELPERS DE QUANTIDADE ══════════
-/*
-  Estrutura salva:
-  - modo 'geral':
-      gondola, estoque, acabamento:'Geral', variacoes: null
-  - modo 'variacao':
-      gondola (soma), estoque (soma), acabamento:'Variado',
-      variacoes: {
-        Prata:    { gondola, estoque },
-        Dourado:  { gondola, estoque },
-        RoseGold: { gondola, estoque }
-      }
-*/
-function getTotaisVariacao(){
-  return {
-    gondola: (parseInt(document.getElementById('vp-gondola').value)||0)+
-             (parseInt(document.getElementById('vd-gondola').value)||0)+
-             (parseInt(document.getElementById('vr-gondola').value)||0),
-    estoque: (parseInt(document.getElementById('vp-estoque').value)||0)+
-             (parseInt(document.getElementById('vd-estoque').value)||0)+
-             (parseInt(document.getElementById('vr-estoque').value)||0)
-  };
-}
-
-function acabamentoLabel(r){
-  if(!r.variacoes) return r.acabamento || 'Geral';
-  return 'Variado (🔘✨🌸)';
-}
-
-function iconeAcabamento(chave){
-  if(chave==='Prata')   return '🔘';
-  if(chave==='Dourado') return '✨';
-  if(chave==='RoseGold')return '🌸';
-  return '📦';
-}
-
-function pillClassAcabamento(chave){
-  if(chave==='Prata')   return 'prata';
-  if(chave==='Dourado') return 'dourado';
-  if(chave==='RoseGold')return 'rosegold';
-  return '';
-}
-
-// ══════════ REGISTRAR ══════════
+// REGISTRAR
 function registrar(){
-  const nome  = document.getElementById('f-nome').value.trim();
-  const ref   = document.getElementById('f-ref').value.trim();
-  const tipo  = document.getElementById('f-tipo').value;
-  const forn  = document.getElementById('f-forn').value.trim();
-  const obs   = document.getElementById('f-obs').value.trim();
-
+  const nome=document.getElementById('f-nome').value.trim();
+  const ref=document.getElementById('f-ref').value.trim();
+  const tipo=document.getElementById('f-tipo').value;
+  const forn=document.getElementById('f-forn').value.trim();
+  const obs=document.getElementById('f-obs').value.trim();
   if(!nome) return toast('⚠️ Informe o nome do produto.');
   if(!tipo) return toast('⚠️ Selecione o tipo.');
 
-  let gondola, estoque, alerta, acabamento, variacoes=null;
+  let gondola,estoque,alerta,acabamento,variacoes=null;
 
-  if(modoQtd==='geral'){
-    gondola   = parseInt(document.getElementById('f-gondola').value)||0;
-    estoque   = parseInt(document.getElementById('f-estoque').value)||0;
-    alerta    = parseInt(document.getElementById('f-alerta').value)||5;
-    acabamento= 'Geral';
-    if(gondola===0 && estoque===0) return toast('⚠️ Informe ao menos uma quantidade.');
+  if(modoAtual==='geral'){
+    gondola=n('f-gondola');estoque=n('f-estoque');alerta=n('f-alerta')||5;
+    acabamento='Geral';
+    if(gondola===0&&estoque===0) return toast('⚠️ Informe ao menos uma quantidade.');
   } else {
-    const vp_g = parseInt(document.getElementById('vp-gondola').value)||0;
-    const vp_e = parseInt(document.getElementById('vp-estoque').value)||0;
-    const vd_g = parseInt(document.getElementById('vd-gondola').value)||0;
-    const vd_e = parseInt(document.getElementById('vd-estoque').value)||0;
-    const vr_g = parseInt(document.getElementById('vr-gondola').value)||0;
-    const vr_e = parseInt(document.getElementById('vr-estoque').value)||0;
-    gondola    = vp_g+vd_g+vr_g;
-    estoque    = vp_e+vd_e+vr_e;
-    alerta     = parseInt(document.getElementById('f-alerta-var').value)||5;
-    acabamento = 'Variado';
-    if(gondola===0 && estoque===0) return toast('⚠️ Informe ao menos uma quantidade em algum acabamento.');
-    variacoes  = {
-      Prata:    { gondola:vp_g, estoque:vp_e },
-      Dourado:  { gondola:vd_g, estoque:vd_e },
-      RoseGold: { gondola:vr_g, estoque:vr_e }
-    };
+    const pg=n('vp-g'),pe=n('vp-e'),dg=n('vd-g'),de=n('vd-e'),rg=n('vr-g'),re=n('vr-e');
+    gondola=pg+dg+rg;estoque=pe+de+re;alerta=n('f-alerta-v')||5;
+    acabamento='Variado';
+    if(gondola===0&&estoque===0) return toast('⚠️ Informe ao menos uma quantidade.');
+    variacoes={Prata:{gondola:pg,estoque:pe},Dourado:{gondola:dg,estoque:de},RoseGold:{gondola:rg,estoque:re}};
   }
 
-  const reg = {
-    id: Date.now(),
-    data: new Date().toISOString(),
-    nome, ref, tipo, forn, obs,
-    gondola, estoque, alerta,
-    acabamento, variacoes,
-    foto: fotoB64||null,
-    por: USER.nome,
-    movimentacoes:[{
-      data: new Date().toISOString(),
-      acao:'Check-in inicial',
-      gondola, estoque, variacoes,
-      por: USER.nome
-    }]
+  const reg={
+    id:Date.now(),data:new Date().toISOString(),
+    nome,ref,tipo,forn,obs,gondola,estoque,alerta,acabamento,variacoes,
+    foto:fotoB64||null,por:USER.nome,
+    movimentacoes:[{data:new Date().toISOString(),acao:'Check-in inicial',gondola,estoque,variacoes,por:USER.nome}]
   };
 
-  const lista=getData(); lista.unshift(reg); setData(lista);
-  limparForm(); atualizar();
+  const lista=getData();lista.unshift(reg);setData(lista);
+  limparForm();atualizar();
   toast('✅ Produto registrado com sucesso!');
 }
 
 function limparForm(){
   ['f-nome','f-ref','f-forn','f-obs','f-gondola','f-estoque','f-alerta',
-   'vp-gondola','vp-estoque','vd-gondola','vd-estoque','vr-gondola','vr-estoque','f-alerta-var']
-    .forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+   'vp-g','vp-e','vd-g','vd-e','vr-g','vr-e','f-alerta-v']
+    .forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('f-tipo').value='';
   document.getElementById('preview-img').style.display='none';
   document.getElementById('foto-input').value='';
-  document.getElementById('preview-geral').style.display='none';
-  document.getElementById('preview-variacao').textContent='';
+  document.getElementById('prev-geral').style.display='none';
+  document.getElementById('prev-var').textContent='';
   fotoB64=null;
-  setModoQtd('geral');
+  setModo('geral');
 }
 
-// ══════════ REPOR GÔNDOLA ══════════
+// REPOR
 function abrirRepor(id){
-  const r=getData().find(x=>x.id===id); if(!r) return;
+  const r=getData().find(x=>x.id===id);if(!r)return;
   reporId=id;
-
-  // Monta info
-  let infoHtml=`<strong>${r.nome}</strong><br>`;
+  let info=`<strong>${r.nome}</strong><br>`;
   if(r.variacoes){
     Object.entries(r.variacoes).forEach(([k,v])=>{
-      if(v.gondola>0||v.estoque>0)
-        infoHtml+=`${iconeAcabamento(k)} ${k==='RoseGold'?'Rose Gold':k}: 🛒 ${v.gondola} | 📦 ${v.estoque}<br>`;
+      if(v.gondola>0||v.estoque>0){
+        const nome=k==='RoseGold'?'Rose Gold':k;
+        info+=`${icone(k)} ${nome}: 🛒${v.gondola} | 📦${v.estoque}<br>`;
+      }
     });
   } else {
-    infoHtml+=`🛒 Gôndola: <b>${r.gondola}</b> &nbsp; 📦 Estoque: <b>${r.estoque}</b>`;
+    info+=`🛒 Gôndola: <b>${r.gondola}</b> &nbsp; 📦 Estoque: <b>${r.estoque}</b>`;
   }
-  document.getElementById('repor-info').innerHTML=infoHtml;
+  document.getElementById('repor-info').innerHTML=info;
 
-  // Monta botões de seleção
   const grp=document.getElementById('repor-var-group');
   grp.innerHTML='';
   document.getElementById('repor-var-sel').value='';
@@ -919,20 +586,27 @@ function abrirRepor(id){
   if(r.variacoes){
     Object.entries(r.variacoes).forEach(([k,v])=>{
       const nome=k==='RoseGold'?'Rose Gold':k;
-      const cls=k==='RoseGold'?'rosegold':k.toLowerCase();
       const btn=document.createElement('button');
       btn.type='button';
-      btn.className=`var-sel-btn ${cls}`;
-      btn.innerHTML=`${iconeAcabamento(k)} ${nome}<br><small>📦 ${v.estoque} disp.</small>`;
-      btn.onclick=()=>selecionarVarRepor(k, btn);
+      btn.className='var-sel-btn';
+      btn.innerHTML=`${icone(k)} ${nome}<br><small>📦${v.estoque} disp.</small>`;
+      btn.onclick=()=>{
+        document.querySelectorAll('#repor-var-group .var-sel-btn').forEach(b=>b.classList.remove('ativo'));
+        btn.classList.add('ativo');
+        document.getElementById('repor-var-sel').value=k;
+      };
       grp.appendChild(btn);
     });
   } else {
     const btn=document.createElement('button');
     btn.type='button';
-    btn.className='var-sel-btn geral ativo';
-    btn.innerHTML=`📦 Geral<br><small>📦 ${r.estoque} disp.</small>`;
-    btn.onclick=()=>selecionarVarRepor('Geral', btn);
+    btn.className='var-sel-btn ativo';
+    btn.innerHTML=`📦 Geral<br><small>📦${r.estoque} disp.</small>`;
+    btn.onclick=()=>{
+      document.querySelectorAll('#repor-var-group .var-sel-btn').forEach(b=>b.classList.remove('ativo'));
+      btn.classList.add('ativo');
+      document.getElementById('repor-var-sel').value='Geral';
+    };
     document.getElementById('repor-var-sel').value='Geral';
     grp.appendChild(btn);
   }
@@ -941,39 +615,27 @@ function abrirRepor(id){
   document.getElementById('repor-modal').classList.add('open');
 }
 
-function selecionarVarRepor(chave, btn){
-  document.querySelectorAll('#repor-var-group .var-sel-btn')
-    .forEach(b=>b.classList.remove('ativo'));
-  btn.classList.add('ativo');
-  document.getElementById('repor-var-sel').value=chave;
-}
-
-function fecharRepor(){
-  document.getElementById('repor-modal').classList.remove('open');
-  reporId=null;
-}
+function fecharRepor(){document.getElementById('repor-modal').classList.remove('open');reporId=null;}
 
 function confirmarRepor(){
   const qtd=parseInt(document.getElementById('repor-qtd').value)||0;
   const varSel=document.getElementById('repor-var-sel').value;
-  if(qtd<=0)    return toast('⚠️ Informe uma quantidade válida.');
-  if(!varSel)   return toast('⚠️ Selecione o acabamento a repor.');
-
+  if(qtd<=0) return toast('⚠️ Informe uma quantidade válida.');
+  if(!varSel) return toast('⚠️ Selecione o acabamento.');
   const lista=getData();
-  const idx=lista.findIndex(x=>x.id===reporId);
-  if(idx<0) return;
+  const idx=lista.findIndex(x=>x.id===reporId);if(idx<0)return;
   const r=lista[idx];
 
-  if(r.variacoes && varSel!=='Geral'){
+  if(r.variacoes&&varSel!=='Geral'){
     const v=r.variacoes[varSel];
     if(!v) return toast('⚠️ Variação não encontrada.');
-    if(qtd>v.estoque) return toast(`⚠️ Estoque insuficiente para ${varSel}! Disponível: ${v.estoque}`);
-    v.gondola+=qtd; v.estoque-=qtd;
+    if(qtd>v.estoque) return toast(`⚠️ Estoque insuficiente! Disponível: ${v.estoque}`);
+    v.gondola+=qtd;v.estoque-=qtd;
     r.gondola=Object.values(r.variacoes).reduce((s,x)=>s+x.gondola,0);
     r.estoque=Object.values(r.variacoes).reduce((s,x)=>s+x.estoque,0);
   } else {
     if(qtd>r.estoque) return toast(`⚠️ Estoque insuficiente! Disponível: ${r.estoque}`);
-    r.gondola+=qtd; r.estoque-=qtd;
+    r.gondola+=qtd;r.estoque-=qtd;
   }
 
   r.movimentacoes=r.movimentacoes||[];
@@ -981,12 +643,118 @@ function confirmarRepor(){
   r.movimentacoes.unshift({
     data:new Date().toISOString(),
     acao:`Reposição: ${qtd} un. → Gôndola (${nomeVar})`,
-    gondola:r.gondola, estoque:r.estoque,
-    variacoes: r.variacoes ? JSON.parse(JSON.stringify(r.variacoes)) : null,
+    gondola:r.gondola,estoque:r.estoque,
+    variacoes:r.variacoes?JSON.parse(JSON.stringify(r.variacoes)):null,
     por:USER.nome
   });
-
-  lista[idx]=r; setData(lista);
-  fecharRepor(); atualizar();
+  lista[idx]=r;setData(lista);
+  fecharRepor();atualizar();
   toast(`✅ ${qtd} un. (${nomeVar}) movidas para a gôndola!`);
+}
+
+// EDITAR
+function abrirEdit(id){
+  if(!USER.isAdmin) return toast('🚫 Apenas o administrador pode editar.');
+  const r=getData().find(x=>x.id===id);if(!r)return;
+  document.getElementById('edit-id').value=id;
+  document.getElementById('edit-nome').value=r.nome||'';
+  document.getElementById('edit-ref').value=r.ref||'';
+  document.getElementById('edit-tipo').value=r.tipo||'';
+  document.getElementById('edit-forn').value=r.forn||'';
+  document.getElementById('edit-alerta').value=r.alerta||5;
+  document.getElementById('edit-obs').value=r.obs||'';
+
+  const area=document.getElementById('edit-qtd-area');
+  if(r.variacoes){
+    area.innerHTML=`
+      <div class="var-row"><div class="vt">🔘 Prata</div><div class="vc">
+        <div><label>Gôndola</label><input type="number" id="ep-g" min="0" value="${r.variacoes.Prata.gondola}"/></div>
+        <div><label>Estoque</label><input type="number" id="ep-e" min="0" value="${r.variacoes.Prata.estoque}"/></div>
+      </div></div>
+      <div class="var-row"><div class="vt">✨ Dourado</div><div class="vc">
+        <div><label>Gôndola</label><input type="number" id="ed-g" min="0" value="${r.variacoes.Dourado.gondola}"/></div>
+        <div><label>Estoque</label><input type="number" id="ed-e" min="0" value="${r.variacoes.Dourado.estoque}"/></div>
+      </div></div>
+      <div class="var-row"><div class="vt">🌸 Rose Gold</div><div class="vc">
+        <div><label>Gôndola</label><input type="number" id="er-g" min="0" value="${r.variacoes.RoseGold.gondola}"/></div>
+        <div><label>Estoque</label><input type="number" id="er-e" min="0" value="${r.variacoes.RoseGold.estoque}"/></div>
+      </div></div>`;
+  } else {
+    area.innerHTML=`
+      <div class="row2">
+        <div class="field"><label>Gôndola</label><input type="number" id="eg-g" min="0" value="${r.gondola}"/></div>
+        <div class="field"><label>Estoque</label><input type="number" id="eg-e" min="0" value="${r.estoque}"/></div>
+      </div>`;
+  }
+  document.getElementById('edit-modal').classList.add('open');
+}
+
+function fecharEdit(){document.getElementById('edit-modal').classList.remove('open');}
+
+function salvarEdit(){
+  const id=parseInt(document.getElementById('edit-id').value);
+  const lista=getData();
+  const idx=lista.findIndex(x=>x.id===id);if(idx<0)return;
+  const r=lista[idx];
+  r.nome=document.getElementById('edit-nome').value.trim();
+  r.ref=document.getElementById('edit-ref').value.trim();
+  r.tipo=document.getElementById('edit-tipo').value;
+  r.forn=document.getElementById('edit-forn').value.trim();
+  r.alerta=parseInt(document.getElementById('edit-alerta').value)||5;
+  r.obs=document.getElementById('edit-obs').value.trim();
+
+  if(r.variacoes){
+    r.variacoes.Prata.gondola=parseInt(document.getElementById('ep-g').value)||0;
+    r.variacoes.Prata.estoque=parseInt(document.getElementById('ep-e').value)||0;
+    r.variacoes.Dourado.gondola=parseInt(document.getElementById('ed-g').value)||0;
+    r.variacoes.Dourado.estoque=parseInt(document.getElementById('ed-e').value)||0;
+    r.variacoes.RoseGold.gondola=parseInt(document.getElementById('er-g').value)||0;
+    r.variacoes.RoseGold.estoque=parseInt(document.getElementById('er-e').value)||0;
+    r.gondola=Object.values(r.variacoes).reduce((s,x)=>s+x.gondola,0);
+    r.estoque=Object.values(r.variacoes).reduce((s,x)=>s+x.estoque,0);
+  } else {
+    r.gondola=parseInt(document.getElementById('eg-g').value)||0;
+    r.estoque=parseInt(document.getElementById('eg-e').value)||0;
+  }
+
+  r.movimentacoes=r.movimentacoes||[];
+  r.movimentacoes.unshift({data:new Date().toISOString(),acao:'Edição manual (Admin)',gondola:r.gondola,estoque:r.estoque,por:USER.nome});
+  lista[idx]=r;setData(lista);
+  fecharEdit();atualizar();
+  toast('💾 Registro atualizado!');
+}
+
+function excluir(id){
+  if(!USER.isAdmin) return toast('🚫 Apenas o administrador pode excluir.');
+  if(!confirm('Excluir este registro permanentemente?')) return;
+  setData(getData().filter(r=>r.id!==id));
+  atualizar();toast('🗑️ Registro excluído.');
+}
+
+// HELPERS
+function isLow(r){return(r.gondola+r.estoque)<=(r.alerta||5);}
+function fmt(iso){return new Date(iso).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});}
+function fmtC(iso){return new Date(iso).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});}
+function icone(k){if(k==='Prata')return'🔘';if(k==='Dourado')return'✨';if(k==='RoseGold')return'🌸';return'📦';}
+function pillCls(k){if(k==='Prata')return'prata';if(k==='Dourado')return'dourado';if(k==='RoseGold')return'rosegold';return'';}
+
+function buildAlertas(lista){
+  const low=lista.filter(r=>isLow(r));
+  if(!low.length)return'';
+  return`<div class="alerta-estoque"><strong>⚠️ ${low.length} produto(s) com estoque baixo</strong>
+    ${low.map(r=>`<div class="alerta-item">${r.nome}${r.ref?` (${r.ref})`:''} — 🛒${r.gondola} | 📦${r.estoque}</div>`).join('')}</div>`;
+}
+
+function buildStats(lista,id){
+  const t=lista.length,g=lista.reduce((s,r)=>s+r.gondola,0),e=lista.reduce((s,r)=>s+r.estoque,0),l=lista.filter(r=>isLow(r)).length;
+  document.getElementById(id).innerHTML=`
+    <div class="stat-box"><div class="num">${t}</div><div class="lbl">Produtos</div></div>
+    <div class="stat-box"><div class="num">${g}</div><div class="lbl">Na Gôndola</div></div>
+    <div class="stat-box"><div class="num">${e}</div><div class="lbl">No Estoque</div></div>
+    <div class="stat-box ${l>0?'warn':''}"><div class="num">${l}</div><div class="lbl">Alerta Baixo</div></div>`;
+}
+
+function varDetalhe(r){
+  if(!r.variacoes)return'';
+  return`<div class="var-detalhe
 
