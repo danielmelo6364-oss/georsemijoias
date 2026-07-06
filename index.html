@@ -757,4 +757,620 @@ function buildStats(lista,id){
 function varDetalhe(r){
   if(!r.variacoes)return'';
   return`<div class="var-detalhe
+  <!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Géor</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--r:#c9748a;--rl:#f7e8ec;--rd:#9e4f63;--g:#b8860b;--dk:#1a1a2e;--br:#4a3728;--tx:#2d2d2d;--mt:#9e8575;--bg:#fdf5f7;}
+body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;}
+.ls{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a1a2e,#9e4f63,#c9748a);}
+.lb{background:#fff;border-radius:24px;padding:44px 38px;width:100%;max-width:390px;box-shadow:0 24px 64px rgba(0,0,0,.25);text-align:center;}
+.gl{font-size:38px;font-weight:900;letter-spacing:4px;background:linear-gradient(135deg,var(--rd),var(--g));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;}
+.sub{font-size:12px;color:var(--mt);margin-bottom:28px;letter-spacing:1px;}
+.lf{margin-bottom:16px;text-align:left;}
+.lf label{display:block;font-size:11px;font-weight:700;color:var(--rd);margin-bottom:5px;text-transform:uppercase;}
+.lf input{width:100%;padding:11px 14px;border:1.5px solid #e0d0d5;border-radius:10px;font-size:14px;font-family:inherit;background:var(--bg);}
+.lf input:focus{outline:none;border-color:var(--r);}
+.bl{width:100%;padding:13px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--r),var(--rd));color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;}
+.le{color:#dc3545;font-size:12px;margin-top:10px;display:none;}
+.si{display:none;}
+header{background:linear-gradient(135deg,var(--dk),var(--rd));color:#fff;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 16px rgba(0,0,0,.25);flex-wrap:wrap;gap:10px;}
+.hl{display:flex;align-items:center;gap:14px;}
+.hlo{font-size:22px;font-weight:900;letter-spacing:3px;background:linear-gradient(135deg,#f7e8ec,#f0c8d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hr{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.ub{background:rgba(255,255,255,.15);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;}
+.at{background:var(--g);border-radius:12px;padding:2px 8px;font-size:10px;font-weight:700;margin-left:5px;}
+.bo{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:#fff;padding:5px 12px;border-radius:8px;font-size:12px;cursor:pointer;}
+.tabs{display:flex;background:#fff;border-bottom:2px solid var(--rl);padding:0 28px;box-shadow:0 2px 8px rgba(0,0,0,.05);flex-wrap:wrap;}
+.tab{padding:13px 20px;font-size:13px;font-weight:600;cursor:pointer;color:var(--mt);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap;}
+.tab.active{color:var(--rd);border-bottom-color:var(--r);}
+.pan{display:none;padding:24px 28px;max-width:1200px;margin:0 auto;}
+.pan.active{display:block;}
+.card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,.07);}
+.card h2{font-size:15px;font-weight:700;color:var(--br);margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--rl);}
+.gf{display:grid;grid-template-columns:430px 1fr;gap:24px;align-items:start;}
+@media(max-width:860px){.gf{grid-template-columns:1fr;}}
+.fi{margin-bottom:14px;}
+.fi label{display:block;font-size:11px;font-weight:700;color:var(--rd);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px;}
+input[type=text],input[type=number],input[type=date],select,textarea{width:100%;padding:9px 13px;border:1.5px solid #e0d0d5;border-radius:8px;font-size:13px;color:var(--tx);background:var(--bg);transition:border-color .2s;font-family:inherit;}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--r);background:#fff;}
+textarea{resize:vertical;min-height:64px;}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.mt{display:flex;gap:0;margin-bottom:14px;border-radius:10px;overflow:hidden;border:2px solid #e0d0d5;}
+.mt button{flex:1;padding:9px 6px;border:none;background:var(--bg);font-size:12px;font-weight:700;cursor:pointer;color:var(--mt);transition:all .2s;}
+.mt button.on{background:linear-gradient(135deg,var(--r),var(--rd));color:#fff;}
+.mt button:first-child{border-right:1px solid #e0d0d5;}
+.bg{display:block;}.bv{display:none;}
+.vr{background:var(--bg);border:1.5px solid #e8d0d8;border-radius:10px;padding:12px 14px;margin-bottom:10px;}
+.vr .vt{font-size:11px;font-weight:800;color:var(--rd);text-transform:uppercase;margin-bottom:10px;}
+.vr .vc{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.vr .vc label{font-size:10px;font-weight:700;color:var(--mt);display:block;margin-bottom:3px;text-transform:uppercase;}
+.vr .vc input{background:#fff;}
+.pt{background:var(--rl);border-radius:8px;padding:9px 13px;font-size:12px;color:var(--rd);font-weight:700;text-align:center;margin-top:6px;}
+.fa{border:2px dashed #e0c0cc;border-radius:10px;padding:18px;text-align:center;cursor:pointer;position:relative;background:var(--bg);}
+.fa input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.fa .ic{font-size:28px;margin-bottom:4px;}
+.fa p{font-size:11px;color:var(--mt);}
+#pi{width:100%;max-height:160px;object-fit:cover;border-radius:8px;margin-top:8px;display:none;}
+.btn{padding:10px 18px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;}
+.bp{background:linear-gradient(135deg,var(--r),var(--rd));color:#fff;box-shadow:0 4px 14px rgba(201,116,138,.35);width:100%;padding:12px;}
+.bd{background:#dc3545;color:#fff;font-size:11px;padding:4px 10px;border-radius:6px;border:none;cursor:pointer;}
+.bw{background:#fd7e14;color:#fff;font-size:11px;padding:4px 10px;border-radius:6px;border:none;cursor:pointer;}
+.bs{background:#28a745;color:#fff;font-size:11px;padding:4px 10px;border-radius:6px;border:none;cursor:pointer;}
+.bk{background:var(--dk);color:#f7e8ec;font-size:12px;padding:7px 14px;border:none;border-radius:8px;cursor:pointer;}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:20px;}
+.sb{background:#fff;border-radius:12px;padding:14px 16px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.06);border-top:3px solid var(--r);}
+.sb .nm{font-size:24px;font-weight:800;color:var(--rd);}
+.sb .lb{font-size:10px;color:var(--mt);margin-top:2px;text-transform:uppercase;}
+.sb.wn .nm{color:#fd7e14;}.sb.wn{border-top-color:#fd7e14;}
+.ae{background:#fff3cd;border:1px solid #ffc107;border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#856404;}
+.ae strong{display:block;margin-bottom:6px;font-size:14px;}
+.ai{padding:3px 0;border-bottom:1px solid #ffe69c;}
+.ai:last-child{border:none;}
+.fts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center;}
+.fts select,.fts input{padding:7px 12px;border:1.5px solid #e0d0d5;border-radius:8px;font-size:12px;background:#fff;font-family:inherit;}
+.hw{max-height:65vh;overflow-y:auto;padding-right:4px;}
+.hw::-webkit-scrollbar{width:4px;}
+.hw::-webkit-scrollbar-thumb{background:var(--rl);border-radius:10px;}
+.en{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);display:grid;grid-template-columns:72px 1fr auto;gap:12px;align-items:start;border-left:4px solid var(--rl);transition:box-shadow .2s;}
+.en:hover{box-shadow:0 4px 16px rgba(0,0,0,.1);border-left-color:var(--r);}
+.en.al{border-left-color:#fd7e14;}
+.en img{width:72px;height:72px;object-fit:cover;border-radius:8px;}
+.ni{width:72px;height:72px;border-radius:8px;background:var(--rl);display:flex;align-items:center;justify-content:center;font-size:22px;}
+.ei h3{font-size:13px;font-weight:700;margin-bottom:3px;}
+.ei .rf{font-size:10px;color:var(--mt);font-family:monospace;margin-bottom:4px;}
+.ei .me{font-size:11px;color:var(--mt);margin-bottom:5px;}
+.ei .ob{font-size:11px;color:var(--br);font-style:italic;margin-top:3px;}
+.ei .rp{font-size:10px;color:var(--rd);font-weight:600;margin-top:3px;}
+.pls{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;}
+.pl{border-radius:6px;padding:2px 9px;font-size:11px;font-weight:600;background:var(--rl);color:var(--rd);}
+.pl.go{background:#e8f5e9;color:#2e7d32;}
+.pl.es{background:#e3f2fd;color:#1565c0;}
+.pl.to{background:#f3e5f5;color:#6a1b9a;}
+.pl.lw{background:#fff3e0;color:#e65100;}
+.pl.pr{background:#e8e8f0;color:#3a3a6e;}
+.pl.do{background:#fff8e1;color:#7a5500;}
+.pl.rg{background:#fce4ec;color:#9e4f63;}
+.tb{display:inline-block;padding:1px 9px;border-radius:12px;font-size:10px;font-weight:700;}
+.tb.J{background:#fff3cd;color:#856404;}.tb.B{background:#d1ecf1;color:#0c5460;}
+.tb.S{background:#f8d7da;color:#721c24;}.tb.A{background:#d4edda;color:#155724;}.tb.O{background:#e2e3e5;color:#383d41;}
+.ea{display:flex;flex-direction:column;align-items:flex-end;gap:5px;}
+.vd{margin-top:8px;background:var(--bg);border-radius:8px;padding:8px 10px;}
+.vd .vdt{font-size:10px;font-weight:800;color:var(--rd);text-transform:uppercase;margin-bottom:6px;}
+.vl{display:flex;justify-content:space-between;font-size:11px;padding:3px 0;border-bottom:1px dashed #f0dde3;}
+.vl:last-child{border:none;}
+.vn{font-weight:700;color:var(--br);}
+.vq{color:var(--mt);}
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:200;}
+.mo.op{display:flex;}
+.rb{background:#fff;border-radius:16px;padding:28px;width:90%;max-width:420px;box-shadow:0 16px 48px rgba(0,0,0,.2);text-align:center;}
+.rb h3{font-size:16px;font-weight:700;color:var(--br);margin-bottom:6px;}
+.rb p{font-size:12px;color:var(--mt);margin-bottom:16px;}
+.ri{background:var(--rl);border-radius:8px;padding:10px;font-size:13px;margin-bottom:16px;color:var(--rd);line-height:1.8;text-align:left;}
+.ssl{font-size:11px;font-weight:700;color:var(--rd);text-transform:uppercase;margin-bottom:6px;display:block;text-align:left;}
+.ssg{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.ssb{padding:8px 12px;border:2px solid #e0d0d5;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;background:var(--bg);transition:all .2s;}
+.ssb.on{border-color:var(--r);background:var(--rl);color:var(--rd);}
+.rb input[type=number]{width:100%;padding:10px;border:1.5px solid #e0d0d5;border-radius:8px;font-size:18px;text-align:center;margin-bottom:14px;background:var(--bg);}
+.rbs{display:flex;gap:10px;}
+.rbs button{flex:1;padding:11px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;}
+.rok{background:linear-gradient(135deg,var(--r),var(--rd));color:#fff;}
+.rcl{background:#f0f0f0;color:#666;}
+.eo{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:300;}
+.eo.op{display:flex;}
+.eb{background:#fff;border-radius:16px;padding:28px;width:94%;max-width:540px;box-shadow:0 16px 48px rgba(0,0,0,.25);max-height:90vh;overflow-y:auto;}
+.eb h3{font-size:16px;font-weight:700;color:var(--br);margin-bottom:18px;}
+.pf{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px;}
+.pf .pp{display:flex;flex-direction:column;gap:4px;}
+.pf label{font-size:11px;font-weight:700;color:var(--rd);text-transform:uppercase;}
+.pf input,.pf select{padding:8px 12px;border:1.5px solid #e0d0d5;border-radius:8px;font-size:13px;background:var(--bg);}
+.rg2{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:20px;}
+.rc{background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.06);border-top:3px solid var(--r);}
+.rc h4{font-size:11px;font-weight:700;color:var(--mt);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;}
+.rc .bg2{font-size:28px;font-weight:800;color:var(--rd);}
+.rc .ds{font-size:11px;color:var(--mt);margin-top:2px;}
+.rt{width:100%;border-collapse:collapse;font-size:12px;}
+.rt th{background:var(--rl);color:var(--rd);padding:8px 10px;text-align:left;font-size:11px;text-transform:uppercase;}
+.rt td{padding:8px 10px;border-bottom:1px solid #f5eef0;}
+.rt tr:hover td{background:var(--bg);}
+#toast{position:fixed;bottom:24px;right:24px;background:var(--dk);color:#f7e8ec;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:600;opacity:0;transform:translateY(8px);transition:all .3s;z-index:999;pointer-events:none;}
+#toast.sh{opacity:1;transform:translateY(0);}
+.em{text-align:center;color:#d4a0b0;font-size:13px;padding:36px 20px;}
+.em .ic{font-size:36px;margin-bottom:8px;}
+.ml{margin-top:6px;font-size:11px;color:var(--mt);}
+.mi{padding:2px 0;border-top:1px dashed #f0e0e5;}
+</style></head><body>
+
+<div class="ls" id="ls">
+  <div class="lb">
+    <div class="gl">GÉOR</div>
+    <div class="sub">SEMIJOIAS & ACESSÓRIOS</div>
+    <div class="lf"><label>Usuário</label><input type="text" id="lu" placeholder="Digite seu usuário"/></div>
+    <div class="lf"><label>Senha</label><input type="password" id="lp" placeholder="Digite sua senha" onkeydown="if(event.key==='Enter')login()"/></div>
+    <button class="bl" onclick="login()">🔐 Entrar</button>
+    <div class="le" id="le">Usuário ou senha incorretos.</div>
+  </div>
+</div>
+
+<div class="si" id="si">
+  <header>
+    <div class="hl"><div class="hlo">GÉOR</div><div style="font-size:13px;opacity:.8;">Sistema de Check-in</div></div>
+    <div class="hr"><div class="ub" id="ub">👤 —</div><button class="bo" onclick="logout()">Sair</button></div>
+  </header>
+  <div class="tabs">
+    <div class="tab active" onclick="aba('ci')">📦 Check-in</div>
+    <div class="tab" onclick="aba('es')">🗄️ Estoque</div>
+    <div class="tab" onclick="aba('re')">📊 Relatório</div>
+    <div class="tab adm" onclick="aba('ad')" style="display:none">⚙️ Admin</div>
+  </div>
+
+  <!-- CHECK-IN -->
+  <div class="pan active" id="tab-ci">
+    <div class="gf">
+      <div class="card">
+        <h2>📦 Novo Registro</h2>
+        <div class="fi"><label>Foto</label>
+          <div class="fa"><input type="file" accept="image/*" id="fi"/><div class="ic">📷</div><p>Clique para adicionar foto</p></div>
+          <img id="pi" alt=""/>
+        </div>
+        <div class="fi"><label>Nome / Descrição *</label><input type="text" id="fn" placeholder="Ex: Anel Solitário"/></div>
+        <div class="r2">
+          <div class="fi"><label>Código / Ref.</label><input type="text" id="fr" placeholder="GR-001"/></div>
+          <div class="fi"><label>Tipo *</label>
+            <select id="ft"><option value="">Selecione...</option><option value="Joia">💛 Joia</option><option value="Bijuteria">💙 Bijuteria</option><option value="Semijoia">❤️ Semijoia</option><option value="Acessório">💚 Acessório</option><option value="Outro">⚪ Outro</option></select>
+          </div>
+        </div>
+        <div class="fi"><label>Fornecedor</label><input type="text" id="ff" placeholder="Ex: Fornecedor SP"/></div>
+        <div class="fi">
+          <label>Como informar as quantidades?</label>
+          <div class="mt"><button type="button" id="bmg" class="on" onclick="setM('g')">📦 Qtd. Geral</button><button type="button" id="bmv" onclick="setM('v')">🔘✨ Por Acabamento</button></div>
+        </div>
+        <!-- GERAL -->
+        <div class="bg" id="bg">
+          <div class="r3">
+            <div class="fi"><label>Gôndola</label><input type="number" id="fg" min="0" placeholder="0" oninput="pg()"/></div>
+            <div class="fi"><label>Estoque</label><input type="number" id="fe" min="0" placeholder="0" oninput="pg()"/></div>
+            <div class="fi"><label>Alertar abaixo</label><input type="number" id="fa2" min="0" placeholder="5"/></div>
+          </div>
+          <div class="pt" id="ptg" style="display:none"></div>
+        </div>
+        <!-- VARIAÇÃO -->
+        <div class="bv" id="bv">
+          <div class="vr"><div class="vt">🔘 Prata</div><div class="vc"><div><label>Gôndola</label><input type="number" id="vpg" min="0" placeholder="0" oninput="pv()"/></div><div><label>Estoque</label><input type="number" id="vpe" min="0" placeholder="0" oninput="pv()"/></div></div></div>
+          <div class="vr"><div class="vt">✨ Dourado</div><div class="vc"><div><label>Gôndola</label><input type="number" id="vdg" min="0" placeholder="0" oninput="pv()"/></div><div><label>Estoque</label><input type="number" id="vde" min="0" placeholder="0" oninput="pv()"/></div></div></div>
+          <div class="vr"><div class="vt">🌸 Rose Gold</div><div class="vc"><div><label>Gôndola</label><input type="number" id="vrg" min="0" placeholder="0" oninput="pv()"/></div><div><label>Estoque</label><input type="number" id="vre" min="0" placeholder="0" oninput="pv()"/></div></div></div>
+          <div class="fi" style="margin-top:6px;"><label>Alertar abaixo (total)</label><input type="number" id="fav" min="0" placeholder="5"/></div>
+          <div class="pt" id="ptv"></div>
+        </div>
+        <div class="fi" style="margin-top:6px;"><label>Observações</label><textarea id="fo" placeholder="Cor, tamanho, coleção..."></textarea></div>
+        <button class="btn bp" onclick="registrar()">✅ Registrar Check-in</button>
+      </div>
+      <div>
+        <div class="sg" id="sc"></div>
+        <div id="at"></div>
+        <div class="card" style="padding:20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+            <span style="font-size:15px;font-weight:700;color:var(--br);">📋 Histórico</span>
+            <button class="bk" onclick="expCSV()">⬇️ CSV</button>
+          </div>
+          <div class="fts">
+            <select id="ftt" onchange="rCI()"><option value="">Todos os tipos</option><option value="Joia">Joia</option><option value="Bijuteria">Bijuteria</option><option value="Semijoia">Semijoia</option><option value="Acessório">Acessório</option><option value="Outro">Outro</option></select>
+            <select id="fta" onchange="rCI()"><option value="">Todos acabamentos</option><option value="Geral">📦 Geral</option><option value="Prata">🔘 Prata</option><option value="Dourado">✨ Dourado</option><option value="Rose Gold">🌸 Rose Gold</option></select>
+            <input type="text" id="ftb" placeholder="🔍 Nome ou código..." oninput="rCI()" style="flex:1;min-width:130px;"/>
+          </div>
+          <div class="hw" id="hci"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESTOQUE -->
+  <div class="pan" id="tab-es">
+    <div class="sg" id="ses"></div>
+    <div id="aes"></div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+        <span style="font-size:15px;font-weight:700;color:var(--br);">🗄️ Posição de Estoque</span>
+        <button class="bk" onclick="expCSV()">⬇️ CSV</button>
+      </div>
+      <div class="fts">
+        <select id="fet" onchange="rES()"><option value="">Todos os tipos</option><option value="Joia">Joia</option><option value="Bijuteria">Bijuteria</option><option value="Semijoia">Semijoia</option><option value="Acessório">Acessório</option><option value="Outro">Outro</option></select>
+        <select id="fea" onchange="rES()"><option value="">Todos acabamentos</option><option value="Geral">📦 Geral</option><option value="Prata">🔘 Prata</option><option value="Dourado">✨ Dourado</option><option value="Rose Gold">🌸 Rose Gold</option></select>
+        <select id="fel" onchange="rES()"><option value="">Todos</option><option value="low">⚠️ Estoque baixo</option><option value="ok">✅ Estoque ok</option></select>
+        <input type="text" id="feb" placeholder="🔍 Nome ou código..." oninput="rES()" style="flex:1;min-width:130px;"/>
+      </div>
+      <div class="hw" id="hes"></div>
+    </div>
+  </div>
+
+  <!-- RELATÓRIO -->
+  <div class="pan" id="tab-re">
+    <div class="pf">
+      <div class="pp"><label>Início</label><input type="date" id="ri"/></div>
+      <div class="pp"><label>Fim</label><input type="date" id="rf2"/></div>
+      <div class="pp"><label>Tipo</label><select id="rt2"><option value="">Todos</option><option value="Joia">Joia</option><option value="Bijuteria">Bijuteria</option><option value="Semijoia">Semijoia</option><option value="Acessório">Acessório</option><option value="Outro">Outro</option></select></div>
+      <div class="pp"><label>Acabamento</label><select id="ra"><option value="">Todos</option><option value="Geral">📦 Geral</option><option value="Prata">🔘 Prata</option><option value="Dourado">✨ Dourado</option><option value="Rose Gold">🌸 Rose Gold</option></select></div>
+      <div class="pp"><label>Usuário</label><select id="ru"><option value="">Todos</option><option value="Administrador">Administrador</option><option value="Hellen">Hellen</option></select></div>
+      <button class="btn bp" style="width:auto;padding:9px 20px;" onclick="gRel()">🔍 Gerar</button>
+      <button class="bk" onclick="expRelCSV()">⬇️ CSV</button>
+    </div>
+    <div class="rg2" id="rca"></div>
+    <div class="card" style="padding:20px;"><h2>Detalhamento</h2>
+      <div style="overflow-x:auto;"><table class="rt"><thead><tr><th>Data</th><th>Código</th><th>Produto</th><th>Tipo</th><th>Acabamento</th><th>Gôndola</th><th>Estoque</th><th>Total</th><th>Por</th></tr></thead><tbody id="rtb"></tbody></table></div>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div class="pan" id="tab-ad">
+    <div class="card"><h2>⚙️ Painel Administrativo</h2>
+      <p style="font-size:12px;color:var(--mt);margin-bottom:16px;">Apenas administrador pode editar ou excluir.</p>
+      <div class="fts"><input type="text" id="fab" placeholder="🔍 Buscar..." oninput="rAD()" style="flex:1;"/></div>
+      <div class="hw" id="had"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL REPOR -->
+<div class="mo" id="rm">
+  <div class="rb">
+    <h3>🔄 Repor Gôndola</h3><p>Mover unidades do estoque para a gôndola</p>
+    <div class="ri" id="rmi">—</div>
+    <span class="ssl">Selecione o acabamento a repor</span>
+    <div class="ssg" id="rvg"></div>
+    <input type="hidden" id="rvs" value=""/>
+    <input type="number" id="rq" min="1" placeholder="Quantidade"/>
+    <div class="rbs"><button class="rcl" onclick="fRep()">Cancelar</button><button class="rok" onclick="cRep()">✅ Confirmar</button></div>
+  </div>
+</div>
+
+<!-- MODAL EDITAR -->
+<div class="eo" id="em2">
+  <div class="eb">
+    <h3>✏️ Editar Registro</h3>
+    <input type="hidden" id="eid"/>
+    <div class="fi"><label>Nome</label><input type="text" id="en2"/></div>
+    <div class="r2">
+      <div class="fi"><label>Código</label><input type="text" id="er2"/></div>
+      <div class="fi"><label>Tipo</label><select id="eti"><option value="Joia">Joia</option><option value="Bijuteria">Bijuteria</option><option value="Semijoia">Semijoia</option><option value="Acessório">Acessório</option><option value="Outro">Outro</option></select></div>
+    </div>
+    <div class="fi"><label>Fornecedor</label><input type="text" id="efo"/></div>
+    <div id="eqa"></div>
+    <div class="fi"><label>Alertar abaixo de</label><input type="number" id="eal" min="0"/></div>
+    <div class="fi"><label>Observações</label><textarea id="eob"></textarea></div>
+    <div style="display:flex;gap:10px;margin-top:8px;">
+      <button class="btn" style="flex:1;background:#f0f0f0;color:#666;border:none;cursor:pointer;" onclick="fEdit()">Cancelar</button>
+      <button class="btn bp" style="flex:2;" onclick="sEdit()">💾 Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const US={admin:{s:'geor2024',n:'Administrador',a:true},hellen:{s:'hellen123',n:'Hellen',a:false}};
+let U=null,RI=null,RF=[],MD='g';
+
+function login(){
+  const u=document.getElementById('lu').value.trim().toLowerCase();
+  const s=document.getElementById('lp').value;
+  const er=document.getElementById('le');
+  if(US[u]&&US[u].s===s){
+    U={k:u,...US[u]};er.style.display='none';
+    document.getElementById('ls').style.display='none';
+    document.getElementById('si').style.display='block';
+    document.getElementById('ub').innerHTML=`👤 ${U.n}${U.a?'<span class="at">ADMIN</span>':''}`;
+    if(U.a) document.querySelectorAll('.adm').forEach(e=>e.style.display='');
+    const h=new Date(),i=new Date(h.getFullYear(),h.getMonth(),1);
+    document.getElementById('ri').value=i.toISOString().slice(0,10);
+    document.getElementById('rf2').value=h.toISOString().slice(0,10);
+    upd();
+  } else er.style.display='block';
+}
+function logout(){U=null;document.getElementById('ls').style.display='flex';document.getElementById('si').style.display='none';document.getElementById('lu').value='';document.getElementById('lp').value='';}
+
+function setM(m){
+  MD=m;
+  document.getElementById('bmg').classList.toggle('on',m==='g');
+  document.getElementById('bmv').classList.toggle('on',m==='v');
+  document.getElementById('bg').style.display=m==='g'?'block':'none';
+  document.getElementById('bv').style.display=m==='v'?'block':'none';
+}
+function pg(){
+  const g=nv('fg'),e=nv('fe'),el=document.getElementById('ptg');
+  if(g===0&&e===0){el.style.display='none';return;}
+  el.style.display='block';el.textContent=`∑ Total: ${g+e} | 🛒 Gôndola: ${g} | 📦 Estoque: ${e}`;
+}
+function pv(){
+  const pg2=nv('vpg'),pe=nv('vpe'),dg=nv('vdg'),de=nv('vde'),rg=nv('vrg'),re=nv('vre');
+  const tg=pg2+dg+rg,te=pe+de+re;
+  document.getElementById('ptv').textContent=`∑ Total: ${tg+te} | 🛒 Gôndola: ${tg} | 📦 Estoque: ${te}`;
+}
+function nv(id){return parseInt(document.getElementById(id).value)||0;}
+
+function aba(id){
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['ci','es','re','ad'][i]===id));
+  document.querySelectorAll('.pan').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(id==='es')rES();if(id==='re')gRel();if(id==='ad')rAD();
+}
+
+function gD(){return JSON.parse(localStorage.getItem('geor_v3')||'[]');}
+function sD(d){localStorage.setItem('geor_v3',JSON.stringify(d));}
+
+let FB=null;
+document.getElementById('fi').addEventListener('change',function(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{FB=ev.target.result;const i=document.getElementById('pi');i.src=FB;i.style.display='block';};
+  r.readAsDataURL(f);
+});
+
+function registrar(){
+  const nm=document.getElementById('fn').value.trim();
+  const rf=document.getElementById('fr').value.trim();
+  const tp=document.getElementById('ft').value;
+  const fo=document.getElementById('ff').value.trim();
+  const ob=document.getElementById('fo').value.trim();
+  if(!nm)return toast('⚠️ Informe o nome.');
+  if(!tp)return toast('⚠️ Selecione o tipo.');
+  let g,e,al,ac,vr=null;
+  if(MD==='g'){
+    g=nv('fg');e=nv('fe');al=nv('fa2')||5;ac='Geral';
+    if(g===0&&e===0)return toast('⚠️ Informe ao menos uma quantidade.');
+  } else {
+    const pg2=nv('vpg'),pe=nv('vpe'),dg=nv('vdg'),de=nv('vde'),rg=nv('vrg'),re=nv('vre');
+    g=pg2+dg+rg;e=pe+de+re;al=nv('fav')||5;ac='Variado';
+    if(g===0&&e===0)return toast('⚠️ Informe ao menos uma quantidade.');
+    vr={Prata:{g:pg2,e:pe},Dourado:{g:dg,e:de},RoseGold:{g:rg,e:re}};
+  }
+  const reg={id:Date.now(),dt:new Date().toISOString(),nm,rf,tp,fo,ob,g,e,al,ac,vr,ft:FB||null,pr:U.n,
+    mv:[{dt:new Date().toISOString(),ac2:'Check-in inicial',g,e,vr,pr:U.n}]};
+  const l=gD();l.unshift(reg);sD(l);
+  limpar();upd();toast('✅ Produto registrado!');
+}
+
+function limpar(){
+  ['fn','fr','ff','fo','fg','fe','fa2','vpg','vpe','vdg','vde','vrg','vre','fav']
+    .forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('ft').value='';
+  document.getElementById('pi').style.display='none';
+  document.getElementById('fi').value='';
+  document.getElementById('ptg').style.display='none';
+  document.getElementById('ptv').textContent='';
+  FB=null;setM('g');
+}
+
+function abrirR(id){
+  const r=gD().find(x=>x.id===id);if(!r)return;
+  RI=id;
+  let inf=`<strong>${r.nm}</strong><br>`;
+  if(r.vr){
+    Object.entries(r.vr).forEach(([k,v])=>{
+      if(v.g>0||v.e>0){const n2=k==='RoseGold'?'Rose Gold':k;inf+=`${ico(k)} ${n2}: 🛒${v.g} | 📦${v.e}<br>`;}
+    });
+  } else inf+=`🛒 Gôndola: <b>${r.g}</b> &nbsp; 📦 Estoque: <b>${r.e}</b>`;
+  document.getElementById('rmi').innerHTML=inf;
+  const grp=document.getElementById('rvg');grp.innerHTML='';
+  document.getElementById('rvs').value='';
+  if(r.vr){
+    Object.entries(r.vr).forEach(([k,v])=>{
+      const n2=k==='RoseGold'?'Rose Gold':k;
+      const b=document.createElement('button');b.type='button';b.className='ssb';
+      b.innerHTML=`${ico(k)} ${n2}<br><small>📦${v.e} disp.</small>`;
+      b.onclick=()=>{document.querySelectorAll('#rvg .ssb').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.getElementById('rvs').value=k;};
+      grp.appendChild(b);
+    });
+  } else {
+    const b=document.createElement('button');b.type='button';b.className='ssb on';
+    b.innerHTML=`📦 Geral<br><small>📦${r.e} disp.</small>`;
+    b.onclick=()=>{document.querySelectorAll('#rvg .ssb').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.getElementById('rvs').value='Geral';};
+    document.getElementById('rvs').value='Geral';grp.appendChild(b);
+  }
+  document.getElementById('rq').value='';
+  document.getElementById('rm').classList.add('op');
+}
+function fRep(){document.getElementById('rm').classList.remove('op');RI=null;}
+function cRep(){
+  const q=parseInt(document.getElementById('rq').value)||0;
+  const vs=document.getElementById('rvs').value;
+  if(q<=0)return toast('⚠️ Quantidade inválida.');
+  if(!vs)return toast('⚠️ Selecione o acabamento.');
+  const l=gD();const idx=l.findIndex(x=>x.id===RI);if(idx<0)return;
+  const r=l[idx];
+  if(r.vr&&vs!=='Geral'){
+    const v=r.vr[vs];if(!v)return toast('⚠️ Variação não encontrada.');
+    if(q>v.e)return toast(`⚠️ Estoque insuficiente! Disponível: ${v.e}`);
+    v.g+=q;v.e-=q;
+    r.g=Object.values(r.vr).reduce((s,x)=>s+x.g,0);
+    r.e=Object.values(r.vr).reduce((s,x)=>s+x.e,0);
+  } else {
+    if(q>r.e)return toast(`⚠️ Estoque insuficiente! Disponível: ${r.e}`);
+    r.g+=q;r.e-=q;
+  }
+  r.mv=r.mv||[];
+  const nv2=vs==='RoseGold'?'Rose Gold':vs;
+  r.mv.unshift({dt:new Date().toISOString(),ac2:`Reposição: ${q} un. → Gôndola (${nv2})`,g:r.g,e:r.e,vr:r.vr?JSON.parse(JSON.stringify(r.vr)):null,pr:U.n});
+  l[idx]=r;sD(l);fRep();upd();toast(`✅ ${q} un. (${nv2}) movidas para a gôndola!`);
+}
+
+function abrirE(id){
+  if(!U.a)return toast('🚫 Apenas administrador.');
+  const r=gD().find(x=>x.id===id);if(!r)return;
+  document.getElementById('eid').value=id;
+  document.getElementById('en2').value=r.nm||'';
+  document.getElementById('er2').value=r.rf||'';
+  document.getElementById('eti').value=r.tp||'';
+  document.getElementById('efo').value=r.fo||'';
+  document.getElementById('eal').value=r.al||5;
+  document.getElementById('eob').value=r.ob||'';
+  const ar=document.getElementById('eqa');
+  if(r.vr){
+    ar.innerHTML=`
+      <div class="vr"><div class="vt">🔘 Prata</div><div class="vc"><div><label>Gôndola</label><input type="number" id="epg" min="0" value="${r.vr.Prata.g}"/></div><div><label>Estoque</label><input type="number" id="epe" min="0" value="${r.vr.Prata.e}"/></div></div></div>
+      <div class="vr"><div class="vt">✨ Dourado</div><div class="vc"><div><label>Gôndola</label><input type="number" id="edg" min="0" value="${r.vr.Dourado.g}"/></div><div><label>Estoque</label><input type="number" id="ede" min="0" value="${r.vr.Dourado.e}"/></div></div></div>
+      <div class="vr"><div class="vt">🌸 Rose Gold</div><div class="vc"><div><label>Gôndola</label><input type="number" id="erg" min="0" value="${r.vr.RoseGold.g}"/></div><div><label>Estoque</label><input type="number" id="ere" min="0" value="${r.vr.RoseGold.e}"/></div></div></div>`;
+  } else {
+    ar.innerHTML=`<div class="r2"><div class="fi"><label>Gôndola</label><input type="number" id="egg" min="0" value="${r.g}"/></div><div class="fi"><label>Estoque</label><input type="number" id="ege" min="0" value="${r.e}"/></div></div>`;
+  }
+  document.getElementById('em2').classList.add('op');
+}
+function fEdit(){document.getElementById('em2').classList.remove('op');}
+function sEdit(){
+  const id=parseInt(document.getElementById('eid').value);
+  const l=gD();const idx=l.findIndex(x=>x.id===id);if(idx<0)return;
+  const r=l[idx];
+  r.nm=document.getElementById('en2').value.trim();
+  r.rf=document.getElementById('er2').value.trim();
+  r.tp=document.getElementById('eti').value;
+  r.fo=document.getElementById('efo').value.trim();
+  r.al=parseInt(document.getElementById('eal').value)||5;
+  r.ob=document.getElementById('eob').value.trim();
+  if(r.vr){
+    r.vr.Prata.g=parseInt(document.getElementById('epg').value)||0;
+    r.vr.Prata.e=parseInt(document.getElementById('epe').value)||0;
+    r.vr.Dourado.g=parseInt(document.getElementById('edg').value)||0;
+    r.vr.Dourado.e=parseInt(document.getElementById('ede').value)||0;
+    r.vr.RoseGold.g=parseInt(document.getElementById('erg').value)||0;
+    r.vr.RoseGold.e=parseInt(document.getElementById('ere').value)||0;
+    r.g=Object.values(r.vr).reduce((s,x)=>s+x.g,0);
+    r.e=Object.values(r.vr).reduce((s,x)=>s+x.e,0);
+  } else {
+    r.g=parseInt(document.getElementById('egg').value)||0;
+    r.e=parseInt(document.getElementById('ege').value)||0;
+  }
+  r.mv=r.mv||[];
+  r.mv.unshift({dt:new Date().toISOString(),ac2:'Edição (Admin)',g:r.g,e:r.e,pr:U.n});
+  l[idx]=r;sD(l);fEdit();upd();toast('💾 Registro atualizado!');
+}
+
+function excluir(id){
+  if(!U.a)return toast('🚫 Apenas administrador.');
+  if(!confirm('Excluir permanentemente?'))return;
+  sD(gD().filter(r=>r.id!==id));upd();toast('🗑️ Excluído.');
+}
+
+function isLow(r){return(r.g+r.e)<=(r.al||5);}
+function fmt(s){return new Date(s).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});}
+function fmtC(s){return new Date(s).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});}
+function ico(k){return k==='Prata'?'🔘':k==='Dourado'?'✨':k==='RoseGold'?'🌸':'📦';}
+function pcl(k){return k==='Prata'?'pr':k==='Dourado'?'do':k==='RoseGold'?'rg':'';}
+function tcl(tp){return tp==='Joia'?'J':tp==='Bijuteria'?'B':tp==='Semijoia'?'S':tp==='Acessório'?'A':'O';}
+
+function bldAlerta(l){
+  const lw=l.filter(r=>isLow(r));if(!lw.length)return'';
+  return`<div class="ae"><strong>⚠️ ${lw.length} produto(s) com estoque baixo</strong>${lw.map(r=>`<div class="ai">${r.nm}${r.rf?` (${r.rf})`:''} — 🛒${r.g} | 📦${r.e}</div>`).join('')}</div>`;
+}
+function bldStats(l,id){
+  const t=l.length,g=l.reduce((s,r)=>s+r.g,0),e=l.reduce((s,r)=>s+r.e,0),lw=l.filter(r=>isLow(r)).length;
+  document.getElementById(id).innerHTML=`<div class="sb"><div class="nm">${t}</div><div class="lb">Produtos</div></div><div class="sb"><div class="nm">${g}</div><div class="lb">Na Gôndola</div></div><div class="sb"><div class="nm">${e}</div><div class="lb">No Estoque</div></div><div class="sb ${lw>0?'wn':''}"><div class="nm">${lw}</div><div class="lb">Alerta Baixo</div></div>`;
+}
+
+function card(r,mv){
+  const lw=isLow(r);
+  let varHtml='';
+  if(r.vr){
+    varHtml=`<div class="vd"><div class="vdt">Variações</div>`;
+    Object.entries(r.vr).forEach(([k,v])=>{
+      if(v.g>0||v.e>0){const n2=k==='RoseGold'?'Rose Gold':k;varHtml+=`<div class="vl"><span class="vn">${ico(k)} ${n2}</span><span class="vq">🛒${v.g} | 📦${v.e}</span></div>`;}
+    });
+    varHtml+=`</div>`;
+  }
+  const acPill=r.vr?`<span class="pl ${pcl('')}">🔘✨ Variado</span>`:`<span class="pl ${pcl(r.ac)}">${ico(r.ac)} ${r.ac}</span>`;
+  const movHtml=mv&&r.mv&&r.mv.length?`<div class="ml">${r.mv.slice(0,4).map(m=>`<div class="mi">📌 ${fmtC(m.dt)} — ${m.ac2} por ${m.pr}</div>`).join('')}</div>`:'';
+  return`<div class="en ${lw?'al':''}">
+    ${r.ft?`<img src="${r.ft}" alt=""/>`:`<div class="ni">💎</div>`}
+    <div class="ei">
+      <h3>${r.nm}</h3>
+      ${r.rf?`<div class="rf">🏷️ ${r.rf}</div>`:''}
+      <div class="me"><span class="tb ${tcl(r.tp)}">${r.tp}</span>${r.fo?` · ${r.fo}`:''}</div>
+      <div class="pls">${acPill}<span class="pl go">🛒 Gôndola: ${r.g}</span><span class="pl es">📦 Estoque: ${r.e}</span><span class="pl to">∑ ${r.g+r.e}</span>${lw?`<span class="pl lw">⚠️ Baixo</span>`:''}</div>
+      ${varHtml}
+      ${r.ob?`<div class="ob">📝 ${r.ob}</div>`:''}
+      ${movHtml}
+      <div class="rp">👤 ${r.pr||'—'} em ${fmt(r.dt)}</div>
+    </div>
+    <div class="ea">
+      <button class="bs" onclick="abrirR(${r.id})">🔄 Repor</button>
+      ${U.a?`<button class="bw" onclick="abrirE(${r.id})">✏️ Editar</button><button class="bd" onclick="excluir(${r.id})">🗑️</button>`:`<span style="font-size:10px;color:#ccc;">🔒</span>`}
+    </div>
+  </div>`;
+}
+
+function filtroAcab(r,fa){
+  if(!fa)return true;
+  if(fa==='Geral')return r.ac==='Geral';
+  if(!r.vr)return false;
+  const k=fa==='Rose Gold'?'RoseGold':fa;
+  return r.vr[k]&&(r.vr[k].g>0||r.vr[k].e>0);
+}
+
+function rCI(){
+  const ft=document.getElementById('ftt').value;
+  const fa=document.getElementById('fta').value;
+  const fb=document.getElementById('ftb').value.toLowerCase();
+  let l=gD();
+  bldStats(l,'sc');document.getElementById('at').innerHTML=bldAlerta(l);
+  if(ft)l=l.filter(r=>r.tp===ft);
+  l=l.filter(r=>filtroAcab(r,fa));
+  if(fb)l=l.filter(r=>r.nm.toLowerCase().includes(fb)||(r.rf||'').toLowerCase().includes(fb));
+  const el=document.getElementById('hci');
+  el.innerHTML=l.length?l.map(r=>card(r,false)).join(''):`<div class="em"><div class="ic">📭</div><p>Nenhum registro.</p></div>`;
+}
+
+function rES(){
+  const ft=document.getElementById('fet').value;
+  const fa=document.getElementById('fea').value;
+  const fl=document.getElementById('fel').value;
+  const fb=document.getElementById('feb').value.toLowerCase();
+  let l=gD();
+  bldStats(l,'ses');document.getElementById('aes').innerHTML=bldAlerta(l);
+  if(ft)l=l.filter(r=>r.tp===ft);
+  l=l.filter(r=>filtroAcab(r,fa));
+  if(fl==='low')l=l.filter(r=>isLow(r));
+  if(fl==='ok')l=l.filter(r=>!isLow(r));
+  if(fb)l=l.filter(r=>r.nm.toLowerCase().includes(fb)||(r.rf||'').toLowerCase().includes(fb));
+  const el=document.getElementById('hes');
+  el.innerHTML=l.length?l.map(r=>card(r,true)).join(''):`<div class="em"><div class="ic">📭</div><p>Nenhum produto.</p></div>`;
+}
+
+function rAD(){
+  const fb=(document.getElementById('fab').value||'').toLowerCase();
+  let l=gD();
+  if(fb)l=l.filter(r=>r.nm.toLowerCase().includes(fb)||(r.rf||'').toLowerCase().includes(fb));
+  const el=document.getElementById('had');
+  el.innerHTML=l.length?l.map(r=>card(r,true)).join(''):`<div class="em"><div class="ic">📭</div><p>Nenhum registro.</p></div>`;
+}
+
+function gRel(){
+  const ini=document.getElementById('ri').value;
+  const fim=document.getElementById('rf2').value;
+  const tp=document.getElementById('rt2').value;
+  const fa=document.getElementById('ra').value;
+  const us=document.getElementById('ru').value;
+  let l=gD();
+  if(ini)l=l.filter(r=>r.dt>=ini);
+  if(fim)l=l.filter(r=>r.dt<=fim+'T23:59:59');
+  if(tp)l=l
+
+
 
