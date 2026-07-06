@@ -1002,4 +1002,173 @@ function cardProduto(r, mostrarMov){
       </div>
       <div class="entry-actions">
         <button class="btn-success" onclick="abrirRepor(${r.id})">🔄 Repor Gôndola</button
+      </div>
+    </div>`;
+}
 
+// ══════════ RENDERS ══════════
+function renderCheckin(){
+  const fTipo      = document.getElementById('ft-tipo').value;
+  const fAcabamento= document.getElementById('ft-acabamento').value;
+  const fBusca     = document.getElementById('ft-busca').value.toLowerCase();
+  let lista = getData();
+  buildStats(lista, 'stats-checkin');
+  document.getElementById('alertas-top').innerHTML = buildAlertas(lista);
+  if(fTipo)       lista = lista.filter(r => r.tipo === fTipo);
+  if(fAcabamento) lista = lista.filter(r => r.acabamento === fAcabamento);
+  if(fBusca)      lista = lista.filter(r =>
+    r.nome.toLowerCase().includes(fBusca) ||
+    (r.ref||'').toLowerCase().includes(fBusca) ||
+    (r.forn||'').toLowerCase().includes(fBusca));
+  const el = document.getElementById('hist-checkin');
+  if(!lista.length){
+    el.innerHTML=`<div class="empty"><div class="icon">📭</div><p>Nenhum registro encontrado.</p></div>`;
+    return;
+  }
+  el.innerHTML = lista.map(r => cardProduto(r, false)).join('');
+}
+
+function renderEstoque(){
+  const fTipo       = document.getElementById('fe-tipo').value;
+  const fAcabamento = document.getElementById('fe-acabamento').value;
+  const fAlert      = document.getElementById('fe-alerta').value;
+  const fBusca      = document.getElementById('fe-busca').value.toLowerCase();
+  let lista = getData();
+  buildStats(lista, 'stats-estoque');
+  document.getElementById('alertas-estoque').innerHTML = buildAlertas(lista);
+  if(fTipo)          lista = lista.filter(r => r.tipo === fTipo);
+  if(fAcabamento)    lista = lista.filter(r => r.acabamento === fAcabamento);
+  if(fAlert==='low') lista = lista.filter(r => isLow(r));
+  if(fAlert==='ok')  lista = lista.filter(r => !isLow(r));
+  if(fBusca) lista = lista.filter(r =>
+    r.nome.toLowerCase().includes(fBusca) ||
+    (r.ref||'').toLowerCase().includes(fBusca));
+  const el = document.getElementById('hist-estoque');
+  if(!lista.length){
+    el.innerHTML=`<div class="empty"><div class="icon">📭</div><p>Nenhum produto encontrado.</p></div>`;
+    return;
+  }
+  el.innerHTML = lista.map(r => cardProduto(r, true)).join('');
+}
+
+function renderAdmin(){
+  const fBusca = (document.getElementById('fa-busca').value||'').toLowerCase();
+  let lista = getData();
+  if(fBusca) lista = lista.filter(r =>
+    r.nome.toLowerCase().includes(fBusca)||
+    (r.ref||'').toLowerCase().includes(fBusca));
+  const el = document.getElementById('hist-admin');
+  if(!lista.length){
+    el.innerHTML=`<div class="empty"><div class="icon">📭</div><p>Nenhum registro.</p></div>`;
+    return;
+  }
+  el.innerHTML = lista.map(r => cardProduto(r, true)).join('');
+}
+
+// ══════════ RELATÓRIO ══════════
+function gerarRelatorio(){
+  const ini       = document.getElementById('r-inicio').value;
+  const fim       = document.getElementById('r-fim').value;
+  const tipo      = document.getElementById('r-tipo').value;
+  const acabamento= document.getElementById('r-acabamento').value;
+  const usu       = document.getElementById('r-usuario').value;
+  let lista = getData();
+  if(ini)       lista = lista.filter(r => r.data >= ini);
+  if(fim)       lista = lista.filter(r => r.data <= fim+'T23:59:59');
+  if(tipo)      lista = lista.filter(r => r.tipo === tipo);
+  if(acabamento)lista = lista.filter(r => r.acabamento === acabamento);
+  if(usu)       lista = lista.filter(r => r.por === usu);
+  relFiltrado = lista;
+
+  const totG  = lista.reduce((s,r)=>s+r.gondola,0);
+  const totE  = lista.reduce((s,r)=>s+r.estoque,0);
+  const tipos = [...new Set(lista.map(r=>r.tipo))].length;
+  const low   = lista.filter(r=>isLow(r)).length;
+
+  document.getElementById('rel-cards').innerHTML = `
+    <div class="rel-card"><h4>Registros</h4>
+      <div class="big">${lista.length}</div><div class="desc">no período selecionado</div></div>
+    <div class="rel-card"><h4>Total Gôndola</h4>
+      <div class="big">${totG}</div><div class="desc">unidades na gôndola</div></div>
+    <div class="rel-card"><h4>Total Estoque</h4>
+      <div class="big">${totE}</div><div class="desc">unidades no estoque</div></div>
+    <div class="rel-card"><h4>Categorias</h4>
+      <div class="big">${tipos}</div><div class="desc">tipos distintos</div></div>
+    <div class="rel-card"><h4>Estoque Baixo</h4>
+      <div class="big" style="color:${low>0?'#fd7e14':'#28a745'}">${low}</div>
+      <div class="desc">produtos em alerta</div></div>
+  `;
+
+  const tbody = document.getElementById('rel-tbody');
+  if(!lista.length){
+    tbody.innerHTML=`<tr><td colspan="9" style="text-align:center;color:#ccc;padding:24px;">
+      Nenhum registro no período.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = lista.map(r=>`
+    <tr>
+      <td>${fmt(r.data)}</td>
+      <td style="font-family:monospace;">${r.ref||'—'}</td>
+      <td>${r.nome}</td>
+      <td><span class="tipo-badge tipo-${r.tipo}">${r.tipo}</span></td>
+      <td>${r.acabamento ? acabamentoIcon(r.acabamento)+' '+r.acabamento : '—'}</td>
+      <td>${r.gondola}</td>
+      <td>${r.estoque}</td>
+      <td><b>${r.gondola+r.estoque}</b></td>
+      <td>${r.por||'—'}</td>
+    </tr>`).join('');
+}
+
+function exportarCSV(){
+  const lista = getData();
+  if(!lista.length) return toast('⚠️ Nenhum registro para exportar.');
+  const h = ['Data','Código','Produto','Tipo','Acabamento','Fornecedor','Gôndola','Estoque','Total','Alerta','Por','Obs'];
+  const rows = lista.map(r=>[
+    fmt(r.data), `"${r.ref||''}"`, `"${r.nome}"`, r.tipo, r.acabamento||'',
+    `"${r.forn||''}"`, r.gondola, r.estoque, r.gondola+r.estoque,
+    r.alerta||5, `"${r.por||''}"`, `"${r.obs||''}"`
+  ].join(';'));
+  gerarDownloadCSV([h.join(';'),...rows].join('\n'), 'geor_estoque');
+}
+
+function exportarRelCSV(){
+  if(!relFiltrado.length) return toast('⚠️ Gere o relatório primeiro.');
+  const h = ['Data','Código','Produto','Tipo','Acabamento','Gôndola','Estoque','Total','Por'];
+  const rows = relFiltrado.map(r=>[
+    fmt(r.data), `"${r.ref||''}"`, `"${r.nome}"`, r.tipo, r.acabamento||'',
+    r.gondola, r.estoque, r.gondola+r.estoque, `"${r.por||''}"`
+  ].join(';'));
+  gerarDownloadCSV([h.join(';'),...rows].join('\n'), 'geor_relatorio');
+}
+
+function gerarDownloadCSV(csv, nome){
+  const blob = new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `${nome}_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('📄 CSV exportado!');
+}
+
+function atualizar(){
+  renderCheckin();
+  const abaAtiva = document.querySelector('.tab.active');
+  if(abaAtiva){
+    const idx = [...document.querySelectorAll('.tab')].indexOf(abaAtiva);
+    if(idx===1) renderEstoque();
+    if(idx===2) gerarRelatorio();
+    if(idx===3) renderAdmin();
+  }
+}
+
+function toast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), 3200);
+}
+</script>
+</body>
+</html>
