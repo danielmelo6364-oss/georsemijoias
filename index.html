@@ -83,6 +83,17 @@
     .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
     .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
 
+    /* ACABAMENTO TOGGLE */
+    .acabamento-group{display:flex;gap:8px;margin-top:2px;}
+    .acabamento-btn{flex:1;padding:9px 0;border:2px solid #e0d0d5;border-radius:8px;
+      font-size:12px;font-weight:700;cursor:pointer;background:#fdf5f7;
+      transition:all .2s;text-align:center;display:flex;align-items:center;
+      justify-content:center;gap:5px;}
+    .acabamento-btn.prata.ativo{background:#e8e8f0;border-color:#7e7ea0;color:#3a3a6e;}
+    .acabamento-btn.dourado.ativo{background:#fff8e1;border-color:#b8860b;color:#7a5500;}
+    .acabamento-btn.rosegold.ativo{background:#fce4ec;border-color:#c9748a;color:#9e4f63;}
+    .acabamento-btn:hover{border-color:var(--rose);}
+
     /* FOTO */
     .foto-area{border:2px dashed #e0c0cc;border-radius:10px;padding:18px;text-align:center;
       cursor:pointer;position:relative;background:#fdf5f7;transition:all .2s;}
@@ -149,6 +160,9 @@
     .pill.estoque{background:#e3f2fd;color:#1565c0;}
     .pill.total{background:#f3e5f5;color:#6a1b9a;}
     .pill.low{background:#fff3e0;color:#e65100;}
+    .pill.prata{background:#e8e8f0;color:#3a3a6e;}
+    .pill.dourado{background:#fff8e1;color:#7a5500;}
+    .pill.rosegold{background:#fce4ec;color:#9e4f63;}
     .tipo-badge{display:inline-block;padding:1px 9px;border-radius:12px;font-size:10px;font-weight:700;}
     .tipo-Joia{background:#fff3cd;color:#856404;}
     .tipo-Bijuteria{background:#d1ecf1;color:#0c5460;}
@@ -162,7 +176,7 @@
     .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);
       display:none;align-items:center;justify-content:center;z-index:200;}
     .modal-overlay.open{display:flex;}
-    .repor-box{background:#fff;border-radius:16px;padding:28px;width:90%;max-width:360px;
+    .repor-box{background:#fff;border-radius:16px;padding:28px;width:90%;max-width:380px;
       box-shadow:0 16px 48px rgba(0,0,0,.2);text-align:center;}
     .repor-box h3{font-size:16px;font-weight:700;color:var(--brown);margin-bottom:6px;}
     .repor-box p{font-size:12px;color:var(--muted);margin-bottom:16px;}
@@ -175,6 +189,12 @@
       font-size:13px;font-weight:700;cursor:pointer;}
     .repor-ok{background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:#fff;}
     .repor-cancel{background:#f0f0f0;color:#666;}
+
+    /* ACABAMENTO NO MODAL REPOR */
+    .repor-acabamento{margin-bottom:14px;}
+    .repor-acabamento label{display:block;font-size:11px;font-weight:700;
+      color:var(--rose-dark);text-transform:uppercase;margin-bottom:6px;text-align:left;}
+    .repor-acabamento .acabamento-group{justify-content:center;}
 
     /* MODAL EDITAR */
     .edit-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);
@@ -294,6 +314,24 @@
             </select>
           </div>
         </div>
+
+        <!-- ACABAMENTO -->
+        <div class="field">
+          <label>Acabamento *</label>
+          <div class="acabamento-group" id="f-acabamento-group">
+            <button type="button" class="acabamento-btn prata" onclick="selecionarAcabamento('Prata')">
+              🔘 Prata
+            </button>
+            <button type="button" class="acabamento-btn dourado" onclick="selecionarAcabamento('Dourado')">
+              ✨ Dourado
+            </button>
+            <button type="button" class="acabamento-btn rosegold" onclick="selecionarAcabamento('Rose Gold')">
+              🌸 Rose Gold
+            </button>
+          </div>
+          <input type="hidden" id="f-acabamento" value=""/>
+        </div>
+
         <div class="field">
           <label>Fornecedor / Origem</label>
           <input type="text" id="f-forn" placeholder="Ex: Fornecedor SP"/>
@@ -336,6 +374,12 @@
               <option value="Acessório">Acessório</option>
               <option value="Outro">Outro</option>
             </select>
+            <select id="ft-acabamento" onchange="renderCheckin()">
+              <option value="">Todos os acabamentos</option>
+              <option value="Prata">🔘 Prata</option>
+              <option value="Dourado">✨ Dourado</option>
+              <option value="Rose Gold">🌸 Rose Gold</option>
+            </select>
             <input type="text" id="ft-busca" placeholder="🔍 Nome ou código..."
               oninput="renderCheckin()" style="flex:1;min-width:130px;"/>
           </div>
@@ -362,6 +406,12 @@
           <option value="Semijoia">Semijoia</option>
           <option value="Acessório">Acessório</option>
           <option value="Outro">Outro</option>
+        </select>
+        <select id="fe-acabamento" onchange="renderEstoque()">
+          <option value="">Todos os acabamentos</option>
+          <option value="Prata">🔘 Prata</option>
+          <option value="Dourado">✨ Dourado</option>
+          <option value="Rose Gold">🌸 Rose Gold</option>
         </select>
         <select id="fe-alerta" onchange="renderEstoque()">
           <option value="">Todos</option>
@@ -398,6 +448,15 @@
         </select>
       </div>
       <div class="pf">
+        <label>Acabamento</label>
+        <select id="r-acabamento">
+          <option value="">Todos</option>
+          <option value="Prata">🔘 Prata</option>
+          <option value="Dourado">✨ Dourado</option>
+          <option value="Rose Gold">🌸 Rose Gold</option>
+        </select>
+      </div>
+      <div class="pf">
         <label>Usuário</label>
         <select id="r-usuario">
           <option value="">Todos</option>
@@ -416,7 +475,7 @@
           <thead>
             <tr>
               <th>Data</th><th>Código</th><th>Produto</th><th>Tipo</th>
-              <th>Gôndola</th><th>Estoque</th><th>Total</th><th>Por</th>
+              <th>Acabamento</th><th>Gôndola</th><th>Estoque</th><th>Total</th><th>Por</th>
             </tr>
           </thead>
           <tbody id="rel-tbody"></tbody>
@@ -447,6 +506,24 @@
     <h3>🔄 Repor Gôndola</h3>
     <p>Mover unidades do estoque para a gôndola</p>
     <div class="repor-info" id="repor-info">—</div>
+
+    <!-- ACABAMENTO NO MODAL -->
+    <div class="repor-acabamento">
+      <label>Acabamento que está sendo reposto</label>
+      <div class="acabamento-group" id="repor-acabamento-group">
+        <button type="button" class="acabamento-btn prata" onclick="selecionarAcabamentoRepor('Prata')">
+          🔘 Prata
+        </button>
+        <button type="button" class="acabamento-btn dourado" onclick="selecionarAcabamentoRepor('Dourado')">
+          ✨ Dourado
+        </button>
+        <button type="button" class="acabamento-btn rosegold" onclick="selecionarAcabamentoRepor('Rose Gold')">
+          🌸 Rose Gold
+        </button>
+      </div>
+      <input type="hidden" id="repor-acabamento-val" value=""/>
+    </div>
+
     <input type="number" id="repor-qtd" min="1" placeholder="Quantidade"/>
     <div class="repor-btns">
       <button class="repor-cancel" onclick="fecharRepor()">Cancelar</button>
@@ -480,6 +557,24 @@
         </select>
       </div>
     </div>
+
+    <!-- ACABAMENTO NO EDITAR -->
+    <div class="field">
+      <label>Acabamento</label>
+      <div class="acabamento-group" id="edit-acabamento-group">
+        <button type="button" class="acabamento-btn prata" onclick="selecionarAcabamentoEdit('Prata')">
+          🔘 Prata
+        </button>
+        <button type="button" class="acabamento-btn dourado" onclick="selecionarAcabamentoEdit('Dourado')">
+          ✨ Dourado
+        </button>
+        <button type="button" class="acabamento-btn rosegold" onclick="selecionarAcabamentoEdit('Rose Gold')">
+          🌸 Rose Gold
+        </button>
+      </div>
+      <input type="hidden" id="edit-acabamento" value=""/>
+    </div>
+
     <div class="field">
       <label>Fornecedor</label>
       <input type="text" id="edit-forn"/>
@@ -553,6 +648,61 @@ function logout(){
   document.getElementById('l-pass').value = '';
 }
 
+// ══════════ ACABAMENTO ══════════
+function selecionarAcabamento(val){
+  document.getElementById('f-acabamento').value = val;
+  document.querySelectorAll('#f-acabamento-group .acabamento-btn').forEach(btn => {
+    btn.classList.remove('ativo');
+    if(btn.textContent.trim().includes(val === 'Rose Gold' ? 'Rose' : val)){
+      btn.classList.add('ativo');
+    }
+  });
+}
+
+function selecionarAcabamentoRepor(val){
+  document.getElementById('repor-acabamento-val').value = val;
+  document.querySelectorAll('#repor-acabamento-group .acabamento-btn').forEach(btn => {
+    btn.classList.remove('ativo');
+    if(btn.textContent.trim().includes(val === 'Rose Gold' ? 'Rose' : val)){
+      btn.classList.add('ativo');
+    }
+  });
+}
+
+function selecionarAcabamentoEdit(val){
+  document.getElementById('edit-acabamento').value = val;
+  document.querySelectorAll('#edit-acabamento-group .acabamento-btn').forEach(btn => {
+    btn.classList.remove('ativo');
+    if(btn.textContent.trim().includes(val === 'Rose Gold' ? 'Rose' : val)){
+      btn.classList.add('ativo');
+    }
+  });
+}
+
+function ativarBotaoAcabamento(groupId, val){
+  if(!val) return;
+  document.querySelectorAll(`#${groupId} .acabamento-btn`).forEach(btn => {
+    btn.classList.remove('ativo');
+    if(btn.textContent.trim().includes(val === 'Rose Gold' ? 'Rose' : val)){
+      btn.classList.add('ativo');
+    }
+  });
+}
+
+function acabamentoIcon(val){
+  if(val === 'Prata')    return '🔘';
+  if(val === 'Dourado')  return '✨';
+  if(val === 'Rose Gold') return '🌸';
+  return '⚪';
+}
+
+function acabamentoPillClass(val){
+  if(val === 'Prata')    return 'prata';
+  if(val === 'Dourado')  return 'dourado';
+  if(val === 'Rose Gold') return 'rosegold';
+  return '';
+}
+
 // ══════════ ABAS ══════════
 function aba(id){
   document.querySelectorAll('.tab').forEach((t,i)=>{
@@ -560,9 +710,9 @@ function aba(id){
   });
   document.querySelectorAll('.painel').forEach(p=>p.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
-  if(id==='estoque')  renderEstoque();
+  if(id==='estoque')   renderEstoque();
   if(id==='relatorio') gerarRelatorio();
-  if(id==='admin')    renderAdmin();
+  if(id==='admin')     renderAdmin();
 }
 
 // ══════════ DADOS ══════════
@@ -584,29 +734,32 @@ document.getElementById('foto-input').addEventListener('change', function(e){
 
 // ══════════ REGISTRAR ══════════
 function registrar(){
-  const nome    = document.getElementById('f-nome').value.trim();
-  const ref     = document.getElementById('f-ref').value.trim();
-  const tipo    = document.getElementById('f-tipo').value;
-  const forn    = document.getElementById('f-forn').value.trim();
-  const gondola = parseInt(document.getElementById('f-gondola').value) || 0;
-  const estoque = parseInt(document.getElementById('f-estoque').value) || 0;
-  const alerta  = parseInt(document.getElementById('f-alerta').value) || 5;
-  const obs     = document.getElementById('f-obs').value.trim();
+  const nome      = document.getElementById('f-nome').value.trim();
+  const ref       = document.getElementById('f-ref').value.trim();
+  const tipo      = document.getElementById('f-tipo').value;
+  const acabamento= document.getElementById('f-acabamento').value;
+  const forn      = document.getElementById('f-forn').value.trim();
+  const gondola   = parseInt(document.getElementById('f-gondola').value) || 0;
+  const estoque   = parseInt(document.getElementById('f-estoque').value) || 0;
+  const alerta    = parseInt(document.getElementById('f-alerta').value) || 5;
+  const obs       = document.getElementById('f-obs').value.trim();
 
-  if(!nome) return toast('⚠️ Informe o nome do produto.');
-  if(!tipo) return toast('⚠️ Selecione o tipo.');
+  if(!nome)      return toast('⚠️ Informe o nome do produto.');
+  if(!tipo)      return toast('⚠️ Selecione o tipo.');
+  if(!acabamento) return toast('⚠️ Selecione o acabamento (Prata, Dourado ou Rose Gold).');
   if(gondola === 0 && estoque === 0) return toast('⚠️ Informe ao menos uma quantidade.');
 
   const reg = {
     id: Date.now(),
     data: new Date().toISOString(),
-    nome, ref, tipo, forn, gondola, estoque, alerta, obs,
+    nome, ref, tipo, acabamento, forn, gondola, estoque, alerta, obs,
     foto: fotoB64 || null,
     por: USER.nome,
     movimentacoes: [{
       data: new Date().toISOString(),
       acao: 'Check-in inicial',
       gondola, estoque,
+      acabamento,
       por: USER.nome
     }]
   };
@@ -622,8 +775,11 @@ function registrar(){
 function limparForm(){
   ['f-nome','f-ref','f-forn','f-gondola','f-estoque','f-obs']
     .forEach(id => document.getElementById(id).value = '');
-  document.getElementById('f-tipo').value   = '';
-  document.getElementById('f-alerta').value = '';
+  document.getElementById('f-tipo').value      = '';
+  document.getElementById('f-alerta').value    = '';
+  document.getElementById('f-acabamento').value = '';
+  document.querySelectorAll('#f-acabamento-group .acabamento-btn')
+    .forEach(btn => btn.classList.remove('ativo'));
   document.getElementById('preview-img').style.display = 'none';
   document.getElementById('foto-input').value = '';
   fotoB64 = null;
@@ -636,8 +792,16 @@ function abrirRepor(id){
   reporId = id;
   document.getElementById('repor-info').innerHTML =
     `<strong>${r.nome}</strong><br>
+     ${r.acabamento ? `${acabamentoIcon(r.acabamento)} <b>${r.acabamento}</b><br>` : ''}
      🛒 Gôndola atual: <b>${r.gondola}</b> &nbsp;&nbsp;
      📦 Estoque disponível: <b>${r.estoque}</b>`;
+
+  // Pré-seleciona o acabamento já cadastrado no produto
+  document.getElementById('repor-acabamento-val').value = r.acabamento || '';
+  document.querySelectorAll('#repor-acabamento-group .acabamento-btn')
+    .forEach(btn => btn.classList.remove('ativo'));
+  if(r.acabamento) ativarBotaoAcabamento('repor-acabamento-group', r.acabamento);
+
   document.getElementById('repor-qtd').value = '';
   document.getElementById('repor-modal').classList.add('open');
 }
@@ -648,8 +812,11 @@ function fecharRepor(){
 }
 
 function confirmarRepor(){
-  const qtd = parseInt(document.getElementById('repor-qtd').value) || 0;
-  if(qtd <= 0) return toast('⚠️ Informe uma quantidade válida.');
+  const qtd       = parseInt(document.getElementById('repor-qtd').value) || 0;
+  const acabamento = document.getElementById('repor-acabamento-val').value;
+
+  if(qtd <= 0)    return toast('⚠️ Informe uma quantidade válida.');
+  if(!acabamento) return toast('⚠️ Confirme o acabamento que está sendo reposto.');
 
   const lista = getData();
   const idx   = lista.findIndex(x => x.id === reporId);
@@ -661,7 +828,6 @@ function confirmarRepor(){
     return toast(`⚠️ Estoque insuficiente! Disponível: ${r.estoque} unidade(s).`);
   }
 
-  // Aplica a movimentação
   r.gondola += qtd;
   r.estoque -= qtd;
 
@@ -669,6 +835,7 @@ function confirmarRepor(){
   r.movimentacoes.unshift({
     data: new Date().toISOString(),
     acao: `Reposição: ${qtd} un. → Gôndola`,
+    acabamento,
     gondola: r.gondola,
     estoque: r.estoque,
     por: USER.nome
@@ -678,7 +845,7 @@ function confirmarRepor(){
   setData(lista);
   fecharRepor();
   atualizar();
-  toast(`✅ ${qtd} unidade(s) movidas do estoque para a gôndola!`);
+  toast(`✅ ${qtd} un. (${acabamento}) movidas para a gôndola!`);
 }
 
 // ══════════ EDITAR (ADMIN) ══════════
@@ -686,15 +853,19 @@ function abrirEdit(id){
   if(!USER.isAdmin) return toast('🚫 Apenas o administrador pode editar.');
   const r = getData().find(x => x.id === id);
   if(!r) return;
-  document.getElementById('edit-id').value      = id;
-  document.getElementById('edit-nome').value    = r.nome || '';
-  document.getElementById('edit-ref').value     = r.ref  || '';
-  document.getElementById('edit-tipo').value    = r.tipo || '';
-  document.getElementById('edit-forn').value    = r.forn || '';
-  document.getElementById('edit-gondola').value = r.gondola || 0;
-  document.getElementById('edit-estoque').value = r.estoque || 0;
-  document.getElementById('edit-alerta').value  = r.alerta  || 5;
-  document.getElementById('edit-obs').value     = r.obs  || '';
+  document.getElementById('edit-id').value       = id;
+  document.getElementById('edit-nome').value     = r.nome || '';
+  document.getElementById('edit-ref').value      = r.ref  || '';
+  document.getElementById('edit-tipo').value     = r.tipo || '';
+  document.getElementById('edit-forn').value     = r.forn || '';
+  document.getElementById('edit-gondola').value  = r.gondola || 0;
+  document.getElementById('edit-estoque').value  = r.estoque || 0;
+  document.getElementById('edit-alerta').value   = r.alerta  || 5;
+  document.getElementById('edit-obs').value      = r.obs  || '';
+  document.getElementById('edit-acabamento').value = r.acabamento || '';
+  document.querySelectorAll('#edit-acabamento-group .acabamento-btn')
+    .forEach(btn => btn.classList.remove('ativo'));
+  if(r.acabamento) ativarBotaoAcabamento('edit-acabamento-group', r.acabamento);
   document.getElementById('edit-modal').classList.add('open');
 }
 
@@ -709,18 +880,20 @@ function salvarEdit(){
   if(idx < 0) return;
   const r = lista[idx];
 
-  r.nome    = document.getElementById('edit-nome').value.trim();
-  r.ref     = document.getElementById('edit-ref').value.trim();
-  r.tipo    = document.getElementById('edit-tipo').value;
-  r.forn    = document.getElementById('edit-forn').value.trim();
-  r.gondola = parseInt(document.getElementById('edit-gondola').value) || 0;
-  r.estoque = parseInt(document.getElementById('edit-estoque').value) || 0;
-  r.alerta  = parseInt(document.getElementById('edit-alerta').value) || 5;
-  r.obs     = document.getElementById('edit-obs').value.trim();
+  r.nome      = document.getElementById('edit-nome').value.trim();
+  r.ref       = document.getElementById('edit-ref').value.trim();
+  r.tipo      = document.getElementById('edit-tipo').value;
+  r.acabamento= document.getElementById('edit-acabamento').value;
+  r.forn      = document.getElementById('edit-forn').value.trim();
+  r.gondola   = parseInt(document.getElementById('edit-gondola').value) || 0;
+  r.estoque   = parseInt(document.getElementById('edit-estoque').value) || 0;
+  r.alerta    = parseInt(document.getElementById('edit-alerta').value) || 5;
+  r.obs       = document.getElementById('edit-obs').value.trim();
   r.movimentacoes = r.movimentacoes || [];
   r.movimentacoes.unshift({
     data: new Date().toISOString(),
     acao: 'Edição manual (Admin)',
+    acabamento: r.acabamento,
     gondola: r.gondola,
     estoque: r.estoque,
     por: USER.nome
@@ -763,6 +936,7 @@ function buildAlertas(lista){
     <strong>⚠️ ${low.length} produto(s) com estoque baixo</strong>
     ${low.map(r=>`<div class="alerta-item">
       ${r.nome} ${r.ref?`<small>(${r.ref})</small>`:''}
+      ${r.acabamento ? `· ${acabamentoIcon(r.acabamento)} ${r.acabamento}` : ''}
       — 🛒 Gôndola: <b>${r.gondola}</b> | 📦 Estoque: <b>${r.estoque}</b>
     </div>`).join('')}
   </div>`;
@@ -785,14 +959,23 @@ function buildStats(lista, targetId){
 function cardProduto(r, mostrarMov){
   const low = isLow(r);
   const ultimaMov = r.movimentacoes && r.movimentacoes.length > 1
-    ? `<div class="obs">🕒 Última reposição: ${fmtCurta(r.movimentacoes[0].data)} por ${r.movimentacoes[0].por}</div>`
+    ? `<div class="obs">🕒 Última reposição: ${fmtCurta(r.movimentacoes[0].data)} por ${r.movimentacoes[0].por}
+         ${r.movimentacoes[0].acabamento ? `· ${acabamentoIcon(r.movimentacoes[0].acabamento)} ${r.movimentacoes[0].acabamento}` : ''}
+       </div>`
     : '';
   const movLista = mostrarMov && r.movimentacoes && r.movimentacoes.length > 0
     ? `<div class="mov-lista">
         ${r.movimentacoes.slice(0,5).map(m=>
-          `<div class="mov-item">📌 ${fmtCurta(m.data)} — ${m.acao} (🛒${m.gondola} | 📦${m.estoque}) por ${m.por}</div>`
+          `<div class="mov-item">📌 ${fmtCurta(m.data)} — ${m.acao}
+           ${m.acabamento ? `· ${acabamentoIcon(m.acabamento)} ${m.acabamento}` : ''}
+           (🛒${m.gondola} | 📦${m.estoque}) por ${m.por}</div>`
         ).join('')}
       </div>` : '';
+
+  const acPill = r.acabamento
+    ? `<span class="pill ${acabamentoPillClass(r.acabamento)}">${acabamentoIcon(r.acabamento)} ${r.acabamento}</span>`
+    : '';
+
   return `
     <div class="entry ${low?'alerta-low':''}">
       ${r.foto
@@ -806,6 +989,7 @@ function cardProduto(r, mostrarMov){
           ${r.forn?` · ${r.forn}`:''}
         </div>
         <div class="pills">
+          ${acPill}
           <span class="pill gondola">🛒 Gôndola: ${r.gondola}</span>
           <span class="pill estoque">📦 Estoque: ${r.estoque}</span>
           <span class="pill total">∑ Total: ${r.gondola+r.estoque}</span>
@@ -817,171 +1001,5 @@ function cardProduto(r, mostrarMov){
         <div class="reg-por">👤 Check-in por ${r.por||'—'} em ${fmt(r.data)}</div>
       </div>
       <div class="entry-actions">
-        <button class="btn-success" onclick="abrirRepor(${r.id})">🔄 Repor Gôndola</button>
-        ${USER.isAdmin
-          ? `<button class="btn-warning" onclick="abrirEdit(${r.id})">✏️ Editar</button>
-             <button class="btn-danger" onclick="excluir(${r.id})">🗑️</button>`
-          : `<span style="font-size:10px;color:#ccc;">🔒 Admin</span>`}
-      </div>
-    </div>`;
-}
+        <button class="btn-success" onclick="abrirRepor(${r.id})">🔄 Repor Gôndola</button
 
-// ══════════ RENDERS ══════════
-function renderCheckin(){
-  const fTipo  = document.getElementById('ft-tipo').value;
-  const fBusca = document.getElementById('ft-busca').value.toLowerCase();
-  let lista = getData();
-  buildStats(lista, 'stats-checkin');
-  document.getElementById('alertas-top').innerHTML = buildAlertas(lista);
-  if(fTipo)  lista = lista.filter(r => r.tipo === fTipo);
-  if(fBusca) lista = lista.filter(r =>
-    r.nome.toLowerCase().includes(fBusca) ||
-    (r.ref||'').toLowerCase().includes(fBusca) ||
-    (r.forn||'').toLowerCase().includes(fBusca));
-  const el = document.getElementById('hist-checkin');
-  if(!lista.length){
-    el.innerHTML=`<div class="empty"><div class="icon">📭</div><p>Nenhum registro encontrado.</p></div>`;
-    return;
-  }
-  el.innerHTML = lista.map(r => cardProduto(r, false)).join('');
-}
-
-function renderEstoque(){
-  const fTipo  = document.getElementById('fe-tipo').value;
-  const fAlert = document.getElementById('fe-alerta').value;
-  const fBusca = document.getElementById('fe-busca').value.toLowerCase();
-  let lista = getData();
-  buildStats(lista, 'stats-estoque');
-  document.getElementById('alertas-estoque').innerHTML = buildAlertas(lista);
-  if(fTipo)         lista = lista.filter(r => r.tipo === fTipo);
-  if(fAlert==='low') lista = lista.filter(r => isLow(r));
-  if(fAlert==='ok')  lista = lista.filter(r => !isLow(r));
-  if(fBusca) lista = lista.filter(r =>
-    r.nome.toLowerCase().includes(fBusca) ||
-    (r.ref||'').toLowerCase().includes(fBusca));
-  const el = document.getElementById('hist-estoque');
-  if(!lista.length){
-    el.innerHTML=`<div class="empty"><div class="icon">📭</div><p>Nenhum produto encontrado.</p></div>`;
-    return;
-  }
-  el.innerHTML = lista.map(r => cardProduto(r, true)).join('');
-}
-
-function renderAdmin(){
-  const fBusca = (document.getElementById('fa-busca').value||'').toLowerCase();
-  let lista = getData();
-  if(fBusca) lista = lista.filter(r =>
-    r.nome.toLowerCase().includes(fBusca)||
-    (r.ref||'').toLowerCase().includes(fBusca));
-  const el = document.getElementById('hist-admin');
-  if(!lista.length){
-    el.innerHTML=`<div class="empty"><div class="icon">📭</div><p>Nenhum registro.</p></div>`;
-    return;
-  }
-  el.innerHTML = lista.map(r => cardProduto(r, true)).join('');
-}
-
-// ══════════ RELATÓRIO ══════════
-function gerarRelatorio(){
-  const ini  = document.getElementById('r-inicio').value;
-  const fim  = document.getElementById('r-fim').value;
-  const tipo = document.getElementById('r-tipo').value;
-  const usu  = document.getElementById('r-usuario').value;
-  let lista  = getData();
-  if(ini) lista = lista.filter(r => r.data >= ini);
-  if(fim) lista = lista.filter(r => r.data <= fim+'T23:59:59');
-  if(tipo) lista = lista.filter(r => r.tipo === tipo);
-  if(usu)  lista = lista.filter(r => r.por === usu);
-  relFiltrado = lista;
-
-  const totG  = lista.reduce((s,r)=>s+r.gondola,0);
-  const totE  = lista.reduce((s,r)=>s+r.estoque,0);
-  const tipos = [...new Set(lista.map(r=>r.tipo))].length;
-  const low   = lista.filter(r=>isLow(r)).length;
-
-  document.getElementById('rel-cards').innerHTML = `
-    <div class="rel-card"><h4>Registros</h4>
-      <div class="big">${lista.length}</div><div class="desc">no período selecionado</div></div>
-    <div class="rel-card"><h4>Total Gôndola</h4>
-      <div class="big">${totG}</div><div class="desc">unidades na gôndola</div></div>
-    <div class="rel-card"><h4>Total Estoque</h4>
-      <div class="big">${totE}</div><div class="desc">unidades no estoque</div></div>
-    <div class="rel-card"><h4>Categorias</h4>
-      <div class="big">${tipos}</div><div class="desc">tipos distintos</div></div>
-    <div class="rel-card"><h4>Estoque Baixo</h4>
-      <div class="big" style="color:${low>0?'#fd7e14':'#28a745'}">${low}</div>
-      <div class="desc">produtos em alerta</div></div>
-  `;
-
-  const tbody = document.getElementById('rel-tbody');
-  if(!lista.length){
-    tbody.innerHTML=`<tr><td colspan="8" style="text-align:center;color:#ccc;padding:24px;">
-      Nenhum registro no período.</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = lista.map(r=>`
-    <tr>
-      <td>${fmt(r.data)}</td>
-      <td style="font-family:monospace;">${r.ref||'—'}</td>
-      <td>${r.nome}</td>
-      <td><span class="tipo-badge tipo-${r.tipo}">${r.tipo}</span></td>
-      <td>${r.gondola}</td>
-      <td>${r.estoque}</td>
-      <td><b>${r.gondola+r.estoque}</b></td>
-      <td>${r.por||'—'}</td>
-    </tr>`).join('');
-}
-
-function exportarCSV(){
-  const lista = getData();
-  if(!lista.length) return toast('⚠️ Nenhum registro para exportar.');
-  const h = ['Data','Código','Produto','Tipo','Fornecedor','Gôndola','Estoque','Total','Alerta','Por','Obs'];
-  const rows = lista.map(r=>[
-    fmt(r.data), `"${r.ref||''}"`, `"${r.nome}"`, r.tipo, `"${r.forn||''}"`,
-    r.gondola, r.estoque, r.gondola+r.estoque, r.alerta||5,
-    `"${r.por||''}"`, `"${r.obs||''}"`
-  ].join(';'));
-  gerarDownloadCSV([h.join(';'),...rows].join('\n'), 'geor_estoque');
-}
-
-function exportarRelCSV(){
-  if(!relFiltrado.length) return toast('⚠️ Gere o relatório primeiro.');
-  const h = ['Data','Código','Produto','Tipo','Gôndola','Estoque','Total','Por'];
-  const rows = relFiltrado.map(r=>[
-    fmt(r.data), `"${r.ref||''}"`, `"${r.nome}"`, r.tipo,
-    r.gondola, r.estoque, r.gondola+r.estoque, `"${r.por||''}"`
-  ].join(';'));
-  gerarDownloadCSV([h.join(';'),...rows].join('\n'), 'geor_relatorio');
-}
-
-function gerarDownloadCSV(csv, nome){
-  const blob = new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  a.href     = url;
-  a.download = `${nome}_${new Date().toISOString().slice(0,10)}.csv`;
-  a.click();
-  URL.revokeObjectURL(url);
-  toast('📄 CSV exportado!');
-}
-
-function atualizar(){
-  renderCheckin();
-  const abaAtiva = document.querySelector('.tab.active');
-  if(abaAtiva){
-    const idx = [...document.querySelectorAll('.tab')].indexOf(abaAtiva);
-    if(idx===1) renderEstoque();
-    if(idx===2) gerarRelatorio();
-    if(idx===3) renderAdmin();
-  }
-}
-
-function toast(msg){
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'), 3200);
-}
-</script>
-</body>
-</html>
